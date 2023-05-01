@@ -6,7 +6,38 @@ using System.Threading.Tasks;
 
 namespace Delta_Coop365
 {
-    internal class Product
+    public class Product
     {
+        private string productName;
+        private int productID;
+        private int stock;
+        private double price;
+
+        public string GetName()
+        {
+            return productName;
+        }
+
+        public int GetID()
+        {
+            return productID;
+        }
+
+        public int GetStock()
+        {
+            return stock;
+        }
+
+        public double GetPrice()
+        {
+            return price;
+        }
+
+        public string GetIngredients()
+        {
+            /// get ingredients from the XML file
+            /// should it be returned as an array of ingredients instead?
+            return;
+        }
     }
 }
