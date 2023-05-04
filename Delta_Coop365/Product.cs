@@ -36,7 +36,7 @@ namespace Delta_Coop365
         public string GetIngredients()
         {
             /// get ingredients from the XML file
-            /// should it be returned as an array of ingredients instead?
+            /// SQL call, get the ingredients from the database
             return;
         }
     }

@@ -20,15 +20,21 @@ namespace Delta_Coop365
         public double GetPrice()
         {
             /// Implement the code to calculate the total price
-            /// remember that you need to get the price from the Product within the OrderLine
-            /// but the amount from OrderLine itself
+            /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
+            int counter = 0;
+            while (counter < orderLines.Count)
+            {
+                TotalPrice += orderLines[counter].Getprice();
+                counter++;
+            }
+
             return TotalPrice;
         }
 
-        public int ProductsLeft(Product p)
+        public int ProductsLeft(OrderLine ol)
         {
-            int productsLeft = 0; // Implement the actual calculation of the productsleft after order made
-
+            Product p = ol.GetProduct();
+            int productsLeft = p.GetStock() - ol.GetAmount(); // Implement the actual calculation of the productsleft after order made
             if (productsLeft == 0) Notify(p);
 
             return productsLeft;
@@ -46,6 +52,7 @@ namespace Delta_Coop365
         {
             /// Adds the OrderLine to the database
             /// Use of SQL commands
+            
         }
 
         public void DeleteOrderLine(OrderLine ol)
