@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Delta_Coop365
 {
@@ -42,12 +44,24 @@ namespace Delta_Coop365
             return price;
         }
 
-        public string GetIngredients()
+        public void GetIngredients() //Ændret fra string til void.
         {
             /// get ingredients from the XML file
             /// should it be returned as an array of ingredients instead?
             //ingredients = String.Format();???
-            return "Idk what we put here yet";
+
+            try
+            {
+                SqlConnection myConnection = new SqlConnection("user id=" + UserID + "; password=" + Password + "; server=" + Server + "; database=" + Database + ";");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n StackTrace: " + e.StackTrace);
+            }
+            finally 
+            { 
+
+            }
         }
     }
 }
