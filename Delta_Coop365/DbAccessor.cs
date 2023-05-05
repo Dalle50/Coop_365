@@ -1,4 +1,4 @@
-﻿using Delta_Coop365.ProductPictures;
+﻿using Delta_Coop365;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
