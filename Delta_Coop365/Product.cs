@@ -37,6 +37,7 @@ namespace Delta_Coop365
         {
             /// get ingredients from the XML file
             /// should it be returned as an array of ingredients instead?
+            /// This should be constructed with the object, and not recieved by the xml file after object is constructed.
             return;
         }
     }
