@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Delta_Coop365
 {
@@ -14,14 +16,15 @@ namespace Delta_Coop365
         private int productID;
         private int stock;
         private double price;
-        //private string ingredients;
+        private string ingredients;
 
-        Product(string productName, int productID, int stock, double price /*, string ingredients*/)
+        Product(string productName, int productID, int stock, double price , string ingredients)
         {
             this.productName = productName;
             this.productID = productID;
             this.stock = stock;
             this.price = price;
+            this.ingredients = ingredients;
         }
 
         public string GetName()
@@ -47,13 +50,14 @@ namespace Delta_Coop365
         public void GetIngredients() //Ændret fra string til void.
         {
             /// get ingredients from the XML file
-            /// should it be returned as an array of ingredients instead?
             /// This should be constructed with the object, and not recieved by the xml file after object is constructed.
-            //ingredients = String.Format();???
-
+            SqlConnection connection = new SqlConnection();
             try
             {
-                SqlConnection myConnection = new SqlConnection("user id=" + UserID + "; password=" + Password + "; server=" + Server + "; database=" + Database + ";");
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT Description FROM Products WHERE ProductID = @productID", connection);
+                command.Parameters.Add("@productID", SqlDbType.Int, GetID());
+                SqlDataReader reader = command.ExecuteReader();
             }
             catch (Exception e)
             {
