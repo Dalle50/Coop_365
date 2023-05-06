@@ -58,6 +58,11 @@ namespace Delta_Coop365
                 SqlCommand command = new SqlCommand("SELECT Description FROM Products WHERE ProductID = @productID", connection);
                 command.Parameters.Add("@productID", SqlDbType.Int, GetID());
                 SqlDataReader reader = command.ExecuteReader();
+                //while (reader.Read())
+                //{
+                //    string ingredients = reader.GetString(0);
+                //    Product product = new Product();
+                //}
             }
             catch (Exception e)
             {
