@@ -64,8 +64,8 @@ namespace Delta_Coop365
                 MessageBox.Show(e.Message + "\n StackTrace: " + e.StackTrace);
             }
             finally 
-            { 
-
+            {
+                connection.Close();
             }
         }
     }
