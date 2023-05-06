@@ -18,10 +18,10 @@ namespace Delta_Coop365
         private double price;
         private string ingredients;
 
-        Product(string productName, int productID, int stock, double price , string ingredients)
+        Product( int productID, string productName, int stock, double price , string ingredients)
         {
-            this.productName = productName;
             this.productID = productID;
+            this.productName = productName;
             this.stock = stock;
             this.price = price;
             this.ingredients = ingredients;
