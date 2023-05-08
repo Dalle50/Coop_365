@@ -49,8 +49,8 @@ namespace Delta_Coop365
                 {
                     int productid = (int)e.Element("Varenummer");
                     double price = (double)e.Element("Pris");
-                    string name = (string)e.Element("Navn");
-                    string ingredients = (string)e.Element("ingredience");
+                    string name = (string)e.Element("Name");
+                    string ingredients = (string)e.Element("Ingredience");
                     dbAccessor.insertIntoProducts(productid, name, ingredients, price);
                 }
             }
