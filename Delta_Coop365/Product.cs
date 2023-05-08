@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Delta_Coop365
 {
@@ -47,10 +46,8 @@ namespace Delta_Coop365
             return price;
         }
 
-        public string GetIngredients() //Ændret fra string til void. 
+        public string GetIngredients()
         {
-            /// get ingredients from the XML file
-            /// This should be constructed with the object, and not recieved by the xml file after object is constructed.
            return ingredients;
         }
     }
