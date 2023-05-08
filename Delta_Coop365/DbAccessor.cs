@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.VisualStudio.Setup.Configuration;
 using System.IO;
+using System.Configuration;
+using Microsoft.VisualStudio.Setup.Configuration;
 
 namespace Delta_Coop365
 {
@@ -23,9 +24,9 @@ namespace Delta_Coop365
         /// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security=True"
         /// </summary>
         /// <param name="connString"></param>
-        public DbAccessor(string connString) 
+        public DbAccessor() 
         {
-            this.connString = connString;
+            this.connString = ConfigurationManager.ConnectionStrings["post"].ConnectionString;
             //this.connString =
             //    "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename="
             //    + GetSolutionPath()
