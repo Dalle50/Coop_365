@@ -20,7 +20,7 @@ namespace Delta_Coop365
         
         public Product GetProduct()
         {
-            return product;
+            return product; //.---
         }
 
         public int GetAmount()

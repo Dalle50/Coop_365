@@ -26,3 +26,4 @@ OrderId int FOREIGN KEY REFERENCES dbo.Orders(OrderId),
 Date DateTime NOT NULL,
 QRCode VARBINARY(MAX)NOT NULL,
 )
+
