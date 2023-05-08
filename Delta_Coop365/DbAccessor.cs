@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.VisualStudio.Setup.Configuration;
+using System.IO;
 
 namespace Delta_Coop365
 {
@@ -17,8 +19,19 @@ namespace Delta_Coop365
         /// </summary>
         string connString;
         string picturesUrl;
-        public DbAccessor(string connString) { this.connString = connString; this.picturesUrl = "C:\\Users\\danie\\source\\repos\\ConsoleApp2\\ConsoleApp2\\productPictures\\"; }
-        public DbAccessor(string connString, string picturesUrl) { this.connString = connString; this.picturesUrl = picturesUrl; }
+        /// <summary>
+        /// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security=True"
+        /// </summary>
+        /// <param name="connString"></param>
+        public DbAccessor(string connString) 
+        {
+            this.connString = connString;
+            //this.connString =
+            //    "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename="
+            //    + GetSolutionPath()
+            //    + "\\Database1.mdf;Integrated Security=True";
+            this.picturesUrl = 
+                GetSolutionPath() + "\\productPictures\\"; }
         /// <summary>
         /// This functions is made to check if database is populated with data. 
         /// This controls if we have to created the data or just update it.
@@ -75,10 +88,9 @@ namespace Delta_Coop365
         /// <summary>
         /// This function updates all the products with the newest data from the file.
         /// </summary>
-        public void updateProductsDaily()
+        public void updateProductsDaily(IEnumerable<XElement> results)
         {
-            DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
-            var results = data.getData("BakeOffVare");
+
             foreach (var element in results)
             {
                 int productid = (int)element.Element("Varenummer");
@@ -118,6 +130,23 @@ namespace Delta_Coop365
                     command.Connection.Close();
                 }
             }
+        }
+
+        public static string GetSolutionPath()
+        {
+            var query = new SetupConfiguration();
+            var e = query.EnumAllInstances();
+
+            int fetched;
+            var instances = new ISetupInstance[1];
+            e.Next(1, instances, out fetched);
+
+            string visualStudioDirectory = instances[0].GetInstallationPath();
+            string solutionDirectory = Path.Combine(visualStudioDirectory, "Delta_Coop365");
+
+            string solutionFilePath = Path.Combine(solutionDirectory, "Delta_Coop365.sln");
+
+            return solutionFilePath;
         }
     }
 }
