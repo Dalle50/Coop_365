@@ -39,7 +39,6 @@ namespace Delta_Coop365
             {
                 Console.WriteLine("Failed to generate QrCode");
             }
-
         }
     }
 }
