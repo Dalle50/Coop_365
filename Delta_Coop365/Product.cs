@@ -47,31 +47,11 @@ namespace Delta_Coop365
             return price;
         }
 
-        public void GetIngredients() //Ændret fra string til void.
+        public string GetIngredients() //Ændret fra string til void. 
         {
             /// get ingredients from the XML file
             /// This should be constructed with the object, and not recieved by the xml file after object is constructed.
-            SqlConnection connection = new SqlConnection();
-            try
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT Description FROM Products WHERE ProductID = @productID", connection);
-                command.Parameters.Add("@productID", SqlDbType.Int, GetID());
-                SqlDataReader reader = command.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    string ingredients = reader.GetString(0);
-                //    Product product = new Product();
-                //}
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message + "\n StackTrace: " + e.StackTrace);
-            }
-            finally 
-            {
-                connection.Close();
-            }
+           return ingredients;
         }
     }
 }
