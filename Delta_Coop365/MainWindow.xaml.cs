@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Delta_Coop365;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Delta_Coop365
 {
@@ -25,7 +24,7 @@ namespace Delta_Coop365
     /// </summary>
     public partial class MainWindow : Window
     {
-        DbAccessor dbAccessor = new DbAccessor("Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security = True");
+        DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         
         public MainWindow()
