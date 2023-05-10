@@ -9,8 +9,6 @@ using System.Xml.Linq;
 using System.IO;
 using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
-using System.Threading;
-using static Azure.Core.HttpHeader;
 
 namespace Delta_Coop365
 {
@@ -68,9 +66,17 @@ namespace Delta_Coop365
         /// <param name="name"></param>
         /// <param name="ingredients"></param>
         /// <param name="price"></param>
-        public void insertIntoProducts(int productid, string name, string ingredients, double price)
+        //public void insertIntoProducts(int productid, string name, string ingredients, double price)
+        //{
+        //    string pictureUrl = this.picturesUrl + productid.ToString();
+        //    string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES ('" + productid + "','" + name + "','" + price + "','" + ingredients + "','" + pictureUrl + "')";
+        //    sqlQuery(query);
+        //}
+
+        public void InsertIntoProducts(int productid, string name, string ingredients, double price)
         {
             string pictureUrl = this.picturesUrl + productid.ToString();
+
             string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES (@productid,@name,@price,@ingredients,@pictureUrl)";
             SqlParameter productIdParam = new SqlParameter("@productid", productid);
             SqlParameter nameParam = new SqlParameter("@name", name);
@@ -78,7 +84,10 @@ namespace Delta_Coop365
             SqlParameter ingredientsParam = new SqlParameter("@ingredients", ingredients);
             SqlParameter pictureUrlParam = new SqlParameter("@pictureUrl", pictureUrl);
             sqlQuery(query, productIdParam, nameParam, priceParam, ingredientsParam, pictureUrlParam);
+
         }
+
+
         /// <summary>
         /// Updates the stock of the product with the given ProductID
         /// </summary>
