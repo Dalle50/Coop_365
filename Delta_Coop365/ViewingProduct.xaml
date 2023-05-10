@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="ViewingProduct" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="210"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image HorizontalAlignment="Left" Height="177" Margin="10,10,0,0" VerticalAlignment="Top" Width="188" Source="">
+            <Image.OpacityMask>
+                <ImageBrush Stretch="UniformToFill"/>
+            </Image.OpacityMask>
+        </Image>
+
     </Grid>
 </Window>
