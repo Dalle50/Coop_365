@@ -21,6 +21,7 @@ namespace Delta_Coop365
         private double price;
         private string ingredients;
 
+
         /// <summary>
         /// The values tied to the Product such as name, id, stock, price and nutritional information.
         /// Below is the constructor.
