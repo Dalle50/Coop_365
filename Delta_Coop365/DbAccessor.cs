@@ -66,12 +66,28 @@ namespace Delta_Coop365
         /// <param name="name"></param>
         /// <param name="ingredients"></param>
         /// <param name="price"></param>
-        public void insertIntoProducts(int productid, string name, string ingredients, double price)
+        //public void insertIntoProducts(int productid, string name, string ingredients, double price)
+        //{
+        //    string pictureUrl = this.picturesUrl + productid.ToString();
+        //    string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES ('" + productid + "','" + name + "','" + price + "','" + ingredients + "','" + pictureUrl + "')";
+        //    sqlQuery(query);
+        //}
+
+        public void InsertIntoProducts(int productid, string name, string ingredients, double price)
         {
             string pictureUrl = this.picturesUrl + productid.ToString();
-            string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES ('" + productid + "','" + name + "','" + price + "','" + ingredients + "','" + pictureUrl + "')";
-            sqlQuery(query);
+
+            string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES (@productid,@name,@price,@ingredients,@pictureUrl)";
+            SqlParameter productIdParam = new SqlParameter("@productid", productid);
+            SqlParameter nameParam = new SqlParameter("@name", name);
+            SqlParameter priceParam = new SqlParameter("@price", price);
+            SqlParameter ingredientsParam = new SqlParameter("@ingredients", ingredients);
+            SqlParameter pictureUrlParam = new SqlParameter("@pictureUrl", pictureUrl);
+            sqlQuery(query, productIdParam, nameParam, priceParam, ingredientsParam, pictureUrlParam);
+
         }
+
+
         /// <summary>
         /// Updates the stock of the product with the given ProductID
         /// </summary>
@@ -79,8 +95,10 @@ namespace Delta_Coop365
         /// <param name="stock"></param>
         public void updateStock(int productid, int stock)
         {
-            string query = "UPDATE Products SET Stock = " + stock + " WHERE ProductID = " + productid;
-            sqlQuery(query);
+            SqlParameter productIdParam = new SqlParameter("@productid", productid);
+            SqlParameter nameParam = new SqlParameter("@stock", stock);
+            string query = "UPDATE Products SET Stock = @stock WHERE ProductID = @productid";
+            sqlQuery(query, productIdParam);
         }
         /// <summary>
         /// This function updates all the products with the newest data from the file.
@@ -107,20 +125,22 @@ namespace Delta_Coop365
         /// <param name="price"></param>
         public void updateProduct(int productid, double price)
         {
-            string query = "UPDATE Products SET Price = " + price + " WHERE ProductID = " + productid;
-            sqlQuery(query);
-
+            string query = "UPDATE Products SET Price = @price WHERE ProductID = @productid";
+            SqlParameter priceParam = new SqlParameter("@productid", price);
+            SqlParameter productIdParam = new SqlParameter("@price", productid);
+            sqlQuery(query, priceParam, productIdParam);
         }
-        /// <summary>
-        /// Main query function that takes the string query as a param.
-        /// </summary>
-        /// <param name="query"></param>
-        public void sqlQuery(string query)
+        public void sqlQuery(string query, params SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(connString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    if (parameters != null && parameters.Length > 0)
+                    {
+                        command.Parameters.AddRange(parameters);
+                    }
+
                     command.Connection.Open();
                     int rowsAffected = command.ExecuteNonQuery();
                     Console.WriteLine($"Rows affected: {rowsAffected}");
