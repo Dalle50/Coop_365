@@ -52,16 +52,8 @@ namespace Delta_Coop365
                     double price = (double)e.Element("Pris");
                     string name = (string)e.Element("Name");
                     string ingredients = (string)e.Element("Ingredience");
+                    dbAccessor.insertIntoProducts(productid, name, ingredients, price);
 
-                    object x = productid.GetType();
-                    object y = price.GetType();
-                    object u = name.GetType();
-                    object i = ingredients.GetType();
-                    Console.WriteLine(x);
-                    Console.WriteLine(y);
-                    Console.WriteLine(u);
-                    Console.WriteLine(i);
-                    dbAccessor.InsertIntoProducts(productid, name, ingredients, price);
                 }
             }
             
