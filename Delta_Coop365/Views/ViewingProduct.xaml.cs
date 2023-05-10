@@ -19,9 +19,28 @@ namespace Delta_Coop365
     /// </summary>
     public partial class ViewingProduct : Window
     {
-        public ViewingProduct()
+        DbAccessor dbAccessor;
+        Product product;
+        public ViewingProduct(Product product)
         {
             InitializeComponent();
+            dbAccessor.picturesUrl + id + ".jpeg";
+            this.product = product;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSubstract_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnReturn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
