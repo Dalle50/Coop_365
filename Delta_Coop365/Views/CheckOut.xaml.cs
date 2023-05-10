@@ -19,14 +19,52 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOut : Window
     {
+        DbAccessor db;
+        Product product;
         public CheckOut()
         {
-            InitializeComponent();
+
         }
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void btnSubstract_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void getOrders()
+        {
+            //foreach (var item in /*collection???????*/)
+            //{
+                StackPanel itemPanel = new StackPanel();
+
+                string imagePath = db.picturesUrl + product.GetID() + ".jpeg";
+                Image itemImage = new Image();
+                itemImage.Source = new BitmapImage(new Uri(imagePath));
+                itemImage.Width = 100;
+                itemImage.Height = 100;
+                itemPanel.Children.Add(itemImage);
+
+                TextBlock itemName = new TextBlock();
+                itemName.Text = item.Name;
+                itemName.FontSize = 14;
+                itemName.Margin = new Thickness(10, 0, 0, 0);
+                itemPanel.Children.Add(itemName);
+
+                TextBlock itemPrice = new TextBlock();
+                itemPrice.Text = item.Price.ToString();
+                itemPrice.FontSize = 14;
+                itemPrice.Margin = new Thickness(10, 0, 0, 0);
+                itemPanel.Children.Add(itemPrice);
+            //}
         }
     }
 }
