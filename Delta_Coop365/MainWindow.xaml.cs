@@ -42,7 +42,7 @@ namespace Delta_Coop365
         {
             if (dbAccessor.isDatabasePopulated("Products"))
             {
-                dbAccessor.updateProductsDaily(getData())
+                dbAccessor.updateProductsDaily(getData());
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Delta_Coop365
                     double price = (double)e.Element("Pris");
                     string name = (string)e.Element("Name");
                     string ingredients = (string)e.Element("Ingredience");
-                    dbAccessor.insertIntoProducts(productid, name, ingredients, price);
+                    dbAccessor.InsertIntoProducts(productid, name, ingredients, price);
 
                 }
             }

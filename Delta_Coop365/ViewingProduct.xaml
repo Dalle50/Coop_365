@@ -11,11 +11,15 @@
             <ColumnDefinition Width="210"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image HorizontalAlignment="Left" Height="177" Margin="10,10,0,0" VerticalAlignment="Top" Width="188" Source="">
+        <Image HorizontalAlignment="Left" Height="177" Margin="10,10,0,0" VerticalAlignment="Top" Width="188">
             <Image.OpacityMask>
                 <ImageBrush Stretch="UniformToFill"/>
             </Image.OpacityMask>
         </Image>
+        
+        <TextBlock HorizontalAlignment="Center" Margin="0,201,0,0" TextWrapping="Wrap" Text="{Binding Path=ingredients}" VerticalAlignment="Top" Width="190" Height="223" Background="White"/>
+
+
 
     </Grid>
 </Window>

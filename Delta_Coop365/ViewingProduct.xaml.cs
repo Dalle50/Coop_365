@@ -23,5 +23,10 @@ namespace Delta_Coop365
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
