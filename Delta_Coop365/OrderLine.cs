@@ -12,6 +12,9 @@ namespace Delta_Coop365
         private int amount;
         private DateTime date;
 
+
+
+
         public double Getprice()
         {
             double total = amount * product.GetPrice();
@@ -27,6 +30,11 @@ namespace Delta_Coop365
         {
             /// WPF textblock? int32.Parse(TextBlock.text)
             return amount;
+        }
+
+        public void SetAmount(int amount)
+        {
+            this.amount = amount;
         }
 
         public DateTime GetDate() 

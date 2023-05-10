@@ -18,9 +18,7 @@ namespace Delta_Coop365
 
         public void Print()
         {
-            /// Implement code that prints the order ticket
-            /// Use of SQL commands
-            /// Do we make a get command for the order?
+            
         }
     }
 }
