@@ -164,19 +164,10 @@ namespace Delta_Coop365
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// Remove when finishing up
+        /// </summary>
+        /// <returns></returns>
         public static string GetSolutionPath1()
         {
             var query = new SetupConfiguration();
