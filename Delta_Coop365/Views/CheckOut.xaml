@@ -10,7 +10,8 @@
         <ScrollViewer x:Name="orderScrollview" Margin="10,59,10,142" Background="#FFECECEC">
             <Grid>
                 <StackPanel x:Name="ordersStackPanel">
-                    <ItemsControl ItemsSource="{Binding}">
+                    <ItemsControl ItemsSource="{Binding}" Height="29">
+                        <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -20,16 +21,17 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 
-                                <Image Source="{Binding}" Height="100" Width="100" Grid.Column="1"/>
-                                <Button x:Name="removeItem" Content="Fjern" Height="30" Width="100" Grid.Column="0"/>
+                                <Image x:Name="imgProduct"  Height="100" Width="100" Grid.Column="1"/>
+                                <Button x:Name="removeItem" Content="Fjern" Height="30" Width="100" Grid.Column="0" Click="removeItem_Click"/>
                                 <TextBlock Text="{Binding}" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="163" Margin="0,35,0,35"/>
                                 <TextBlock Text="{Binding}" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="86" Margin="190,35,0,35"/>
                                 <Label Content="kr." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Margin="276,0,0,0" Grid.ColumnSpan="2"/>
-                                <Button x:Name="btnSubstract" Height="30" Width="30" Grid.Column="3" Content=" - " FontSize="20" Margin="0,0,0,0"/>
+                                <Button x:Name="btnSubstract" Height="30" Width="30" Grid.Column="3" Content=" - " FontSize="20" Margin="0,0,0,0" Click="btnSubstract_Click"/>
                                 <TextBlock x:Name="txtAmount" Height="30" Width="100" Grid.Column="3" Margin="70,35,-70,35" TextAlignment="Center" Background="GhostWhite"/>
-                                <Button x:Name="btnAdd" Height="30" Width="30" Grid.Column="3" Content=" + " FontSize="20" Margin="175,35,-105,35"/>
+                                <Button x:Name="btnAdd" Height="30" Width="30" Grid.Column="3" Content=" + " FontSize="20" Margin="175,35,-105,35" Click="btnAdd_Click"/>
                             </Grid>
                         </StackPanel>
+                        </DataTemplate>
                     </ItemsControl>
                 </StackPanel>
             </Grid>
