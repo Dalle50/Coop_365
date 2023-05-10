@@ -11,6 +11,7 @@ using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
 using System.Threading;
 using static Azure.Core.HttpHeader;
+using System.Diagnostics;
 
 namespace Delta_Coop365
 {
@@ -60,6 +61,30 @@ namespace Delta_Coop365
                 connection.Close();
             }
             return returnBool;
+        }
+        public List<Product> GetProducts()
+        {
+            List<Product> products = new List<Product>();
+            string query = "Select * FROM Products";
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Connection.Open();
+                    SqlDataReader sqlReader = command.ExecuteReader();  
+
+                    while (sqlReader.Read())
+                    {
+                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                        products.Add(temp);
+                    }
+
+                    command.Connection.Close();
+                }
+            }
+            return products;
+
         }
         /// <summary>
         /// Inserts object data of Products into the database.
@@ -139,6 +164,18 @@ namespace Delta_Coop365
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
 
         public static string GetSolutionPath1()
         {
