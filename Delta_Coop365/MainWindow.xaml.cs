@@ -60,7 +60,7 @@ namespace Delta_Coop365
                     Console.WriteLine(y);
                     Console.WriteLine(u);
                     Console.WriteLine(i);
-                    dbAccessor.insertIntoProducts(productid, name, ingredients, price);
+                    dbAccessor.InsertIntoProducts(productid, name, ingredients, price);
                 }
             }
             

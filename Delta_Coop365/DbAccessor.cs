@@ -9,6 +9,8 @@ using System.Xml.Linq;
 using System.IO;
 using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Delta_Coop365
 {
@@ -66,12 +68,31 @@ namespace Delta_Coop365
         /// <param name="name"></param>
         /// <param name="ingredients"></param>
         /// <param name="price"></param>
-        public void insertIntoProducts(int productid, string name, string ingredients, double price)
+        //public void insertIntoProducts(int productid, string name, string ingredients, double price)
+        //{
+        //    string pictureUrl = this.picturesUrl + productid.ToString();
+        //    string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES ('" + productid + "','" + name + "','" + price + "','" + ingredients + "','" + pictureUrl + "')";
+        //    sqlQuery(query);
+        //}
+
+        public void InsertIntoProducts(int productid, string name, string ingredients, double price)
         {
             string pictureUrl = this.picturesUrl + productid.ToString();
-            string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES ('" + productid + "','" + name + "','" + price + "','" + ingredients + "','" + pictureUrl + "')";
-            sqlQuery(query);
+            SqlConnection connection = new SqlConnection(connString);
+            SqlCommand command = new SqlCommand("INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES (@productid, @name, @price, @ingredients, @url)", connection);
+            command.Connection.Open();
+            command.Parameters.AddWithValue("@productid", productid);
+            command.Parameters.AddWithValue("@name", name);
+            command.Parameters.AddWithValue("@price", price);
+            command.Parameters.AddWithValue("@ingredients", ingredients);
+            command.Parameters.AddWithValue("@url", picturesUrl);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            Console.WriteLine($"Rows affected: {rowsAffected}");
+            command.Connection.Close();
         }
+
+
         /// <summary>
         /// Updates the stock of the product with the given ProductID
         /// </summary>
