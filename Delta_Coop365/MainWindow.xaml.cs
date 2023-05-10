@@ -31,6 +31,7 @@ namespace Delta_Coop365
         {
             InitializeComponent();
             updateDateBase();
+            updateDateBase();
 
         }
         public IEnumerable<XElement> getData()
@@ -41,7 +42,7 @@ namespace Delta_Coop365
         {
             if (dbAccessor.isDatabasePopulated("Products"))
             {
-                dbAccessor.updateProductsDaily(getData());
+                dbAccessor.updateProductsDaily(getData())
             }
             else
             {
