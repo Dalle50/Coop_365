@@ -26,8 +26,6 @@ namespace Delta_Coop365
     {
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
-        OrderLine ol;
-        Product p;
         
         public MainWindow()
         {
@@ -70,12 +68,6 @@ namespace Delta_Coop365
                 Console.WriteLine(product.GetIngredients());
 
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            CheckOut checkout = new CheckOut();
-            checkout.Show();
         }
     }
 }
