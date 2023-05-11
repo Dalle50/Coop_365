@@ -31,12 +31,6 @@ namespace Delta_Coop365
             try
             {
                 Console.WriteLine("Trying to fetch the data from OrderLines");
-                DbAccessor dbAcess = new DbAccessor();
-                List<OrderLine> orderLines = dbAcess.GetOrderLines(2);
-                foreach (OrderLine order in orderLines)
-                {
-                    orderLinesCollection.Add(order);
-                }
             }
             catch (Exception e)
             {
