@@ -30,8 +30,8 @@ namespace Delta_Coop365
         public MainWindow()
         {
             InitializeComponent();
-            updateDateBase();
-            updateDateBase();
+            //updateDateBase();
+            GetProducts();
 
         }
         public IEnumerable<XElement> getData()
@@ -57,6 +57,17 @@ namespace Delta_Coop365
                 }
             }
             
+        }
+        public void GetProducts()
+        {
+            foreach(Product product in dbAccessor.GetProducts())
+            {
+                Console.WriteLine(product.GetID());
+                Console.WriteLine(product.GetPrice());
+                Console.WriteLine(product.GetName());
+                Console.WriteLine(product.GetIngredients());
+
+            }
         }
     }
 }

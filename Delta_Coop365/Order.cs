@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,15 +13,16 @@ namespace Delta_Coop365
         private List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
-        private DbAccessor DBA;
 
         public Order()
         {
             orderLines = new List<OrderLine>();
-            DBA = new DbAccessor();
         }
 
-
+        public void SetId(int OrderID)
+        {
+            this.OrderID = OrderID;
+        }
         public int GetID()
         {
             return OrderID;
@@ -73,6 +75,16 @@ namespace Delta_Coop365
         {
             var ol = orderLines.Find(o => o.GetProduct().GetID() == productID);
             ol.SetAmount(amount);
+        }
+        public void UpdateTotalPrice()
+        {
+            double tempTotalPrice = 0;
+            foreach(OrderLine ol in orderLines)
+            {
+                double raisePrice = ol.GetProduct().GetPrice() * ol.GetAmount();
+                tempTotalPrice += raisePrice; 
+            }
+            this.TotalPrice = tempTotalPrice;
         }
     }
 }
