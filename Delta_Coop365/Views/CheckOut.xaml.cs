@@ -29,7 +29,6 @@ namespace Delta_Coop365
             orderLinesCollection = new ObservableCollection<OrderLine>();
             DataContext = orderLinesCollection;
             db = new DbAccessor();
-            orderId = db.InsertIntoOrders(orderId);
             GetCartItems(orderId);
         }
 
