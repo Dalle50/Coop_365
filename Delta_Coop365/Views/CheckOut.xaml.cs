@@ -83,5 +83,10 @@ namespace Delta_Coop365
                 return;
             }
         }
+
+        private void btnReturn_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
