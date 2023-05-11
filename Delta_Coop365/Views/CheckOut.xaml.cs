@@ -55,12 +55,6 @@ namespace Delta_Coop365
         {
             foreach (OrderLine item in orderLinesCollection)
             {
-                if (orderLinesCollection.Count == 0)
-                {
-                    Console.WriteLine("No items in cart");
-                    stackpanel.Visibility = Visibility.Hidden;
-                }
-
                 Console.WriteLine("Adding products...");
                 StackPanel stackpanel = new StackPanel();
                 Image productPicture = (Image)orderScrollview.FindName("imgProduct");
