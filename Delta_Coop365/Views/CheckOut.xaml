@@ -38,8 +38,8 @@
         <Label Content="Total:" HorizontalAlignment="Left" Margin="20,447,0,0" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971"/>
         <Label Content="Check Ud" HorizontalAlignment="Left" Margin="364,0,0,0" VerticalAlignment="Top" FontSize="30"/>
 
-        <Button x:Name="btnReturn" Content="Fortryd" HorizontalAlignment="Left" Margin="20,534,0,0" VerticalAlignment="Top" Height="32" Width="78"/>
-        <Button x:Name="btnConfirm" Content="Godkend og Print" HorizontalAlignment="Left" Margin="667,532,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20"/>
-        <Button x:Name="btnAddMore" Content="Tilføj mere" HorizontalAlignment="Left" Margin="432,534,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20"/>
+        <Button x:Name="btnReturn" Content="Fortryd" HorizontalAlignment="Left" Margin="20,524,0,0" VerticalAlignment="Top" Height="32" Width="78"/>
+        <Button x:Name="btnConfirm" Content="Godkend og Print" HorizontalAlignment="Left" Margin="686,523,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20" RenderTransformOrigin="0.506,0.173"/>
+        <Button x:Name="btnAddMore" Content="Tilføj mere" HorizontalAlignment="Left" Margin="450,523,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20"/>
     </Grid>
 </Window>

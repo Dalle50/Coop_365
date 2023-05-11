@@ -53,12 +53,18 @@ namespace Delta_Coop365
         }
         private void GetCartItems()
         {
-            foreach (OrderLine orderLine in orderLinesCollection)
+            foreach (OrderLine item in orderLinesCollection)
             {
+                if (orderLinesCollection.Count == 0)
+                {
+                    Console.WriteLine("No items in cart");
+                    stackpanel.Visibility = Visibility.Hidden;
+                }
+
                 Console.WriteLine("Adding products...");
                 StackPanel stackpanel = new StackPanel();
                 Image productPicture = (Image)orderScrollview.FindName("imgProduct");
-                string imagePath = db.picturesUrl + orderLine.GetProduct().GetID() + ".jpeg";
+                string imagePath = db.picturesUrl + item.GetProduct().GetID() + ".jpeg";
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(imagePath);
@@ -67,11 +73,11 @@ namespace Delta_Coop365
                 stackpanel.Children.Add(productPicture);
 
                 TextBlock productName = (TextBlock)orderScrollview.FindName("txtProductName");
-                productName.Text = orderLine.GetProduct().GetName();
+                productName.Text = item.GetProduct().GetName();
                 stackpanel.Children.Add(productName);
 
                 TextBlock productPrice = (TextBlock)orderScrollview.FindName("txtProductprice");
-                productPrice.Text = orderLine.GetProduct().GetPrice().ToString();
+                productPrice.Text = item.GetProduct().GetPrice().ToString();
                 stackpanel.Children.Add(productPrice);
 
                 StackPanel ordersStackPanel = (StackPanel)orderScrollview.FindName("ordersStackPanel");
@@ -81,10 +87,6 @@ namespace Delta_Coop365
             {
                 Console.WriteLine("Collection is null.");
                 return;
-            }
-            else
-            {
-                Console.WriteLine("No items in cart.");
             }
         }
     }
