@@ -24,7 +24,7 @@ namespace Delta_Coop365
         public ViewingProduct(Product product)
         {
             InitializeComponent();
-            dbAccessor.picturesUrl + id + ".jpeg";
+            string path = dbAccessor.picturesUrl + product.GetID() + ".jpeg";
             this.product = product;
         }
 
