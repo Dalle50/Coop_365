@@ -25,15 +25,22 @@ namespace Delta_Coop365
         {
             InitializeComponent();
             orderLinesCollection = new ObservableCollection<OrderLine>();
+            Console.WriteLine("Setting data context to the collection");
+            DataContext = orderLinesCollection;
+
             try
             {
-                Console.WriteLine("Setting data context to the collection");
-                DataContext = orderLinesCollection;
-                GetCartItems();
+                Console.WriteLine("Trying to fetch the data from OrderLines");
+                DbAccessor dbAcess = new DbAccessor();
+                List<OrderLine> orderLines = dbAcess.GetOrderLines(2);
+                foreach (OrderLine order in orderLines)
+                {
+                    orderLinesCollection.Add(order);
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Setting the datacontext failed. " + e.Message + " " + e.StackTrace);
+                Console.WriteLine("getting data failed " + e.Message + " " + e.StackTrace);
             }
         }
 
@@ -75,7 +82,7 @@ namespace Delta_Coop365
                 stackpanel.Children.Add(productPrice);
 
                 StackPanel ordersStackPanel = (StackPanel)orderScrollview.FindName("ordersStackPanel");
-                ordersStackPanel.Children.Add(ordersStackPanel);
+                ordersStackPanel.Children.Add(stackpanel);
             }
             if (orderLinesCollection == null)
             {

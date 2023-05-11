@@ -10,7 +10,7 @@ using System.IO;
 using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-
+using System.Collections.ObjectModel;
 
 namespace Delta_Coop365
 {
