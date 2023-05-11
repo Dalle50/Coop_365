@@ -30,7 +30,7 @@ namespace Delta_Coop365
         public MainWindow()
         {
             InitializeComponent();
-            //updateDateBase();
+            updateDateBase();
             GetProducts();
 
         }
