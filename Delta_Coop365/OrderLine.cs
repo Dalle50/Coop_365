@@ -12,6 +12,12 @@ namespace Delta_Coop365
         private int amount;
         private DateTime date;
 
+        public OrderLine(Product product, int amount, DateTime date)
+        {
+            this.product= product;
+            this.amount= amount;
+            this.date = date;
+        }
 
 
 
