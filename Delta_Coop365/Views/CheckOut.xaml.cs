@@ -20,38 +20,50 @@ namespace Delta_Coop365
     public partial class CheckOut : Window
     {
         private ObservableCollection<OrderLine> orderLinesCollection;
+        DbAccessor db;
         public CheckOut()
         {
             InitializeComponent();
             orderLinesCollection = new ObservableCollection<OrderLine>();
-            DataContext = orderLinesCollection;
-            orderLinesCollection.CollectionChanged += OrderLinesCollection_CollectionChanged;
+            try
+            {
+                Console.WriteLine("Setting data context to the collection");
+                DataContext = orderLinesCollection;
+                GetCartItems();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Setting the datacontext failed. " + e.Message + " " + e.StackTrace);
+            }
         }
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
-
+            Console.WriteLine("Remove item button is clicked.");
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
-
+            Console.WriteLine("Substracting from product amount");
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            Console.WriteLine("Adding to product amount");
         }
-        private void OrderLinesCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void GetCartItems()
         {
-            if (orderLinesCollection == null)
-            {
-                return;
-            }
             foreach (OrderLine orderLine in orderLinesCollection)
             {
+                Console.WriteLine("Adding products...");
                 StackPanel stackpanel = new StackPanel();
                 Image productPicture = (Image)orderScrollview.FindName("imgProduct");
+                string imagePath = db.picturesUrl + orderLine.GetProduct().GetID() + ".jpeg";
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(imagePath);
+                bitmap.EndInit();
+                productPicture.Source = bitmap;
                 stackpanel.Children.Add(productPicture);
 
                 TextBlock productName = (TextBlock)orderScrollview.FindName("txtProductName");
@@ -64,6 +76,15 @@ namespace Delta_Coop365
 
                 StackPanel ordersStackPanel = (StackPanel)orderScrollview.FindName("ordersStackPanel");
                 ordersStackPanel.Children.Add(ordersStackPanel);
+            }
+            if (orderLinesCollection == null)
+            {
+                Console.WriteLine("Collection is null.");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("No items in cart.");
             }
         }
     }
