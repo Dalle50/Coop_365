@@ -32,7 +32,7 @@ namespace Delta_Coop365
         /// <param name="price"></param>
         /// <param name="ingredients"></param>
         
-        Product(int productID, string productName, int stock, double price, string ingredients)
+        public Product(int productID, string productName, int stock, double price, string ingredients)
         {
             this.productID = productID;
             this.productName = productName;

@@ -9,6 +9,8 @@ using System.Xml.Linq;
 using System.IO;
 using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 namespace Delta_Coop365
 {
@@ -59,6 +61,48 @@ namespace Delta_Coop365
             }
             return returnBool;
         }
+        public List<Product> GetProducts()
+        {
+            List<Product> products = new List<Product>();
+            string query = "Select * FROM Products";
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Connection.Open();
+                    SqlDataReader sqlReader = command.ExecuteReader();  
+
+                    while (sqlReader.Read())
+                    {
+                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                        products.Add(temp);
+                    }
+
+                    command.Connection.Close();
+                }
+            }
+            return products;
+
+        }
+        public Product GetProduct(int productId)
+        {
+            Product tempProduct;
+            string query = "Select FROM Products WHERE ProductID=@productId";
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    SqlParameter productIdParam = new SqlParameter("@productId", productId);
+                    command.Connection.Open();
+                    SqlDataReader sqlReader = command.ExecuteReader();
+                    tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                    command.Connection.Close();
+                }
+            }
+            return tempProduct;
+
+        }
         /// <summary>
         /// Inserts object data of Products into the database.
         /// </summary>
@@ -66,13 +110,6 @@ namespace Delta_Coop365
         /// <param name="name"></param>
         /// <param name="ingredients"></param>
         /// <param name="price"></param>
-        //public void insertIntoProducts(int productid, string name, string ingredients, double price)
-        //{
-        //    string pictureUrl = this.picturesUrl + productid.ToString();
-        //    string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES ('" + productid + "','" + name + "','" + price + "','" + ingredients + "','" + pictureUrl + "')";
-        //    sqlQuery(query);
-        //}
-
         public void InsertIntoProducts(int productid, string name, string ingredients, double price)
         {
             string pictureUrl = this.picturesUrl + productid.ToString();
@@ -100,9 +137,6 @@ namespace Delta_Coop365
             string query = "UPDATE Products SET Stock = @stock WHERE ProductID = @productid";
             sqlQuery(query, productIdParam);
         }
-        /// <summary>
-        /// This function updates all the products with the newest data from the file.
-        /// </summary>
         public void updateProductsDaily(IEnumerable<XElement> results)
         {
 
@@ -130,6 +164,94 @@ namespace Delta_Coop365
             SqlParameter productIdParam = new SqlParameter("@price", productid);
             sqlQuery(query, priceParam, productIdParam);
         }
+
+        /// Order starts here
+        public Order GetOrder(int OrderId)
+        {
+            Order tempOrder;
+            string query = "Select FROM Orders WHERE OrderID = @orderId";
+            SqlParameter orderIdParam = new SqlParameter("@orderId", OrderId);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(orderIdParam);
+                    command.Connection.Open();
+                    
+                    SqlDataReader sqlReader = command.ExecuteReader();
+
+                    var result  = sqlReader.Read();
+                    tempOrder = new Order();
+                    foreach(OrderLine ol in GetOrderLines(OrderId)) 
+                    { 
+                        tempOrder.AddOrderLine(ol);
+                    }
+                    tempOrder.UpdateTotalPrice();
+                    command.Connection.Close();
+                }
+            }
+            return tempOrder;
+        }
+        public int InsertIntoOrders(double TotalPrice)
+        {
+            int OrderID;
+            string query = "Insert INTO Orders(TotalPrice) VALUES(@TotalPrice); SELECT CONVERT(int, SCOPE_IDENTITY()) as OrderID;";
+            SqlParameter TotalPriceParam = new SqlParameter("@TotalPrice", TotalPrice);
+            using (SqlConnection connection = new SqlConnection(this.connString))
+            {
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(TotalPriceParam);
+                    connection.Open();
+                    OrderID = (int)command.ExecuteScalar();
+
+                }
+            }
+            return OrderID;
+        }
+        public void InsertIntoOrderLines(int OrderID, OrderLine ol)
+        {
+            string query = "Insert INTO OrderLines(Amount, Date, ProductId, OrderId) VALUES(@Amount, @Date, @ProductId, @OrderId)";
+            SqlParameter AmountParam = new SqlParameter("@Amount", ol.GetAmount());
+            SqlParameter DateParam = new SqlParameter("@Date", ol.GetDate());
+            SqlParameter ProductIdParam = new SqlParameter("@ProductId", ol.GetProduct().GetID());
+            SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderID);
+            sqlQuery(query, AmountParam, DateParam, ProductIdParam, OrderIdParam);
+        }
+        public List<OrderLine> GetOrderLines(int OrderId)
+        {
+            List<OrderLine> tempOrderLines = new List<OrderLine>();
+            string query = "Select * FROM OrderLines WHERE OrderID = @orderId";
+            SqlParameter orderIdParam = new SqlParameter("@orderId", OrderId);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(orderIdParam);
+                    command.Connection.Open();
+
+                    SqlDataReader sqlReader = command.ExecuteReader();
+
+                    while (sqlReader.Read())
+                    {
+                        tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(3).ToString())),
+                                                                        Int32.Parse(sqlReader.GetValue(1).ToString()),
+                                                                            DateTime.Parse(sqlReader.GetValue(2).ToString())));
+                    }
+                    command.Connection.Close();
+                }
+            }
+            return tempOrderLines;
+        }
+
+        public static string GetSolutionPath()
+        {
+            // This will get the current PROJECT directory
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+
+            return projectDirectory;
+        }
         public void sqlQuery(string query, params SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(connString))
@@ -148,31 +270,5 @@ namespace Delta_Coop365
                 }
             }
         }
-
-        public static string GetSolutionPath1()
-        {
-            var query = new SetupConfiguration();
-            var e = query.EnumAllInstances();
-
-            int fetched;
-            var instances = new ISetupInstance[1];
-            e.Next(1, instances, out fetched);
-
-            string visualStudioDirectory = instances[0].GetInstallationPath();
-            string solutionDirectory = Path.Combine(visualStudioDirectory, "Delta_Coop365");
-
-            string solutionFilePath = Path.Combine(solutionDirectory, "Delta_Coop365.sln");
-
-            return solutionFilePath;
-        }
-        public static string GetSolutionPath()
-        {
-            // This will get the current PROJECT directory
-            string workingDirectory = Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-
-            return projectDirectory;
-        }
-
     }
 }
