@@ -19,13 +19,9 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOut : Window
     {
-        DbAccessor db;
-        Product product;
-        DateTime date;
         private ObservableCollection<OrderLine> orderLinesCollection;
         public CheckOut()
         {
-
             InitializeComponent();
             orderLinesCollection = new ObservableCollection<OrderLine>();
             DataContext = orderLinesCollection;
