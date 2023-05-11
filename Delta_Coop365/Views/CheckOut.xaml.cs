@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Delta_Coop365;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Delta_Coop365
 {
@@ -21,9 +21,15 @@ namespace Delta_Coop365
     {
         DbAccessor db;
         Product product;
+        DateTime date;
+        private ObservableCollection<OrderLine> orderLinesCollection;
         public CheckOut()
         {
 
+            InitializeComponent();
+            orderLinesCollection = new ObservableCollection<OrderLine>();
+            DataContext = orderLinesCollection;
+            orderLinesCollection.CollectionChanged += OrderLinesCollection_CollectionChanged;
         }
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
@@ -40,31 +46,29 @@ namespace Delta_Coop365
         {
 
         }
-        private void getOrders()
+        private void OrderLinesCollection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //foreach (var item in /*collection???????*/)
-            //{
-                StackPanel itemPanel = new StackPanel();
+            if (orderLinesCollection == null)
+            {
+                return;
+            }
+            foreach (OrderLine orderLine in orderLinesCollection)
+            {
+                StackPanel stackpanel = new StackPanel();
+                Image productPicture = (Image)orderScrollview.FindName("imgProduct");
+                stackpanel.Children.Add(productPicture);
 
-                string imagePath = db.picturesUrl + product.GetID() + ".jpeg";
-                Image itemImage = new Image();
-                itemImage.Source = new BitmapImage(new Uri(imagePath));
-                itemImage.Width = 100;
-                itemImage.Height = 100;
-                itemPanel.Children.Add(itemImage);
+                TextBlock productName = (TextBlock)orderScrollview.FindName("txtProductName");
+                productName.Text = orderLine.GetProduct().GetName();
+                stackpanel.Children.Add(productName);
 
-                TextBlock itemName = new TextBlock();
-                itemName.Text = item.Name;
-                itemName.FontSize = 14;
-                itemName.Margin = new Thickness(10, 0, 0, 0);
-                itemPanel.Children.Add(itemName);
+                TextBlock productPrice = (TextBlock)orderScrollview.FindName("txtProductprice");
+                productPrice.Text = orderLine.GetProduct().GetPrice().ToString();
+                stackpanel.Children.Add(productPrice);
 
-                TextBlock itemPrice = new TextBlock();
-                itemPrice.Text = item.Price.ToString();
-                itemPrice.FontSize = 14;
-                itemPrice.Margin = new Thickness(10, 0, 0, 0);
-                itemPanel.Children.Add(itemPrice);
-            //}
+                StackPanel ordersStackPanel = (StackPanel)orderScrollview.FindName("ordersStackPanel");
+                ordersStackPanel.Children.Add(ordersStackPanel);
+            }
         }
     }
 }

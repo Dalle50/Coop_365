@@ -69,5 +69,11 @@ namespace Delta_Coop365
 
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            CheckOut co = new CheckOut();
+            co.Show();
+        }
     }
 }
