@@ -88,5 +88,15 @@ namespace Delta_Coop365
         {
             Close();
         }
+
+        private void btnAddMore_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void btnConfirm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

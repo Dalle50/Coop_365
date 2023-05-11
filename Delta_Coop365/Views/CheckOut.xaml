@@ -39,7 +39,7 @@
         <Label Content="Check Ud" HorizontalAlignment="Left" Margin="364,0,0,0" VerticalAlignment="Top" FontSize="30"/>
 
         <Button x:Name="btnReturn" Content="Fortryd" HorizontalAlignment="Left" Margin="20,524,0,0" VerticalAlignment="Top" Height="32" Width="78" Click="btnReturn_Click"/>
-        <Button x:Name="btnConfirm" Content="Godkend og Print" HorizontalAlignment="Left" Margin="686,523,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20" RenderTransformOrigin="0.506,0.173"/>
-        <Button x:Name="btnAddMore" Content="Tilføj mere" HorizontalAlignment="Left" Margin="450,523,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20"/>
+        <Button x:Name="btnConfirm" Content="Godkend og Print" HorizontalAlignment="Left" Margin="686,523,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20" RenderTransformOrigin="0.506,0.173" Click="btnConfirm_Click"/>
+        <Button x:Name="btnAddMore" Content="Tilføj mere" HorizontalAlignment="Left" Margin="450,523,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20" Click="btnAddMore_Click"/>
     </Grid>
 </Window>
