@@ -21,21 +21,16 @@ namespace Delta_Coop365
     {
         private ObservableCollection<OrderLine> orderLinesCollection;
         DbAccessor db;
+        private int orderId;
+
         public CheckOut()
         {
             InitializeComponent();
             orderLinesCollection = new ObservableCollection<OrderLine>();
-            Console.WriteLine("Setting data context to the collection");
             DataContext = orderLinesCollection;
-
-            try
-            {
-                Console.WriteLine("Trying to fetch the data from OrderLines");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("getting data failed " + e.Message + " " + e.StackTrace);
-            }
+            db = new DbAccessor();
+            orderId = db.InsertIntoOrders(orderId);
+            GetCartItems(orderId);
         }
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
@@ -52,11 +47,15 @@ namespace Delta_Coop365
         {
             Console.WriteLine("Adding to product amount");
         }
-        private void GetCartItems()
+        private void GetCartItems(int orderID)
         {
-            foreach (OrderLine item in orderLinesCollection)
+            orderLinesCollection.Clear();
+            List<OrderLine> orderLines = db.GetOrderLines(orderID);
+            foreach (OrderLine item in orderLines)
             {
                 Console.WriteLine("Adding products...");
+                orderLinesCollection.Add(item);
+
                 StackPanel stackpanel = new StackPanel();
                 Image productPicture = (Image)orderScrollview.FindName("imgProduct");
                 string imagePath = db.picturesUrl + item.GetProduct().GetID() + ".jpeg";
