@@ -57,6 +57,7 @@ namespace Delta_Coop365
         {
             order.ClearOrderLines();
             Close();
+            Console.WriteLine("The order history was cleared and nothing was added to the database.");
         }
 
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
