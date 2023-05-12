@@ -20,6 +20,7 @@ namespace Delta_Coop365
         private int stock;
         private double price;
         private string ingredients;
+        public string imgPath;
 
 
         /// <summary>
