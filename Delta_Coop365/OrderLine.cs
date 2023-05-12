@@ -11,7 +11,6 @@ namespace Delta_Coop365
         private Product product;
         private int amount;
         private double price;
-        private DateTime date;
 
         public OrderLine(Product product, int amount, DateTime date)
         {
@@ -44,11 +43,6 @@ namespace Delta_Coop365
         {
             this.amount = amount;
             GetPrice();
-        }
-
-        public DateTime GetDate() 
-        {
-            return DateTime.Today;
         }
     }
 }

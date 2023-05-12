@@ -24,7 +24,21 @@
         <!-- col 1, row 0-->
         <ScrollViewer Grid.Column="1" Grid.Row="0">
             <StackPanel>
-                
+                <StackPanel x:Name="BakeOff" Height="100">
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Image}" Height="100" Width="100"/>
+                                    <StackPanel>
+                                        <Label Content="{Binding Name}" FontSize="24"/>
+                                        <Label Content="{Binding Price}" FontSize="24"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
         <!-- col 0, row 1-->
