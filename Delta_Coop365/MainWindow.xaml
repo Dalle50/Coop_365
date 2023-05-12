@@ -9,7 +9,7 @@
         >
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -24,16 +24,31 @@
         <!-- col 1, row 0-->
         <ScrollViewer Grid.Row="0" Grid.ColumnSpan="2" Margin="153,0,0,0">
             <StackPanel>
-                <StackPanel x:Name="BakeOff" Height="100">
-                    <ItemsControl ItemsSource="{Binding}">
+                <StackPanel x:Name="BakeOff">
+                    <ItemsControl x:Name="ICProducts" ItemsSource="{Binding products}" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3" HorizontalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Image}" Height="100" Width="100"/>
-                                    <StackPanel>
-                                        <Label Content="{Binding Name}" FontSize="24"/>
-                                        <Label Content="{Binding Price}" FontSize="24"/>
-                                    </StackPanel>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="200"/>
+                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="25" />
+                                        </Grid.RowDefinitions>
+                                        <Border Width="250" Height="250" Grid.Column="0" Grid.Row="0">
+                                            <Image Source="{Binding Path=imgPath}" Width="200" Height="200"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding Path=productName}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
+                                        <TextBlock Text="{Binding Path=price}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+                                    </Grid>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -42,12 +57,32 @@
             </StackPanel>
         </ScrollViewer>
         <!-- col 0, row 1-->
-        <Image Height="NaN" Margin="29,26,89,26" Grid.Row="1" Source="/HomeButton.png" Stretch="Fill" Width="NaN"/>
+        <Image Height="NaN" Margin="29,17,44,26" Grid.Row="1" Source="/HomeButton.png" />
         <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Left" Margin="16,78,0,0" VerticalAlignment="Top"/>
         <!-- col 1, row 1-->
         <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Center" FontSize="24"/>
-        <Image Grid.Column="1" Height="NaN" Margin="518,20,10,20" Grid.Row="1" Source="/Basket.png" Stretch="Fill" Width="NaN"/>
+        <Image Grid.Column="1" Height="NaN" Margin="518,20,10,20" Grid.Row="1" Source="/Basket.png" />
         <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="381,39,0,0" Grid.Row="1" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="132" Height="39" TextAlignment="Center" FontSize="24"/>
 
     </Grid>
 </Window>
+
+    
+<!--<ItemsControl x:Name="ICProdcuts"  ItemsSource="{Binding products}">
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+                <Grid x:Name="GridProducts">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+</ItemsControl>-->
+    
