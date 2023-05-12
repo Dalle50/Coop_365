@@ -3,28 +3,37 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Shapes;
 
 namespace Delta_Coop365
 {
     internal class QrCodeService
     {
-        public QrCodeService(int ordreId, string path) //Define string path and and ordreId in main and generate a QrCode with this: QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
+
+        QRCodeGenerator qrGenerator;
+        public QrCodeService() //Define string path and and ordreId in main and generate a QrCode with this: QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
+        {
+            this.qrGenerator = new QRCodeGenerator();
+
+        }
+        public Bitmap GenerateQRCodeImage(int ordreId)
+        {
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(ordreId.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            return qrCodeImage;
+        }
+        public void SaveQrCode(Bitmap qrCode, int ordreId, string path)
         {
             try
             {
-                QRCodeGenerator qrGenerator = new QRCodeGenerator();
-                QRCodeData qrCodeData = qrGenerator.CreateQrCode(ordreId.ToString(), QRCodeGenerator.ECCLevel.Q);
-                QRCode qrCode = new QRCode(qrCodeData);
-                Bitmap qrCodeImage = qrCode.GetGraphic(20);
                 if (!Directory.Exists(path))
                 {
                     Console.WriteLine("Failed to save QrCodeImage, no valid path. Trying to create one");
                     Console.WriteLine("Creating directory: {0}", path);
                     Directory.CreateDirectory(path);
                 }
-
-                qrCodeImage.Save(path + "\\" + ordreId + ".png", ImageFormat.Png);
-
+                qrCode.Save(path + "\\" + ordreId + ".png", ImageFormat.Png);
             }
             catch (System.Exception)
             {

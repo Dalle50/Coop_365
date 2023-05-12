@@ -10,13 +10,11 @@ namespace Delta_Coop365
     {
         private Product product;
         private int amount;
-        private double price;
 
-        public OrderLine(Product product, int amount, DateTime date)
+        public OrderLine(Product product, int amount)
         {
             this.product= product;
             this.amount= amount;
-            this.date = date;
         }
 
 
@@ -42,7 +40,7 @@ namespace Delta_Coop365
         public void SetAmount(int amount)
         {
             this.amount = amount;
-            GetPrice();
+
         }
     }
 }
