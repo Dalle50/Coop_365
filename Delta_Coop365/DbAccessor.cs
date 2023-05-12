@@ -243,8 +243,7 @@ namespace Delta_Coop365
                     while (sqlReader.Read())
                     {
                         tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(3).ToString())),
-                                                                        Int32.Parse(sqlReader.GetValue(1).ToString()),
-                                                                            DateTime.Parse(sqlReader.GetValue(2).ToString())));
+                                                                        Int32.Parse(sqlReader.GetValue(1).ToString())));
                     }
                     command.Connection.Close();
                 }
