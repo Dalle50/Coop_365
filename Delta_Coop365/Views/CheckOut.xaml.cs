@@ -19,10 +19,8 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOut : Window
     {
-
         //Løbe gennem listen af orderLines som er på order
         //constructor i main window.
-
         Order order;
         DbAccessor db;
         private int orderId;
