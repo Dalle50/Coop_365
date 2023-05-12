@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +10,19 @@ namespace Delta_Coop365
 {
     public class Order : IBakeOff
     {
-        private List<OrderLine> orderLines = new List<OrderLine>();
+        private List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
 
+        public Order()
+        {
+            orderLines = new List<OrderLine>();
+        }
+
+        public void SetId(int OrderID)
+        {
+            this.OrderID = OrderID;
+        }
         public int GetID()
         {
             return OrderID;
@@ -20,15 +31,14 @@ namespace Delta_Coop365
         public double GetPrice()
         {
             /// Implement the code to calculate the total price
-            /// remember that you need to get the price from the Product within the OrderLine
-            /// but the amount from OrderLine itself
+            /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
             return TotalPrice;
         }
 
-        public int ProductsLeft(Product p)
+        public int ProductsLeft(OrderLine ol)
         {
-            int productsLeft = 0; // Implement the actual calculation of the productsleft after order made
-
+            Product p = ol.GetProduct();
+            int productsLeft = p.GetStock() - ol.GetAmount(); // Implement the actual calculation of the productsleft after order made
             if (productsLeft == 0) Notify(p);
 
             return productsLeft;
@@ -41,24 +51,33 @@ namespace Delta_Coop365
             Email e = new Email();
             e.SendNotice(p);
         }
-
+        
         public void AddOrderLine(OrderLine ol)
         {
-            /// Adds the OrderLine to the database
-            /// Use of SQL commands
+            /// Adds the OrderLine to the list
+            orderLines.Add(ol);
         }
 
         public void DeleteOrderLine(OrderLine ol)
         {
-            /// Removes the OrderLine from the database
-            /// Use of SQL commands
+            /// Removes the OrderLine from the list
+            orderLines.Remove(ol);
         }
 
-        public void UpdateOrderLine(OrderLine ol, int amount)
+        public void UpdateOrderLine(int productID, int amount)
         {
-            /// Updates the OrderLine in the Database
-            /// takes the amount fromt he interface screen (i.e. TextBox.text)
-            /// Use of SQL commands
+            var ol = orderLines.Find(o => o.GetProduct().GetID() == productID);
+            ol.SetAmount(amount);
+        }
+        public void UpdateTotalPrice()
+        {
+            int counter = 0;
+            double tempTotal = 0.0;
+            foreach (OrderLine line in orderLines)
+            {
+                tempTotal += (line.GetProduct().GetPrice() * line.GetAmount());
+            }
+            TotalPrice = tempTotal;
         }
     }
 }

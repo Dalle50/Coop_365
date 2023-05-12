@@ -20,6 +20,8 @@ namespace Delta_Coop365
         private int stock;
         private double price;
         private string ingredients;
+        public string imgPath;
+
 
         /// <summary>
         /// The values tied to the Product such as name, id, stock, price and nutritional information.
@@ -31,7 +33,7 @@ namespace Delta_Coop365
         /// <param name="price"></param>
         /// <param name="ingredients"></param>
         
-        Product(int productID, string productName, int stock, double price, string ingredients)
+        public Product(int productID, string productName, int stock, double price, string ingredients)
         {
             this.productID = productID;
             this.productName = productName;
