@@ -22,7 +22,7 @@ namespace Delta_Coop365
 
         //Løbe gennem listen af orderLines som er på order
         //constructor i main window.
-        //
+
         Order order;
         DbAccessor db;
         private int orderId;
