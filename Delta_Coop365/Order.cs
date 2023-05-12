@@ -35,7 +35,7 @@ namespace Delta_Coop365
             int counter = 0;
             while (counter < orderLines.Count)
             {
-                TotalPrice += orderLines[counter].Getprice();
+                TotalPrice += orderLines[counter].GetPrice();
                 counter++;
             }
 
@@ -81,8 +81,7 @@ namespace Delta_Coop365
             double tempTotalPrice = 0;
             foreach(OrderLine ol in orderLines)
             {
-                double raisePrice = ol.GetProduct().GetPrice() * ol.GetAmount();
-                tempTotalPrice += raisePrice; 
+                tempTotalPrice += ol.GetPrice();
             }
             this.TotalPrice = tempTotalPrice;
         }

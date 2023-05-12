@@ -19,10 +19,11 @@ namespace Delta_Coop365
 
 
 
-        public double Getprice()
+        public double GetPrice()
         {
             double total = amount * product.GetPrice();
-            return total;
+            price = total;
+            return price;
         }
         
         public Product GetProduct()
@@ -39,6 +40,7 @@ namespace Delta_Coop365
         public void SetAmount(int amount)
         {
             this.amount = amount;
+
         }
     }
 }
