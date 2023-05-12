@@ -218,6 +218,14 @@ namespace Delta_Coop365
             SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderID);
             sqlQuery(query, AmountParam, DateParam, ProductIdParam, OrderIdParam);
         }
+        public void UpdateOrderLine(OrderLine ol, int OrderId)
+        {
+            string query = "UPDATE OrderLines SET Amount = @amount WHERE ProductID = @ProductId AND OrderID = @OrderId";
+            SqlParameter AmountParam = new SqlParameter("@Amount", ol.GetAmount());
+            SqlParameter ProductIdParam = new SqlParameter("@ProductId", ol.GetProduct().GetID());
+            SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderId);
+            sqlQuery(query, AmountParam, ProductIdParam, OrderIdParam);
+        }
         public List<OrderLine> GetOrderLines(int OrderId)
         {
             List<OrderLine> tempOrderLines = new List<OrderLine>();
@@ -244,6 +252,20 @@ namespace Delta_Coop365
             return tempOrderLines;
         }
 
+        public void InsertIntoOrderTickets(OrderTicket ot)
+        {
+
+        }
+        /// <summary>
+        /// 
+//        CREATE TABLE dbo.OrderTicket(
+//        Id int NOT NULL PRIMARY KEY,
+//OrderId int FOREIGN KEY REFERENCES dbo.Orders(OrderId),
+//Date DateTime NOT NULL,
+//QRCode VARBINARY(MAX)NOT NULL,
+)
+        /// </summary>
+        /// <returns></returns>
         public static string GetSolutionPath()
         {
             // This will get the current PROJECT directory
