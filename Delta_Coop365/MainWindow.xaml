@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
-        Title="Coop365 BakeOff" Height="600" Width="800">
+        Title="Coop365 BakeOff" Height="600" Width="800"
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -15,7 +16,7 @@
             <RowDefinition Height="470" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <!-- col 0, row 0-->
         <Label Grid.Column="0" Grid.Row="0" Content="kategorier" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="24"/>
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16"/>
@@ -33,7 +34,6 @@
         <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Center" FontSize="24"/>
         <Image Grid.Column="1" Height="NaN" Margin="518,20,10,20" Grid.Row="1" Source="/Basket.png" Stretch="Fill" Width="NaN"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="381,39,0,0" Grid.Row="1" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="132" Height="39" TextAlignment="Center" FontSize="24"/>
-
 
     </Grid>
 </Window>
