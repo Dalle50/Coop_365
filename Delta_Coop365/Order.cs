@@ -32,13 +32,6 @@ namespace Delta_Coop365
         {
             /// Implement the code to calculate the total price
             /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
-            int counter = 0;
-            while (counter < orderLines.Count)
-            {
-                TotalPrice += orderLines[counter].GetPrice();
-                counter++;
-            }
-
             return TotalPrice;
         }
 
@@ -78,12 +71,13 @@ namespace Delta_Coop365
         }
         public void UpdateTotalPrice()
         {
-            double tempTotalPrice = 0;
-            foreach(OrderLine ol in orderLines)
+            int counter = 0;
+            double tempTotal = 0.0;
+            foreach (OrderLine line in orderLines)
             {
-                tempTotalPrice += ol.GetPrice();
+                tempTotal += (line.GetProduct().GetPrice() * line.GetAmount());
             }
-            this.TotalPrice = tempTotalPrice;
+            TotalPrice = tempTotal;
         }
     }
 }
