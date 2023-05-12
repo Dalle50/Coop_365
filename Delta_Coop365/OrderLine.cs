@@ -16,15 +16,6 @@ namespace Delta_Coop365
             this.product= product;
             this.amount= amount;
         }
-
-
-
-        public double GetPrice()
-        {
-            double total = amount * product.GetPrice();
-            price = total;
-            return price;
-        }
         
         public Product GetProduct()
         {

@@ -192,16 +192,18 @@ namespace Delta_Coop365
             }
             return tempOrder;
         }
-        public int InsertIntoOrders(double TotalPrice)
+        public int InsertIntoOrders(double TotalPrice, DateTime date)
         {
             int OrderID;
-            string query = "Insert INTO Orders(TotalPrice) VALUES(@TotalPrice); SELECT CONVERT(int, SCOPE_IDENTITY()) as OrderID;";
+            string query = "Insert INTO Orders(TotalPrice, Date) VALUES(@TotalPrice, @Date); SELECT CONVERT(int, SCOPE_IDENTITY()) as OrderID;";
             SqlParameter TotalPriceParam = new SqlParameter("@TotalPrice", TotalPrice);
+            SqlParameter DateParam = new SqlParameter("@Date", date);
             using (SqlConnection connection = new SqlConnection(this.connString))
             {
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.Add(TotalPriceParam);
+                    command.Parameters.Add(DateParam);
                     connection.Open();
                     OrderID = (int)command.ExecuteScalar();
 
@@ -211,12 +213,11 @@ namespace Delta_Coop365
         }
         public void InsertIntoOrderLines(int OrderID, OrderLine ol)
         {
-            string query = "Insert INTO OrderLines(Amount, Date, ProductId, OrderId) VALUES(@Amount, @Date, @ProductId, @OrderId)";
+            string query = "Insert INTO OrderLines(Amount, ProductId, OrderId) VALUES(@Amount, @ProductId, @OrderId)";
             SqlParameter AmountParam = new SqlParameter("@Amount", ol.GetAmount());
-            SqlParameter DateParam = new SqlParameter("@Date", ol.GetDate());
             SqlParameter ProductIdParam = new SqlParameter("@ProductId", ol.GetProduct().GetID());
             SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderID);
-            sqlQuery(query, AmountParam, DateParam, ProductIdParam, OrderIdParam);
+            sqlQuery(query, AmountParam, ProductIdParam, OrderIdParam);
         }
         public void UpdateOrderLine(OrderLine ol, int OrderId)
         {
@@ -250,19 +251,6 @@ namespace Delta_Coop365
             }
             return tempOrderLines;
         }
-
-        public void InsertIntoOrderTickets(OrderTicket ot)
-        {
-
-        }
-        /// <summary>
-        /// 
-//        CREATE TABLE dbo.OrderTicket(
-//        Id int NOT NULL PRIMARY KEY,
-//OrderId int FOREIGN KEY REFERENCES dbo.Orders(OrderId),
-//Date DateTime NOT NULL,
-//QRCode VARBINARY(MAX)NOT NULL,
-)
         /// </summary>
         /// <returns></returns>
         public static string GetSolutionPath()
