@@ -22,29 +22,26 @@
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16"/>
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16"/>
         <!-- col 1, row 0-->
-        <DataGrid Grid.Column="1" Grid.Row="0" ItemsSource="{Binding products}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Stretch="Uniform" Width="50" Height="50">
-                                <Image.Style>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ImagePath}" Value="{Binding ImagePath}">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                            </Image>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <!-- col 1, row 0-->
+        <ScrollViewer Grid.Column="1" Grid.Row="0">
+            <StackPanel>
+                <StackPanel x:Name="BakeOff" Height="100">
+                    <ItemsControl ItemsSource="{Binding}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Image}" Height="100" Width="100"/>
+                                    <StackPanel>
+                                        <Label Content="{Binding Name}" FontSize="24"/>
+                                        <Label Content="{Binding Price}" FontSize="24"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <!-- col 0, row 1-->
         <Image Height="NaN" Margin="29,26,89,26" Grid.Row="1" Source="/HomeButton.png" Stretch="Fill" Width="NaN"/>
         <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Left" Margin="16,78,0,0" VerticalAlignment="Top"/>
         <!-- col 1, row 1-->
