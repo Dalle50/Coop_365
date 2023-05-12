@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Delta_Coop365
 {
@@ -15,12 +17,12 @@ namespace Delta_Coop365
     /// </summary>
     public class Product : IBakeOff
     {
-        private string productName;
+        public string productName { get; set; }
         private int productID;
         private int stock;
-        private double price;
+        public double price { get; set; }
         private string ingredients;
-        public string imgPath;
+        public BitmapImage imgPath { get; set; }
 
 
         /// <summary>
@@ -33,13 +35,14 @@ namespace Delta_Coop365
         /// <param name="price"></param>
         /// <param name="ingredients"></param>
         
-        public Product(int productID, string productName, int stock, double price, string ingredients)
+        public Product(int productID, string productName, int stock, double price, string ingredients, string imgPath)
         {
             this.productID = productID;
             this.productName = productName;
             this.stock = stock;
             this.price = price;
             this.ingredients = ingredients;
+            this.imgPath = Makebitmap(imgPath);
         }
         /// <summary>
         /// Returns the name of the Product.
@@ -75,6 +78,17 @@ namespace Delta_Coop365
         public string GetIngredients()
         {
            return ingredients;
+        }
+
+        public BitmapImage Makebitmap(string path)
+        {
+            string imgPath = path;
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imgPath);
+            Console.WriteLine(path);
+            bitmap.EndInit();
+            return bitmap;
         }
     }
 }
