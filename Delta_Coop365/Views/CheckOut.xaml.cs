@@ -22,13 +22,14 @@ namespace Delta_Coop365
         //Løbe gennem listen af orderLines som er på order
         //constructor i main window.
         Order order;
-        DbAccessor db;
-        private int orderId;
+        ObservableCollection<OrderLine> orderLines;
 
         public CheckOut(Order order)
         {
             InitializeComponent();
+            cartItems.ItemsSource = orderLines;
             this.order = order;
+            orderLines = new ObservableCollection<OrderLine>();
             GetCartItems();
         }
 
@@ -48,7 +49,11 @@ namespace Delta_Coop365
         }
         private void GetCartItems()
         {
-
+            foreach (var item in order.orderLines)
+            {
+                orderLines.Add(item);
+                Console.WriteLine("Adding " + item.GetProduct() + " ( "+ "amount: " + item.GetAmount() +") " + "to the collection");
+            }
         }
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
