@@ -55,7 +55,6 @@ namespace Delta_Coop365
             bitmap.BeginInit();
             bitmap.UriSource = new Uri(imagePath);
             bitmap.EndInit();
-            pictureProduct.Source = bitmap;
         }
     }
 }

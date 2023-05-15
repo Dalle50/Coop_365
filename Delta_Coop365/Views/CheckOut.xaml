@@ -10,7 +10,7 @@
         <ScrollViewer x:Name="orderScrollview" Margin="20,55,10,142">
             <StackPanel x:Name="ordersStackPanel">
                 <StackPanel Orientation="Horizontal">
-                    <ItemsControl x:Name="ICProducts" ItemsSource="{Binding products}" >
+                    <ItemsControl x:Name="cartItems" ItemsSource="{Binding orderLines}" >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Rows="1" HorizontalAlignment="Center"/>
