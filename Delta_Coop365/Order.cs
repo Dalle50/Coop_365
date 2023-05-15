@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,15 +13,16 @@ namespace Delta_Coop365
         private List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
-        private DbAccessor DBA;
 
         public Order()
         {
             orderLines = new List<OrderLine>();
-            DBA = new DbAccessor();
         }
 
-
+        public void SetId(int OrderID)
+        {
+            this.OrderID = OrderID;
+        }
         public int GetID()
         {
             return OrderID;
@@ -30,13 +32,6 @@ namespace Delta_Coop365
         {
             /// Implement the code to calculate the total price
             /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
-            int counter = 0;
-            while (counter < orderLines.Count)
-            {
-                TotalPrice += orderLines[counter].Getprice();
-                counter++;
-            }
-
             return TotalPrice;
         }
 
@@ -73,6 +68,16 @@ namespace Delta_Coop365
         {
             var ol = orderLines.Find(o => o.GetProduct().GetID() == productID);
             ol.SetAmount(amount);
+        }
+        public void UpdateTotalPrice()
+        {
+            int counter = 0;
+            double tempTotal = 0.0;
+            foreach (OrderLine line in orderLines)
+            {
+                tempTotal += (line.GetProduct().GetPrice() * line.GetAmount());
+            }
+            TotalPrice = tempTotal;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,13 +28,15 @@ namespace Delta_Coop365
     {
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
+        ObservableCollection<Product> products;
         
         public MainWindow()
         {
             InitializeComponent();
+            products = new ObservableCollection<Product>();
             updateDateBase();
-            updateDateBase();
-
+            GetProducts();
+            ShowProducts();
         }
         public IEnumerable<XElement> getData()
         {
@@ -57,6 +61,24 @@ namespace Delta_Coop365
                 }
             }
             
+        }
+        public void GetProducts()
+        {
+            foreach(Product product in dbAccessor.GetProducts())
+            {
+                Console.WriteLine(product.GetID());
+                Console.WriteLine(product.GetPrice());
+                Console.WriteLine(product.GetName());
+                Console.WriteLine(product.GetIngredients());
+                products.Add(product);
+            }
+        }
+
+        
+        public void ShowProducts() 
+        {
+            
+            ICProducts.ItemsSource = products;
         }
     }
 }

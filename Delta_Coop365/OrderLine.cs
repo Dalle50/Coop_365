@@ -10,15 +10,11 @@ namespace Delta_Coop365
     {
         private Product product;
         private int amount;
-        private DateTime date;
 
-
-
-
-        public double Getprice()
+        public OrderLine(Product product, int amount)
         {
-            double total = amount * product.GetPrice();
-            return total;
+            this.product= product;
+            this.amount= amount;
         }
         
         public Product GetProduct()
@@ -35,11 +31,7 @@ namespace Delta_Coop365
         public void SetAmount(int amount)
         {
             this.amount = amount;
-        }
 
-        public DateTime GetDate() 
-        {
-            return DateTime.Today;
         }
     }
 }

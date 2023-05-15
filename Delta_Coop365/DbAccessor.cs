@@ -10,6 +10,7 @@ using System.IO;
 using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Collections.ObjectModel;
 
 
 namespace Delta_Coop365
@@ -75,7 +76,7 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
                         products.Add(temp);
                     }
 
@@ -96,7 +97,7 @@ namespace Delta_Coop365
                     SqlParameter productIdParam = new SqlParameter("@productId", productId);
                     command.Connection.Open();
                     SqlDataReader sqlReader = command.ExecuteReader();
-                    tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                    tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
                     command.Connection.Close();
                 }
             }
@@ -112,7 +113,7 @@ namespace Delta_Coop365
         /// <param name="price"></param>
         public void InsertIntoProducts(int productid, string name, string ingredients, double price)
         {
-            string pictureUrl = this.picturesUrl + productid.ToString();
+            string pictureUrl = this.picturesUrl + productid.ToString() + ".jpeg";
 
             string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES (@productid,@name,@price,@ingredients,@pictureUrl)";
             SqlParameter productIdParam = new SqlParameter("@productid", productid);
@@ -203,6 +204,7 @@ namespace Delta_Coop365
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.Add(TotalPriceParam);
+                    command.Parameters.Add(DateParam);
                     connection.Open();
                     OrderID = (int)command.ExecuteScalar();
 
@@ -212,7 +214,7 @@ namespace Delta_Coop365
         }
         public void InsertIntoOrderLines(int OrderID, OrderLine ol)
         {
-            string query = "Insert INTO OrderLines(Amount,ProductId, OrderId) VALUES(@Amount,, @ProductId, @OrderId)";
+            string query = "Insert INTO OrderLines(Amount, ProductId, OrderId) VALUES(@Amount, @ProductId, @OrderId)";
             SqlParameter AmountParam = new SqlParameter("@Amount", ol.GetAmount());
             SqlParameter ProductIdParam = new SqlParameter("@ProductId", ol.GetProduct().GetID());
             SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderID);
@@ -243,8 +245,7 @@ namespace Delta_Coop365
                     while (sqlReader.Read())
                     {
                         tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(3).ToString())),
-                                                                        Int32.Parse(sqlReader.GetValue(1).ToString()),
-                                                                            DateTime.Parse(sqlReader.GetValue(2).ToString())));
+                                                                        Int32.Parse(sqlReader.GetValue(1).ToString())));
                     }
                     command.Connection.Close();
                 }
