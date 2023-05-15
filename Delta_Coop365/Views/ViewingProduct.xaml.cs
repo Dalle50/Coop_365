@@ -20,9 +20,12 @@ namespace Delta_Coop365
     public partial class ViewingProduct : Window
     {
         Product product;
+        Order order;
         public ViewingProduct(Product p)
         {
             InitializeComponent();
+            Order o = new Order();
+            order = o;
             product = p;
             getImg();
             getInfo(p);
@@ -48,6 +51,20 @@ namespace Delta_Coop365
         private void btnReturn_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void AddToCart(object sender, RoutedEventArgs e)
+        {
+            int amount = Int32.Parse(txtAmount.Text);
+            if (amount > 0)
+            {
+                OrderLine orderLine = new OrderLine(product, amount);
+                order.AddOrderLine(orderLine);
+                Console.WriteLine("Product added to cart");
+            }
+            else
+            {
+                MessageBox.Show("Vælg en mængde");
+            }
         }
         private void getInfo(Product product)
         {
