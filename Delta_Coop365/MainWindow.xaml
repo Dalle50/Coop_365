@@ -22,7 +22,7 @@
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16"/>
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16"/>
         <!-- col 1, row 0-->
-        <ScrollViewer Grid.Column="1" Grid.Row="0">
+        <ScrollViewer Grid.Row="0" Grid.ColumnSpan="2" Margin="153,0,0,0">
             <StackPanel>
                 <StackPanel x:Name="BakeOff">
                     <ItemsControl x:Name="ICProducts" ItemsSource="{Binding products}" >
@@ -62,8 +62,7 @@
         <!-- col 1, row 1-->
         <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Center" FontSize="24"/>
         <Image Grid.Column="1" Height="NaN" Margin="518,20,10,20" Grid.Row="1" Source="/Basket.png" />
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="381,39,0,0" Grid.Row="1" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="132" Height="39" TextAlignment="Center" FontSize="24"/>
-
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="381,39,0,0" Grid.Row="1" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="132" Height="39" TextAlignment="Center" FontSize="24"/>
     </Grid>
 </Window>
 

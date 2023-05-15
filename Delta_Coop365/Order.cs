@@ -10,7 +10,7 @@ namespace Delta_Coop365
 {
     public class Order : IBakeOff
     {
-        private List<OrderLine> orderLines;
+        public List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
 
@@ -78,6 +78,11 @@ namespace Delta_Coop365
                 tempTotal += (line.GetProduct().GetPrice() * line.GetAmount());
             }
             TotalPrice = tempTotal;
+        }
+        public List<OrderLine> GetOrderLines() { return orderLines; }
+        public void ClearOrderLines()
+        {
+            orderLines.Clear();
         }
     }
 }

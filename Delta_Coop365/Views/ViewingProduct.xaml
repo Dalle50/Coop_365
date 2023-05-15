@@ -11,7 +11,7 @@
             <ColumnDefinition Width="210"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="pictureProduct" HorizontalAlignment="Left" Height="177" Margin="10,10,0,0" VerticalAlignment="Top" Width="188">
+        <Image Source="{Binding Path= imgPath}" HorizontalAlignment="Left" Height="177" Margin="10,10,0,0" VerticalAlignment="Top" Width="188">
             <Image.OpacityMask>
                 <ImageBrush Stretch="UniformToFill"/>
             </Image.OpacityMask>
