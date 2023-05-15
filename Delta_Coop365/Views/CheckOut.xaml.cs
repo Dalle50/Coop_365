@@ -27,6 +27,7 @@ namespace Delta_Coop365
         public CheckOut(Order order)
         {
             InitializeComponent();
+            cartItems.ItemsSource = orderLines;
             this.order = order;
             orderLines = new ObservableCollection<OrderLine>();
             GetCartItems();
@@ -48,7 +49,6 @@ namespace Delta_Coop365
         }
         private void GetCartItems()
         {
-            cartItems.ItemsSource = orderLines;
             foreach (var item in order.orderLines)
             {
                 orderLines.Add(item);
