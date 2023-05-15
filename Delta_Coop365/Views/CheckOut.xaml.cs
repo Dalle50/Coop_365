@@ -31,10 +31,10 @@ namespace Delta_Coop365
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
 
-        public CheckOut(Order order)
+        public CheckOut(Order o)
         {
             InitializeComponent();
-            this.order = order;
+            order = o;
             orderLines = new ObservableCollection<OrderLine>();
             GetCartItems();
             ShowCartItems();
@@ -65,7 +65,6 @@ namespace Delta_Coop365
             {
                 foreach (var item in order.GetOrderLines())
                 {
-                    orderLine.GetAmount();
                     orderLines.Add(item);
                     Console.WriteLine("Adding " + item.GetProduct() + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
                 }
@@ -95,8 +94,8 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            Print_WPF_Preview(Grid_Plan); //the thing you want to print/display
-            QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
+            //Print_WPF_Preview(Grid_Plan); //the thing you want to print/display
+            //QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
         }
     }
 }

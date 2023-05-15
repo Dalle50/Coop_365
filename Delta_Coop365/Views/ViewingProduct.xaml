@@ -22,5 +22,6 @@
         <Button  x:Name="btnSubstract" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content=" - " HorizontalAlignment="Left" Width="34" Height="65" FontSize="25" Grid.Column="1" Click="btnSubstract_Click" Margin="181,150,0,325"/>
         <Label Grid.Column="1" Content="Valgt Antal" HorizontalAlignment="Left" Margin="35,52,0,0" VerticalAlignment="Top" FontSize="20"/>
         <Button x:Name="btnReturn" Content="Fortryd" HorizontalAlignment="Left" Margin="10,454,0,0" VerticalAlignment="Top" Width="95" Height="31" FontSize="12" Click="btnReturn_Click"/>
+        <Button x:Name="btnAddToBasket" Content="Tilføj til kurv" HorizontalAlignment="Left" Margin="53,267,0,0" VerticalAlignment="Top" Width="145" Height="56" FontSize="12" Click="AddToCart" Grid.Column="1"/>
     </Grid>
 </Window>
