@@ -5,23 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
-        Title="ViewingProduct" Height="550" Width="500" ResizeMode="NoResize">
+        Title="ViewingProduct" Height="600" Width="560" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="210"/>
+            <ColumnDefinition Width="205"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="image" Source="{Binding}" HorizontalAlignment="Left" Height="177" Margin="10,10,0,0" VerticalAlignment="Top" Width="188">
-        </Image>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="310"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="177"  VerticalAlignment="Top" Width="188" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0"/>
+        <TextBlock x:Name="txtNutrition" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Path=ingredients}" FontSize="9" VerticalAlignment="Top" Width="200" Height="310" Background="#FFEDEDED" Grid.Row="1" Grid.Column="0"/>
 
-        <TextBlock x:Name="txtNutrition" HorizontalAlignment="Center" Margin="0,201,0,0" TextWrapping="Wrap" Text="{Binding Path=ingredients}" VerticalAlignment="Top" Width="190" Height="223" Background="#FFEDEDED"/>
-        <TextBlock x:Name="txtProductName" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Path=productName}" VerticalAlignment="Top" Width="233" Height="37" Background="#FFEDEDED" Grid.Column="1"/>
-        <TextBlock x:Name="txtAmount" Text="0" HorizontalAlignment="Left" Margin="28,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="70" Background="#FFEDEDED" Grid.Column="1" TextAlignment="Center" FontSize="35"/>
+        <Button x:Name="btnReturn" Content="Tilbage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="130" Height="40" FontSize="12" Click="btnReturn_Click" Grid.Column="0" Grid.Row="2"/>
 
-        <Button  x:Name="btnAdd" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content=" + " HorizontalAlignment="Left"  Width="34" Height="65" FontSize="25" Grid.Column="1" Click="btnAdd_Click" Margin="181,69,0,418"/>
-        <Button  x:Name="btnSubstract" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content=" - " HorizontalAlignment="Left" Width="34" Height="65" FontSize="25" Grid.Column="1" Click="btnSubstract_Click" Margin="181,150,0,325"/>
-        <Label Grid.Column="1" Content="Valgt Antal" HorizontalAlignment="Left" Margin="35,52,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <Button x:Name="btnReturn" Content="Fortryd" HorizontalAlignment="Left" Margin="10,454,0,0" VerticalAlignment="Top" Width="95" Height="31" FontSize="12" Click="btnReturn_Click"/>
-        <Button x:Name="btnAddToBasket" Content="Tilføj til kurv" HorizontalAlignment="Left" Margin="53,267,0,0" VerticalAlignment="Top" Width="145" Height="56" FontSize="12" Click="AddToCart" Grid.Column="1"/>
+        <TextBlock x:Name="txtProductName" HorizontalAlignment="Left" Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding Path=productName}" TextAlignment="Center" FontSize="15" VerticalAlignment="Top" Width="200" Height="50" Background="#FFEDEDED" Grid.Column="1" Grid.Row="0"/>
+        <TextBlock x:Name="txtPrice" HorizontalAlignment="Left" Margin="0,66,0,0" TextWrapping="Wrap" Text="{Binding Path=price}" TextAlignment="Center" FontSize="25" VerticalAlignment="Top" Width="90" Height="37" Background="#FFEDEDED" Grid.Column="1" Grid.Row="0"/>
+        <Label Content="Valgt Antal:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Margin="0,136,0,0"/>
+        <Label Content="Kr." HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Grid.Column="1" Margin="93,68,0,0"/>
+        <TextBlock x:Name="txtAmount" Text="0" HorizontalAlignment="Right" TextWrapping="NoWrap" VerticalAlignment="Bottom" Width="90" Height="50" Background="#FFEDEDED" Grid.Column="1" Grid.Row="0" TextAlignment="Center" FontSize="35" Margin="0,0,0,22"/>
+
+        <Button  x:Name="btnAdd" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Content=" + " HorizontalAlignment="Left" VerticalAlignment="Top"  Width="35" Height="36" FontSize="20" Grid.Column="2" Click="btnAdd_Click" Margin="18,84,0,0"/>
+        <Button  x:Name="btnSubstract" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Content=" - " HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="35" Height="35" FontSize="20" Grid.Column="2" Click="btnSubstract_Click" Margin="18,0,0,20"/>
+        <Button x:Name="btnAddToBasket" Content="Tilføj til kurv" HorizontalAlignment="Center" VerticalAlignment="Center" Width="130" Height="40" FontSize="12" Click="AddToCart" Grid.Column="2" Grid.Row="2"/>
     </Grid>
 </Window>

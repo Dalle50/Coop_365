@@ -70,6 +70,7 @@ namespace Delta_Coop365
         {
             txtProductName.Text = product.GetName();
             txtNutrition.Text = product.GetIngredients();
+            txtPrice.Text = product.GetPrice().ToString();
         }
         private void getImg() 
         {
