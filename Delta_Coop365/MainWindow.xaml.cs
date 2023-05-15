@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,7 +36,7 @@ namespace Delta_Coop365
             products = new ObservableCollection<Product>();
             updateDateBase();
             GetProducts();
-
+            ShowProducts();
         }
         public IEnumerable<XElement> getData()
         {
@@ -71,6 +72,13 @@ namespace Delta_Coop365
                 Console.WriteLine(product.GetIngredients());
                 products.Add(product);
             }
+        }
+
+        
+        public void ShowProducts() 
+        {
+            
+            ICProducts.ItemsSource = products;
         }
     }
 }
