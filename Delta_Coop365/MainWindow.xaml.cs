@@ -78,7 +78,6 @@ namespace Delta_Coop365
         
         public void ShowProducts() 
         {
-            
             ICProducts.ItemsSource = products;
         }
 

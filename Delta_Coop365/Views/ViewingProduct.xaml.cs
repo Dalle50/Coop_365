@@ -24,7 +24,6 @@ namespace Delta_Coop365
         public ViewingProduct(Product product)
         {
             InitializeComponent();
-            getImg();
             getInfo(product);
         }
 
@@ -47,14 +46,6 @@ namespace Delta_Coop365
             this.product = product;
             txtProductName.Text = product.GetName();
             txtNutrition.Text = product.GetIngredients();
-        }
-        private void getImg() 
-        {
-            string imagePath = db.picturesUrl + product.GetID() + ".jpeg";
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imagePath);
-            bitmap.EndInit();
         }
     }
 }

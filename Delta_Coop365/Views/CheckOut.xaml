@@ -9,8 +9,8 @@
     <Grid>
         <ScrollViewer x:Name="orderScrollview" Margin="20,55,10,142">
             <StackPanel x:Name="ordersStackPanel">
-                <StackPanel Orientation="Horizontal">
-                    <ItemsControl x:Name="cartItems" ItemsSource="{Binding orderLines}" >
+                <StackPanel Orientation="Horizontal" Height="100">
+                    <ItemsControl x:Name="cartItems" ItemsSource="{Binding orderLines}" Width="852" Height="386" >
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Rows="1" HorizontalAlignment="Center"/>
@@ -32,7 +32,7 @@
                                         <TextBlock Text="{Binding Path= price}" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="86" Margin="190,35,0,35"/>
                                         <Label Content="kr." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Margin="276,0,0,0" Grid.ColumnSpan="2"/>
                                         <Button x:Name="btnSubstract" Height="30" Width="30" Grid.Column="3" Content=" - " FontSize="20" Margin="0,0,0,0" Click="btnSubstract_Click"/>
-                                        <TextBlock x:Name="txtAmount" Height="30" Width="100" Grid.Column="3" Margin="70,35,-70,35" TextAlignment="Center" Background="GhostWhite"/>
+                                        <TextBlock Text="{Binding amount}" Height="30" Width="100" Grid.Column="3" Margin="70,35,-70,35" TextAlignment="Center" Background="GhostWhite"/>
                                         <Button x:Name="btnAdd" Height="30" Width="30" Grid.Column="3" Content=" + " FontSize="20" Margin="175,35,-105,35" Click="btnAdd_Click"/>
                                     </Grid>
                                 </StackPanel>
