@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Delta_Coop365;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Delta_Coop365
@@ -83,8 +84,18 @@ namespace Delta_Coop365
 
         private void BasketClick(object sender, MouseButtonEventArgs e)
         {
-            CheckOut checkout = new CheckOut();
-            checkout.Show();
+            //CheckOut checkout = new CheckOut();
+            //checkout.Show();
+        }
+        private void ProductClick(object sender, MouseButtonEventArgs e)
+        {
+            Product p;
+            for(int i = 0; i < products.Count; i++)
+            {
+                
+            }
+            //ViewingProduct vp = new ViewingProduct();
+            //vp.Show();
         }
     }
 }
