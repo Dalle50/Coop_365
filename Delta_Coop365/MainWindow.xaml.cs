@@ -80,5 +80,11 @@ namespace Delta_Coop365
             
             ICProducts.ItemsSource = products;
         }
+
+        private void BasketClick(object sender, MouseButtonEventArgs e)
+        {
+            CheckOut checkout = new CheckOut();
+            checkout.Show();
+        }
     }
 }
