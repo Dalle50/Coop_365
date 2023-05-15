@@ -10,7 +10,7 @@ namespace Delta_Coop365
 {
     public class Order : IBakeOff
     {
-        private List<OrderLine> orderLines;
+        public List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
 

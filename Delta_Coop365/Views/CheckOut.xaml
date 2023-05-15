@@ -26,10 +26,10 @@
                                             <ColumnDefinition Width="300"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="{Binding imgUrl}"  Height="100" Width="100" Grid.Column="1"/>
+                                        <Image Source="{Binding XPath= imgUrl}"  Height="100" Width="100" Grid.Column="1"/>
                                         <Button x:Name="removeItem" Content="Fjern" Height="30" Width="100" Grid.Column="0" Click="removeItem_Click"/>
-                                        <TextBlock x:Name="txtProductName" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="163" Margin="0,35,0,35"/>
-                                        <TextBlock Name="txtProductprice" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="86" Margin="190,35,0,35"/>
+                                        <TextBlock Text="{Binding Path= productName}" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="163" Margin="0,35,0,35"/>
+                                        <TextBlock Text="{Binding Path= price}" Height="30" Background="GhostWhite" FontSize="12" HorizontalAlignment="Left" Grid.Column="2" Width="86" Margin="190,35,0,35"/>
                                         <Label Content="kr." HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Margin="276,0,0,0" Grid.ColumnSpan="2"/>
                                         <Button x:Name="btnSubstract" Height="30" Width="30" Grid.Column="3" Content=" - " FontSize="20" Margin="0,0,0,0" Click="btnSubstract_Click"/>
                                         <TextBlock x:Name="txtAmount" Height="30" Width="100" Grid.Column="3" Margin="70,35,-70,35" TextAlignment="Center" Background="GhostWhite"/>
