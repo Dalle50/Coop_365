@@ -24,8 +24,7 @@ namespace Delta_Coop365
         public ViewingProduct(Product p)
         {
             InitializeComponent();
-            Order o = new Order();
-            order = o;
+            order = MainWindow.theOrder;
             product = p;
             getImg();
             getInfo(p);
@@ -59,7 +58,10 @@ namespace Delta_Coop365
             {
                 OrderLine orderLine = new OrderLine(product, amount);
                 order.AddOrderLine(orderLine);
+                order.UpdateTotalPrice();
                 Console.WriteLine("Product added to cart");
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+                this.Close();
             }
             else
             {
