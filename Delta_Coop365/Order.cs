@@ -17,6 +17,7 @@ namespace Delta_Coop365
         public Order()
         {
             orderLines = new List<OrderLine>();
+            UpdateTotalPrice();
         }
 
         public void SetId(int OrderID)
@@ -30,8 +31,6 @@ namespace Delta_Coop365
 
         public double GetPrice()
         {
-            /// Implement the code to calculate the total price
-            /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
             return TotalPrice;
         }
 
@@ -71,7 +70,6 @@ namespace Delta_Coop365
         }
         public void UpdateTotalPrice()
         {
-            int counter = 0;
             double tempTotal = 0.0;
             foreach (OrderLine line in orderLines)
             {
