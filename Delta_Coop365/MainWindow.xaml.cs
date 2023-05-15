@@ -30,7 +30,8 @@ namespace Delta_Coop365
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         ObservableCollection<Product> products;
-        
+        Product p;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,7 +79,6 @@ namespace Delta_Coop365
         
         public void ShowProducts() 
         {
-            
             ICProducts.ItemsSource = products;
         }
 
@@ -89,13 +89,21 @@ namespace Delta_Coop365
         }
         private void ProductClick(object sender, MouseButtonEventArgs e)
         {
-            Product p;
-            for(int i = 0; i < products.Count; i++)
+            Image img = (Image)sender;
+            BitmapImage clickedImagepath = (BitmapImage)img.Source;
+
+
+            foreach(Product product in products)
             {
-                
+                if (product.imgPath == clickedImagepath)
+                {
+                    p = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
+                    break;
+                }
             }
-            //ViewingProduct vp = new ViewingProduct();
-            //vp.Show();
+
+            ViewingProduct vp = new ViewingProduct(p);
+            vp.Show();
         }
     }
 }
