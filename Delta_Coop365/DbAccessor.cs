@@ -75,7 +75,7 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
                         products.Add(temp);
                     }
 
@@ -96,7 +96,7 @@ namespace Delta_Coop365
                     SqlParameter productIdParam = new SqlParameter("@productId", productId);
                     command.Connection.Open();
                     SqlDataReader sqlReader = command.ExecuteReader();
-                    tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString());
+                    tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
                     command.Connection.Close();
                 }
             }
@@ -112,7 +112,7 @@ namespace Delta_Coop365
         /// <param name="price"></param>
         public void InsertIntoProducts(int productid, string name, string ingredients, double price)
         {
-            string pictureUrl = this.picturesUrl + productid.ToString();
+            string pictureUrl = this.picturesUrl + productid.ToString() + ".jpeg";
 
             string query = "INSERT INTO Products (ProductID, ProductName, Price, Description, Url) VALUES (@productid,@name,@price,@ingredients,@pictureUrl)";
             SqlParameter productIdParam = new SqlParameter("@productid", productid);
