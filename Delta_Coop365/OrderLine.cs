@@ -9,7 +9,7 @@ namespace Delta_Coop365
     public class OrderLine
     {
         private Product product;
-        private int amount;
+        public int amount { get; set; }
 
         public OrderLine(Product product, int amount)
         {
