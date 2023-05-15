@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Delta_Coop365;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Delta_Coop365
@@ -29,8 +30,8 @@ namespace Delta_Coop365
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         ObservableCollection<Product> products;
-        Order order;
-        
+        Product p;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -83,8 +84,26 @@ namespace Delta_Coop365
 
         private void BasketClick(object sender, MouseButtonEventArgs e)
         {
-            CheckOut checkout = new CheckOut(order);
-            checkout.Show();
+            //CheckOut checkout = new CheckOut();
+            //checkout.Show();
+        }
+        private void ProductClick(object sender, MouseButtonEventArgs e)
+        {
+            Image img = (Image)sender;
+            BitmapImage clickedImagepath = (BitmapImage)img.Source;
+
+
+            foreach(Product product in products)
+            {
+                if (product.imgPath == clickedImagepath)
+                {
+                    p = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
+                    break;
+                }
+            }
+
+            ViewingProduct vp = new ViewingProduct(p);
+            vp.Show();
         }
     }
 }

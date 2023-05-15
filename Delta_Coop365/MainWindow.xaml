@@ -44,7 +44,7 @@
                                             <RowDefinition Height="25" />
                                         </Grid.RowDefinitions>
                                         <Border Width="200" Height="200">
-                                            <Image Source="{Binding Path=imgPath}" Width="200" Height="200" />
+                                            <Image Source="{Binding Path=imgPath}" Width="200" Height="200" MouseDown="ProductClick"/>
                                         </Border>
                                         <TextBlock Text="{Binding Path=productName}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
                                         <TextBlock Text="{Binding Path=price}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
