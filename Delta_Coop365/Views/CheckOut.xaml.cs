@@ -78,6 +78,7 @@ namespace Delta_Coop365
         private void ShowCartItems()
         {
             cartItems.ItemsSource = orderLines;
+            txtTotal.Text = order.GetPrice().ToString();
         }
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
