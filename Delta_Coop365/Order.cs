@@ -17,7 +17,6 @@ namespace Delta_Coop365
         public Order()
         {
             orderLines = new List<OrderLine>();
-            UpdateTotalPrice();
         }
 
         public void SetId(int OrderID)
