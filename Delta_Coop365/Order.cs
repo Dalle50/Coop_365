@@ -79,7 +79,10 @@ namespace Delta_Coop365
             }
             TotalPrice = tempTotal;
         }
-        public List<OrderLine> GetOrderLines() { return orderLines; }
+        public List<OrderLine> GetOrderLines() 
+        {
+            return orderLines;
+        }
         public void ClearOrderLines()
         {
             orderLines.Clear();
