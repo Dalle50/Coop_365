@@ -29,13 +29,14 @@ namespace Delta_Coop365
         {
             InitializeComponent();
             this.order = order;
+            orderLines = new ObservableCollection<OrderLine>();
             GetCartItems();
             ShowCartItems();
         }
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
-
+            //orderLines.RemoveAt(orderLine);
             Console.WriteLine("Remove item button is clicked.");
         }
 
@@ -54,7 +55,6 @@ namespace Delta_Coop365
         }
         private void GetCartItems()
         {
-            orderLines = new ObservableCollection<OrderLine>();
             if (order != null)
             {
                 foreach (var item in order.GetOrderLines())
@@ -84,6 +84,7 @@ namespace Delta_Coop365
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
+            Console.WriteLine("Closing window so customer can add more items.");
         }
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
