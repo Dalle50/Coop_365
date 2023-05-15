@@ -31,11 +31,16 @@ namespace Delta_Coop365
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         ObservableCollection<Product> products;
         Product p;
+        ViewingProduct vp;
+        public static Order theOrder;
+        public static TextBlock tb;
 
         public MainWindow()
         {
             InitializeComponent();
             products = new ObservableCollection<Product>();
+            theOrder = new Order();
+            tb = tbTotalAmount;
             updateDateBase();
             GetProducts();
             ShowProducts();            
@@ -83,8 +88,8 @@ namespace Delta_Coop365
 
         private void BasketClick(object sender, MouseButtonEventArgs e)
         {
-            //CheckOut checkout = new CheckOut();
-            //checkout.Show();
+            CheckOut checkout = new CheckOut(theOrder);
+            checkout.Show();
         }
         private void ProductClick(object sender, MouseButtonEventArgs e)
         {
@@ -101,8 +106,14 @@ namespace Delta_Coop365
                 }
             }
 
-            ViewingProduct vp = new ViewingProduct(p);
+            ViewingProduct viewProduct = new ViewingProduct(p);
+            vp = viewProduct;
             vp.Show();
+        }
+
+        public static void UpdateTotalPriceText(string text)
+        {
+            App.Current.Dispatcher.Invoke(delegate { tb.Text = text; });
         }
     }
 }
