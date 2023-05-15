@@ -19,23 +19,30 @@ namespace Delta_Coop365
     /// </summary>
     public partial class ViewingProduct : Window
     {
-        DbAccessor db;
         Product product;
-        public ViewingProduct(Product product)
+        public ViewingProduct(Product p)
         {
             InitializeComponent();
+            product = p;
             getImg();
-            getInfo(product);
+            getInfo(p);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            int temp = Int32.Parse(txtAmount.Text);
+            temp++;
+            txtAmount.Text = temp.ToString();
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Int32.Parse(txtAmount.Text) > 0)
+            {
+                int temp = Int32.Parse(txtAmount.Text);
+                temp--;
+                txtAmount.Text = temp.ToString();
+            }
         }
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
@@ -44,18 +51,16 @@ namespace Delta_Coop365
         }
         private void getInfo(Product product)
         {
-            this.product = product;
             txtProductName.Text = product.GetName();
             txtNutrition.Text = product.GetIngredients();
         }
         private void getImg() 
         {
-            string imagePath = db.picturesUrl + product.GetID() + ".jpeg";
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imagePath);
+            bitmap.UriSource = product.imgPath.UriSource;
             bitmap.EndInit();
-            pictureProduct.Source = bitmap;
+            image.Source = bitmap;
         }
     }
 }

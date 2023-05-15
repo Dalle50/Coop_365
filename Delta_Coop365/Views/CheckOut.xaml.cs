@@ -25,78 +25,72 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOut : Window
     {
-        private ObservableCollection<OrderLine> orderLinesCollection;
-        DbAccessor db;
-        private int orderId;
+        //Løbe gennem listen af orderLines som er på order
+        //constructor i main window.
+        Order order;
+        OrderLine orderLine;
+        ObservableCollection<OrderLine> orderLines;
 
-        public CheckOut()
+        public CheckOut(Order order)
         {
             InitializeComponent();
-            orderLinesCollection = new ObservableCollection<OrderLine>();
-            DataContext = orderLinesCollection;
-            db = new DbAccessor();
-            GetCartItems(orderId);
+            this.order = order;
+            orderLines = new ObservableCollection<OrderLine>();
+            GetCartItems();
+            ShowCartItems();
         }
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
+            //orderLines.RemoveAt(orderLine);
             Console.WriteLine("Remove item button is clicked.");
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Substracting from product amount");
+            int amount = orderLine.amount;
+            amount = -1;
+            Console.WriteLine("Substracting 1 from " + amount + " which is the amount for the product: " + orderLine.GetProduct());
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Adding to product amount");
+            int amount = orderLine.amount;
+            amount = +1;
+            Console.WriteLine("adding 1 to " + amount + " which is the amount for the product: " + orderLine.GetProduct());
         }
-        private void GetCartItems(int orderID)
+        private void GetCartItems()
         {
-            orderLinesCollection.Clear();
-            List<OrderLine> orderLines = db.GetOrderLines(orderID);
-            foreach (OrderLine item in orderLines)
+            if (order != null)
             {
-                Console.WriteLine("Adding products...");
-                orderLinesCollection.Add(item);
-
-                StackPanel stackpanel = new StackPanel();
-                Image productPicture = (Image)orderScrollview.FindName("imgProduct");
-                string imagePath = db.picturesUrl + item.GetProduct().GetID() + ".jpeg";
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(imagePath);
-                bitmap.EndInit();
-                productPicture.Source = bitmap;
-                stackpanel.Children.Add(productPicture);
-
-                TextBlock productName = (TextBlock)orderScrollview.FindName("txtProductName");
-                productName.Text = item.GetProduct().GetName();
-                stackpanel.Children.Add(productName);
-
-                TextBlock productPrice = (TextBlock)orderScrollview.FindName("txtProductprice");
-                productPrice.Text = item.GetProduct().GetPrice().ToString();
-                stackpanel.Children.Add(productPrice);
-
-                StackPanel ordersStackPanel = (StackPanel)orderScrollview.FindName("ordersStackPanel");
-                ordersStackPanel.Children.Add(stackpanel);
+                foreach (var item in order.GetOrderLines())
+                {
+                    orderLine.GetAmount();
+                    orderLines.Add(item);
+                    Console.WriteLine("Adding " + item.GetProduct() + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                }
             }
-            if (orderLinesCollection == null)
+            else
             {
-                Console.WriteLine("Collection is null.");
-                return;
+                Console.WriteLine("No products is in the cart.");
             }
+        }
+        private void ShowCartItems()
+        {
+            cartItems.ItemsSource = orderLines;
         }
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
         {
+            order.ClearOrderLines();
             Close();
+            Console.WriteLine("The order history was cleared and nothing was added to the database.");
         }
 
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
+            Console.WriteLine("Closing window so customer can add more items.");
         }
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
