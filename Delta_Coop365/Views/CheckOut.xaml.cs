@@ -43,7 +43,14 @@ namespace Delta_Coop365
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
-            
+            var button = sender as Button;
+            var context = button.DataContext;
+
+            if (context is OrderLine orderLine && orderLine.amount > 0)
+            {
+                orderLines.Remove(orderLine);
+                order.DeleteOrderLine(orderLine);
+            }
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
