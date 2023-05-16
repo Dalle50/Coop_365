@@ -54,6 +54,8 @@ namespace Delta_Coop365
         {
             /// Adds the OrderLine to the list
             orderLines.Add(ol);
+            DbAccessor db= new DbAccessor();
+            db.InsertIntoOrderLines(ol.ID, ol);
         }
 
         public void DeleteOrderLine(OrderLine ol)

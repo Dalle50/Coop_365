@@ -16,6 +16,7 @@ using System.Windows.Xps.Packaging;
 using System.Windows.Xps;
 using Delta_Coop365;
 using Microsoft.EntityFrameworkCore.Migrations;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Delta_Coop365
@@ -30,9 +31,8 @@ namespace Delta_Coop365
         Order order;
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
-        
 
-        public CheckOut(Order o)
+    public CheckOut(Order o)
         {
             InitializeComponent();
             order = o;
@@ -43,22 +43,36 @@ namespace Delta_Coop365
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
-            //orderLines.RemoveAt(orderLine);
-            Console.WriteLine("Remove item button is clicked.");
+            
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
-            int amount = orderLine.amount;
-            amount = -1;
-            Console.WriteLine("Substracting 1 from " + amount + " which is the amount for the product: " + orderLine.GetProduct());
+            var button = sender as Button;
+            var context = button.DataContext;
+
+            if (context is OrderLine orderLine && orderLine.amount > 0)
+            {
+                orderLine.amount--;
+                orderLine.SetAmount(orderLine.amount);
+                order.UpdateTotalPrice();
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
+                cartItems.Items.Refresh();
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            int amount = orderLine.amount;
-            amount = +1;
-            Console.WriteLine("adding 1 to " + amount + " which is the amount for the product: " + orderLine.GetProduct());
+            var button = sender as Button;
+            var context = button.DataContext;
+            if (context is OrderLine orderLine)
+            {
+                orderLine.amount++;
+                orderLine.SetAmount(orderLine.amount);
+                order.UpdateTotalPrice();
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
+                cartItems.Items.Refresh();
+            }
         }
         private void GetCartItems()
         {
@@ -67,7 +81,7 @@ namespace Delta_Coop365
                 foreach (var item in order.GetOrderLines())
                 {
                     orderLines.Add(item);
-                    Console.WriteLine("Adding " + item.GetProduct() + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                    Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
                 }
             }
             else
