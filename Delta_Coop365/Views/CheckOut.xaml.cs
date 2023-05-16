@@ -30,6 +30,7 @@ namespace Delta_Coop365
         Order order;
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
+        
 
         public CheckOut(Order o)
         {
