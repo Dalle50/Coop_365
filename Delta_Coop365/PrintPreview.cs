@@ -11,10 +11,8 @@ namespace Delta_Coop365
 
         public PrintPreview(Order order, int ordreId, string path, string qrPath)
         {
-            // Create a new PDF document            
-
+            // Create a new PDF document 
             PdfDocument document = new PdfDocument();
-
             document.Info.Title = ordreId.ToString();
             // Create an empty page
             PdfPage page = document.AddPage();
@@ -28,9 +26,9 @@ namespace Delta_Coop365
             // Insert Image
             XImage image = XImage.FromFile(qrPath + ordreId + ".Jpeg");
             gfx.DrawImage(image, 50, 50, 250, 250);          
-            // Save the document...
+            // Save the document
             document.Save(path + ordreId + ".pdf");
-            // ...and start a viewer.
+            // Open the document
             Process.Start(path + ordreId + ".pdf");            
         }
     }
