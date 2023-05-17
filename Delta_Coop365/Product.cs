@@ -90,5 +90,9 @@ namespace Delta_Coop365
             bitmap.EndInit();
             return bitmap;
         }
+        public string Price
+        {
+            get { return "Pris: " + GetPrice().ToString() + " kr."; }
+        }
     }
 }
