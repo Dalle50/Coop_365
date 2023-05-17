@@ -9,9 +9,9 @@ namespace Delta_Coop365
     {
 
 
-        public PrintPreview(Order order, int ordreId, string path)
+        public PrintPreview(Order order, int ordreId, string path, string qrPath)
         {
-            // Create a new PDF document
+            // Create a new PDF document            
 
             PdfDocument document = new PdfDocument();
 
@@ -25,17 +25,18 @@ namespace Delta_Coop365
             // Draw the text
             gfx.DrawString(order.ToString(), font, XBrushes.Black,
             new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
-            DrawImage(gfx, path + ordreId + ".Jpeg", 50, 50, 250, 250);
-            void DrawImage(XGraphics gfx, string jpegSamplePath, int x, int y, int width, int height)
+            // Insert Image
+            DrawImage(gfx, qrPath + ordreId + ".Jpeg", 50, 50, 250, 250);
+            void DrawImage(XGraphics gfx, string qrPath, int x, int y, int width, int height)
             {
-                XImage image = XImage.FromFile(jpegSamplePath);
+                XImage image = XImage.FromFile(qrPath + ordreId + ".Jpeg");
                 gfx.DrawImage(image, x, y, width, height);
 
                 // Save the document...
-                document.Save(path + "\\" + ordreId + ".pdf");
+                document.Save(path + ordreId + ".pdf");
 
                 // ...and start a viewer.
-                Process.Start(path + "\\" + ordreId + ".pdf");
+                Process.Start(path + ordreId + ".pdf");
             }
         }
     }
