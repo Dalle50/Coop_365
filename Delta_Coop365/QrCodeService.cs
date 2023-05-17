@@ -9,10 +9,10 @@ namespace Delta_Coop365
 {
     internal class QrCodeService
     {
-
-        private QRCodeGenerator qrGenerator;
-        public QrCodeService() //Define string path and and ordreId in main and generate a QrCode with this: QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
-        {
+        QRCodeGenerator qrGenerator;
+        public QrCodeService(int orderId, string path) //Define string path and and ordreId in main and generate a QrCode with this: QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
+        {            
+           
             this.qrGenerator = new QRCodeGenerator();
 
         }
@@ -33,7 +33,7 @@ namespace Delta_Coop365
                     Console.WriteLine("Creating directory: {0}", path);
                     Directory.CreateDirectory(path);
                 }
-                qrCode.Save(path + "\\" + ordreId + ".png", ImageFormat.Png);
+                qrCode.Save(path + ordreId + ".Jpeg", ImageFormat.Jpeg);
             }
             catch (System.Exception)
             {
