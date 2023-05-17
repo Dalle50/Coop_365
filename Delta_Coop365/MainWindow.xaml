@@ -23,7 +23,7 @@
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White"/>
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White"/>
         <!-- col 1, row 0-->
-        <ScrollViewer Grid.Column="1" Grid.Row="0" Background="#0dc144" Margin="0,0,0,144" Grid.RowSpan="2">
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Background="#0dc144" Margin="0,0,0,139" Grid.RowSpan="2">
             <StackPanel>
                 <StackPanel x:Name="BakeOff">
                     <ItemsControl x:Name="ICProducts" ItemsSource="{Binding products}" >
