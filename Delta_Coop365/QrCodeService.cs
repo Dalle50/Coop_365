@@ -23,7 +23,7 @@ namespace Delta_Coop365
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             return qrCodeImage;
         }
-        public void SaveQrCode(Bitmap qrCode, int ordreId, string path)
+        public void SaveQrCode(Bitmap qrCode, int orderId, string path)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Delta_Coop365
                     Console.WriteLine("Creating directory: {0}", path);
                     Directory.CreateDirectory(path);
                 }
-                qrCode.Save(path + ordreId + ".Jpeg", ImageFormat.Jpeg);
+                qrCode.Save(path + orderId + ".Jpeg", ImageFormat.Jpeg);
             }
             catch (System.Exception)
             {
