@@ -43,8 +43,9 @@ namespace Delta_Coop365
             tb = tbTotalAmount;
             updateDateBase();
             GetProducts();
-            ShowProducts();
+            ShowProducts();            
         }
+        
         public IEnumerable<XElement> getData()
         {
             return data.getData("BakeOffVare");
@@ -80,8 +81,6 @@ namespace Delta_Coop365
                 products.Add(product);
             }
         }
-
-        
         public void ShowProducts() 
         {
             ICProducts.ItemsSource = products;
