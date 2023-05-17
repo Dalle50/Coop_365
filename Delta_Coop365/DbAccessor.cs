@@ -279,5 +279,10 @@ namespace Delta_Coop365
                 }
             }
         }
+
+        internal object GetOrders()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
