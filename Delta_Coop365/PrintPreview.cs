@@ -9,12 +9,12 @@ namespace Delta_Coop365
     {
 
 
-        public PrintPreview(Order order, int ordreId, string path, string qrPath)
+        public PrintPreview(Order order, int orderId, string path, string qrPath)
         {
             // Create a new PDF document 
             PdfDocument document = new PdfDocument();
             // Define the documents name/title
-            document.Info.Title = ordreId.ToString();
+            document.Info.Title = orderId.ToString();
             // Create an empty page
             PdfPage page = document.AddPage();
             // Get an XGraphics object for drawing
@@ -25,13 +25,13 @@ namespace Delta_Coop365
             gfx.DrawString(order.ToString(), font, XBrushes.Black,
             new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
             // Define the path of the desired image
-            XImage image = XImage.FromFile(qrPath + ordreId + ".Jpeg");
+            XImage image = XImage.FromFile(qrPath + orderId + ".Jpeg");
             // Insert Image
             gfx.DrawImage(image, 50, 50, 250, 250);
             // Save the document
-            document.Save(path + ordreId + ".pdf");
+            document.Save(path + orderId + ".pdf");
             // Open the document
-            Process.Start(path + ordreId + ".pdf");
+            Process.Start(path + orderId + ".pdf");
         }
     }
 }
