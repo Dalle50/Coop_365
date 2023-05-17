@@ -11,9 +11,14 @@ namespace Delta_Coop365
         private List<OrderLine> orders;
         private DateTime date;
 
+        public Report(List<OrderLine> orders)
+        {
+            this.orders = orders;
+            this.date = DateTime.Now;
+        }
         public DateTime GetTimeStamp()
         {
-            return DateTime.Now;
+            return date;
         }
         
         public void GeneratePDF()
