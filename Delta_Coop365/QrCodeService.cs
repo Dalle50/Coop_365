@@ -16,9 +16,9 @@ namespace Delta_Coop365
             this.qrGenerator = new QRCodeGenerator();
 
         }
-        public Bitmap GenerateQRCodeImage(int ordreId)
+        public Bitmap GenerateQRCodeImage(int orderId)
         {
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(ordreId.ToString(), QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(orderId.ToString(), QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             return qrCodeImage;
