@@ -6,8 +6,8 @@ using System.Diagnostics;
 namespace Delta_Coop365
 {
     internal class PrintPreview
-    {      
-        
+    {
+
 
         public PrintPreview(Order order, int ordreId, string path)
         {
@@ -40,4 +40,3 @@ namespace Delta_Coop365
         }
     }
 }
-    
