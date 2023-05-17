@@ -1,22 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents.Serialization;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Xps.Packaging;
-using System.Windows.Xps;
-using Delta_Coop365;
-using Microsoft.EntityFrameworkCore.Migrations;
-using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Delta_Coop365
@@ -117,8 +102,7 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            //Print_WPF_Preview(Grid_Plan); //the thing you want to print/display
-            //QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
+
         }
     }
 }
