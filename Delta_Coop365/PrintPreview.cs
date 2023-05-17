@@ -13,6 +13,7 @@ namespace Delta_Coop365
         {
             // Create a new PDF document 
             PdfDocument document = new PdfDocument();
+            // Define the documents name/title
             document.Info.Title = ordreId.ToString();
             // Create an empty page
             PdfPage page = document.AddPage();
@@ -20,16 +21,17 @@ namespace Delta_Coop365
             XGraphics gfx = XGraphics.FromPdfPage(page);
             // Create a font
             XFont font = new XFont("Verdana", 20, XFontStyle.BoldItalic);
-            // Draw the text
+            // Draw the text defined as the first parameter of the DrawString method
             gfx.DrawString(order.ToString(), font, XBrushes.Black,
             new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
-            // Insert Image
+            // Define the path of the desired image
             XImage image = XImage.FromFile(qrPath + ordreId + ".Jpeg");
-            gfx.DrawImage(image, 50, 50, 250, 250);          
+            // Insert Image
+            gfx.DrawImage(image, 50, 50, 250, 250);
             // Save the document
             document.Save(path + ordreId + ".pdf");
             // Open the document
-            Process.Start(path + ordreId + ".pdf");            
+            Process.Start(path + ordreId + ".pdf");
         }
     }
 }
