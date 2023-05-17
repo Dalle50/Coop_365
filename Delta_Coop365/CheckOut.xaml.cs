@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Media.Imaging;
 
 namespace Delta_Coop365
 {
@@ -16,6 +17,9 @@ namespace Delta_Coop365
         Order order;
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
+        DbAccessor dbAccessor = new DbAccessor();
+        DateTime date = DateTime.Now;
+
 
         public CheckOut(Order o)
         {
@@ -102,9 +106,20 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            QrCodeService qRCodeGenerator = new QrCodeService(order.GetID(), DbAccessor.GetSolutionPath + "\\QrCodes\\");  //
+            order.UpdateTotalPrice();
+            int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
+            order.SetId(orderId);
+            foreach(OrderLine ol in orderLines)
+            {
+                dbAccessor.InsertIntoOrderLines(orderId, ol);
 
-            PrintPreview CreateRecipe = new PrintPreview(order, order.GetID(), DbAccessor.GetSolutionPath + "\\Recipes\\");  //the thing you want to print/display
+            }
+            QrCodeService qRCodeGenerator = new QrCodeService();  //
+            Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
+            qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
+            PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
+            CreateRecipe.CreatePDFReceipt(order, orderId);
+            Close();
         }
     }
 }
