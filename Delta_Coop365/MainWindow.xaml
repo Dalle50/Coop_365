@@ -63,7 +63,7 @@
         <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Center"  VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15" Height="34" Width="136" Margin="0,102,0,0" Grid.RowSpan="2"/>
         <!-- col 1, row 1-->
         <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="284,59,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Cambria" Foreground="White" Height="38" Width="86" RenderTransformOrigin="0.507,0.433"/>
-        <Image Grid.Column="1" Height="NaN" Margin="569,21,8,5" Source="/Basket.png" MouseDown="BasketClick" Grid.Row="1"/>
+        <Image Grid.Column="1" Height="NaN" Margin="560,21,17,5" Source="/Basket.png" MouseDown="BasketClick" Grid.Row="1"/>
         <Label Grid.Column="1" Grid.Row="1" Content="Kurv" HorizontalAlignment="Left"  VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15" Height="28" Width="41" Margin="601,102,0,0" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="46" TextAlignment="Center" FontSize="24" Background="White" Margin="375,52,0,0" Grid.Column="1"/>
         <Label Grid.Column="1" Grid.Row="1" Content="kr." HorizontalAlignment="Left" Margin="510,58,0,0" Height="40" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971" Foreground="White" FontFamily="Cambria" Width="36"/>
