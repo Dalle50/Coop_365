@@ -43,7 +43,8 @@ namespace Delta_Coop365
             tb = tbTotalAmount;
             updateDateBase();
             GetProducts();
-            ShowProducts();            
+            ShowProducts();
+            SetStock();
         }
         
         public IEnumerable<XElement> getData()
@@ -91,6 +92,10 @@ namespace Delta_Coop365
             CheckOut checkout = new CheckOut(theOrder);
             checkout.Show();
         }
+        private void ReturnClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
         private void ProductClick(object sender, MouseButtonEventArgs e)
         {
             Image img = (Image)sender;
@@ -114,6 +119,20 @@ namespace Delta_Coop365
         public static void UpdateTotalPriceText(string text)
         {
             App.Current.Dispatcher.Invoke(delegate { tb.Text = text; });
+        }
+
+        private void SetStock()
+        {
+            Random rand = new Random();
+            foreach (Product product in products)
+            {
+                int temp = rand.Next(5, 25);
+                if (product.GetStock() == 0 || product.GetStock() == null)
+                {
+                    product.SetStock(temp);
+                }
+                dbAccessor.updateStock(product.GetID(), temp);
+            }
         }
     }
 }

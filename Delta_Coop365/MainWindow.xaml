@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
-        Title="Coop365 BakeOff" Height="650" Width="850">
+        Title="Coop365 BakeOff" Height="700" Width="850" ResizeMode="NoResize">
     <Grid Background="#066a3f">
 
         <Grid.ColumnDefinitions>
@@ -13,7 +13,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="470" />
+            <RowDefinition Height="500" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -58,14 +58,16 @@
             </StackPanel>
         </ScrollViewer>
         <!-- col 0, row 1-->
-        <Image Height="NaN" Margin="22,462,22,11" Source="/HomeButton.png" Grid.RowSpan="2"/>
-        <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Left" Margin="16,110,0,0" VerticalAlignment="Top" FontFamily="Cambria" Foreground="White"/>
+        <Image Height="NaN" Margin="26,475,18,-2" Source="/HomeButton.png" Grid.RowSpan="2" MouseDown="ReturnClick" RenderTransformOrigin="0.616,0.626"/>
+        <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Left" Margin="5,125,0,0" VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15"/>
         <!-- col 1, row 1-->
-        <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Center" FontSize="24" FontFamily="Cambria" Foreground="White"/>
-        <Image Grid.Column="1" Height="NaN" Margin="518,25,10,15" Grid.Row="1" Source="/Basket.png" MouseDown="BasketClick"/>
-        <Border Grid.Column="1" Grid.Row="1" BorderBrush="#FF044B2D" BorderThickness="2" Width="132" Height="39" Margin="381,36,137,30">
-            <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" Height="39" TextAlignment="Center" FontSize="24" Background="White"/>
+        <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="293,66,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Cambria" Foreground="White"/>
+        <Image Grid.Column="1" Height="NaN" Margin="583,43,8,56" Source="/Basket.png" MouseDown="BasketClick" Grid.Row="1"/>
+        <Label Grid.Column="1" Grid.Row="1" Content="Kurv" HorizontalAlignment="Left" Margin="617,125,0,0" VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15"/>
+        <Border Grid.Column="1" Grid.Row="1" BorderBrush="#FF044B2D" BorderThickness="2" Width="132" Height="39" Margin="394,66,174,79">
+            <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" Height="39" TextAlignment="Center" FontSize="24" Background="White" Margin="0,0,0,0"/>
         </Border>
+        <Label Grid.Column="1" Grid.Row="1" Content="kr." HorizontalAlignment="Left" Margin="531,65,0,0" Height="40" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971" Foreground="White" FontFamily="Cambria"/>
     </Grid>
 </Window>
 
