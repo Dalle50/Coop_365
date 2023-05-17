@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Delta_Coop365
 {
@@ -39,6 +40,9 @@ namespace Delta_Coop365
             {
                 orderLines.Remove(orderLine);
                 order.DeleteOrderLine(orderLine);
+                order.UpdateTotalPrice();
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             }
         }
 
@@ -52,6 +56,7 @@ namespace Delta_Coop365
                 orderLine.amount--;
                 orderLine.SetAmount(orderLine.amount);
                 order.UpdateTotalPrice();
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
                 cartItems.Items.Refresh();
             }
@@ -66,6 +71,7 @@ namespace Delta_Coop365
                 orderLine.amount++;
                 orderLine.SetAmount(orderLine.amount);
                 order.UpdateTotalPrice();
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
                 cartItems.Items.Refresh();
             }
@@ -88,12 +94,15 @@ namespace Delta_Coop365
         private void ShowCartItems()
         {
             cartItems.ItemsSource = orderLines;
-            txtTotal.Text = order.GetPrice().ToString();
+            txtTotal.Text = order.GetPrice().ToString() + " Kr.";
         }
 
-        private void btnReturn_Click(object sender, RoutedEventArgs e)
+        private void btnUndoAll_Click(object sender, RoutedEventArgs e)
         {
             order.ClearOrderLines();
+            order.UpdateTotalPrice();
+            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+            App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
             Console.WriteLine("The order history was cleared and nothing was added to the database.");
         }

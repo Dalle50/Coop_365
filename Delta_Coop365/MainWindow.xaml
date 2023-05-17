@@ -5,24 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
-        Title="Coop365 BakeOff" Height="650" Width="850"
-        >
-    <Grid>
+        Title="Coop365 BakeOff" Height="700" Width="850" ResizeMode="NoResize">
+    <Grid Background="#066a3f">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="470" />
+            <RowDefinition Height="500" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- col 0, row 0-->
-        <Label Grid.Column="0" Grid.Row="0" Content="kategorier" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="24"/>
-        <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Rectangle Fill="#FF00DD44" Grid.Column="0" Margin="0,0,0,144" Grid.RowSpan="2"/>
+        <Label Grid.Column="0" Grid.Row="0" Content="kategorier" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Cambria" Foreground="#066a3f"/>
+        <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White"/>
+        <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White"/>
         <!-- col 1, row 0-->
-        <ScrollViewer Grid.Column="1" Grid.Row="0">
+        <ScrollViewer Grid.Column="1" Grid.Row="0" Background="#0dc144" Margin="0,0,0,144" Grid.RowSpan="2">
             <StackPanel>
                 <StackPanel x:Name="BakeOff">
                     <ItemsControl x:Name="ICProducts" ItemsSource="{Binding products}" >
@@ -39,15 +40,15 @@
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="200"/>
-                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="190"/>
+                                            <RowDefinition Height="auto"/>
                                             <RowDefinition Height="25" />
                                         </Grid.RowDefinitions>
-                                        <Border Width="200" Height="200">
+                                        <Border Width="185" Height="185" BorderBrush="#066a3f" BorderThickness="10">
                                             <Image Source="{Binding Path=imgPath}" Width="200" Height="200" MouseDown="ProductClick"/>
                                         </Border>
-                                        <TextBlock Text="{Binding Path=productName}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-                                        <TextBlock Text="{Binding Path=price}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+                                        <TextBlock Text="{Binding Path=productName}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" FontFamily="Cambria" Foreground="White" FontSize="18" TextWrapping="WrapWithOverflow" Background="#066a3f" MinWidth="100" MaxWidth="200"/>
+                                        <TextBlock Text="{Binding Path=Price}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="2" FontFamily="Cambria" Foreground="White"  Background="#066a3f" MinWidth="100" MaxWidth="200" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
                                     </Grid>
                                 </StackPanel>
                             </DataTemplate>
@@ -57,14 +58,16 @@
             </StackPanel>
         </ScrollViewer>
         <!-- col 0, row 1-->
-        <Image Height="NaN" Margin="22,462,22,11" Source="/HomeButton.png" Grid.RowSpan="2" />
-        <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Left" Margin="16,110,0,0" VerticalAlignment="Top"/>
+        <Image Height="NaN" Margin="26,475,18,-2" Source="/HomeButton.png" Grid.RowSpan="2" MouseDown="ReturnClick" RenderTransformOrigin="0.616,0.626"/>
+        <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Left" Margin="5,125,0,0" VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15"/>
         <!-- col 1, row 1-->
-        <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="300,0,0,0" VerticalAlignment="Center" FontSize="24"/>
-        <Image Grid.Column="1" Height="NaN" Margin="518,20,10,20" Grid.Row="1" Source="/Basket.png" MouseDown="BasketClick"/>
-        <Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="2" Width="132" Height="39" Margin="381,36,137,30">
-            <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" Height="39" TextAlignment="Center" FontSize="24"/>
+        <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="293,66,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Cambria" Foreground="White"/>
+        <Image Grid.Column="1" Height="NaN" Margin="583,43,8,56" Source="/Basket.png" MouseDown="BasketClick" Grid.Row="1"/>
+        <Label Grid.Column="1" Grid.Row="1" Content="Kurv" HorizontalAlignment="Left" Margin="617,125,0,0" VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15"/>
+        <Border Grid.Column="1" Grid.Row="1" BorderBrush="#FF044B2D" BorderThickness="2" Width="132" Height="39" Margin="394,66,174,79">
+            <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" Height="39" TextAlignment="Center" FontSize="24" Background="White" Margin="0,0,0,0"/>
         </Border>
+        <Label Grid.Column="1" Grid.Row="1" Content="kr." HorizontalAlignment="Left" Margin="531,65,0,0" Height="40" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971" Foreground="White" FontFamily="Cambria"/>
     </Grid>
 </Window>
 
