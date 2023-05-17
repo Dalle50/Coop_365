@@ -21,7 +21,7 @@ namespace Delta_Coop365
         /// This class main focus is handling the database
         /// connString variable is the source to the database(our case being local)
         /// </summary>
-        string connString;
+        private string connString;
         public string picturesUrl;
         /// <summary>
         /// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security=True"
@@ -133,10 +133,10 @@ namespace Delta_Coop365
         /// <param name="stock"></param>
         public void updateStock(int productid, int stock)
         {
-            SqlParameter productIdParam = new SqlParameter("@productid", productid);
-            SqlParameter nameParam = new SqlParameter("@stock", stock);
             string query = "UPDATE Products SET Stock = @stock WHERE ProductID = @productid";
-            sqlQuery(query, productIdParam);
+            SqlParameter productIdParam = new SqlParameter("@productid", productid);
+            SqlParameter stockParam = new SqlParameter("@stock", stock);
+            sqlQuery(query, productIdParam, stockParam);
         }
         public void updateProductsDaily(IEnumerable<XElement> results)
         {
@@ -279,6 +279,11 @@ namespace Delta_Coop365
                     command.Connection.Close();
                 }
             }
+        }
+
+        internal object GetOrders()
+        {
+            throw new NotImplementedException();
         }
     }
 }

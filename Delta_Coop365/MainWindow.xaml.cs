@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Delta_Coop365;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Delta_Coop365
@@ -29,15 +30,23 @@ namespace Delta_Coop365
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         ObservableCollection<Product> products;
-        
+        Product p;
+        ViewingProduct vp;
+        public static Order theOrder;
+        public static TextBlock tb;
+
         public MainWindow()
         {
             InitializeComponent();
             products = new ObservableCollection<Product>();
+            theOrder = new Order();
+            tb = tbTotalAmount;
             updateDateBase();
             GetProducts();
             ShowProducts();
+            SetStock();
         }
+        
         public IEnumerable<XElement> getData()
         {
             return data.getData("BakeOffVare");
@@ -73,12 +82,57 @@ namespace Delta_Coop365
                 products.Add(product);
             }
         }
-
-        
         public void ShowProducts() 
         {
-            
             ICProducts.ItemsSource = products;
+        }
+
+        private void BasketClick(object sender, MouseButtonEventArgs e)
+        {
+            CheckOut checkout = new CheckOut(theOrder);
+            checkout.Show();
+        }
+        private void ReturnClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        private void ProductClick(object sender, MouseButtonEventArgs e)
+        {
+            Image img = (Image)sender;
+            BitmapImage clickedImagepath = (BitmapImage)img.Source;
+
+
+            foreach(Product product in products)
+            {
+                if (product.imgPath == clickedImagepath)
+                {
+                    p = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
+                    break;
+                }
+            }
+
+            ViewingProduct viewProduct = new ViewingProduct(p);
+            vp = viewProduct;
+            vp.Show();
+        }
+
+        public static void UpdateTotalPriceText(string text)
+        {
+            App.Current.Dispatcher.Invoke(delegate { tb.Text = text; });
+        }
+
+        private void SetStock()
+        {
+            Random rand = new Random();
+            foreach (Product product in products)
+            {
+                int temp = rand.Next(5, 25);
+                if (product.GetStock() == 0 || product.GetStock() == null)
+                {
+                    product.SetStock(temp);
+                }
+                dbAccessor.updateStock(product.GetID(), temp);
+            }
         }
     }
 }
