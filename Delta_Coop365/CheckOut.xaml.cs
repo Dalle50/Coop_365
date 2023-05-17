@@ -1,21 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents.Serialization;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Windows.Xps.Packaging;
-using System.Windows.Xps;
-using Delta_Coop365;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 
 namespace Delta_Coop365
@@ -30,9 +16,8 @@ namespace Delta_Coop365
         Order order;
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
-        
 
-        public CheckOut(Order o)
+    public CheckOut(Order o)
         {
             InitializeComponent();
             order = o;
@@ -43,22 +28,43 @@ namespace Delta_Coop365
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
-            //orderLines.RemoveAt(orderLine);
-            Console.WriteLine("Remove item button is clicked.");
+            var button = sender as Button;
+            var context = button.DataContext;
+
+            if (context is OrderLine orderLine && orderLine.amount > 0)
+            {
+                orderLines.Remove(orderLine);
+                order.DeleteOrderLine(orderLine);
+            }
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
-            int amount = orderLine.amount;
-            amount = -1;
-            Console.WriteLine("Substracting 1 from " + amount + " which is the amount for the product: " + orderLine.GetProduct());
+            var button = sender as Button;
+            var context = button.DataContext;
+
+            if (context is OrderLine orderLine && orderLine.amount > 0)
+            {
+                orderLine.amount--;
+                orderLine.SetAmount(orderLine.amount);
+                order.UpdateTotalPrice();
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
+                cartItems.Items.Refresh();
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            int amount = orderLine.amount;
-            amount = +1;
-            Console.WriteLine("adding 1 to " + amount + " which is the amount for the product: " + orderLine.GetProduct());
+            var button = sender as Button;
+            var context = button.DataContext;
+            if (context is OrderLine orderLine)
+            {
+                orderLine.amount++;
+                orderLine.SetAmount(orderLine.amount);
+                order.UpdateTotalPrice();
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
+                cartItems.Items.Refresh();
+            }
         }
         private void GetCartItems()
         {
@@ -67,7 +73,7 @@ namespace Delta_Coop365
                 foreach (var item in order.GetOrderLines())
                 {
                     orderLines.Add(item);
-                    Console.WriteLine("Adding " + item.GetProduct() + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                    Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
                 }
             }
             else
@@ -78,6 +84,7 @@ namespace Delta_Coop365
         private void ShowCartItems()
         {
             cartItems.ItemsSource = orderLines;
+            txtTotal.Text = order.GetPrice().ToString();
         }
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
@@ -95,8 +102,7 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            //Print_WPF_Preview(Grid_Plan); //the thing you want to print/display
-            //QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
+
         }
     }
 }
