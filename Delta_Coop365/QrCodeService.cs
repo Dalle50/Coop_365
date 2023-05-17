@@ -13,7 +13,6 @@ namespace Delta_Coop365
         public QrCodeService(int orderId, string path)
         {
             this.qrGenerator = new QRCodeGenerator();
-
         }
         public Bitmap GenerateQRCodeImage(int orderId)
         {
