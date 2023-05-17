@@ -49,7 +49,7 @@ namespace Delta_Coop365
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
         private void AddToCart(object sender, RoutedEventArgs e)
         {

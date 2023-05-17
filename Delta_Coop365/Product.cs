@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -58,6 +59,10 @@ namespace Delta_Coop365
         {
             return productID;
         }
+        public void SetStock(int newStock)
+        {
+            stock = newStock;
+        }
         /// <summary>
         /// Returns the number of the given Product left.
         /// </summary>
@@ -77,7 +82,7 @@ namespace Delta_Coop365
         /// </summary>
         public string GetIngredients()
         {
-           return ingredients;
+            return ingredients;
         }
 
         public BitmapImage Makebitmap(string path)
