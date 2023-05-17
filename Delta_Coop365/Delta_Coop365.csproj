@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="QrCodes\**" />
+    <Compile Remove="Recipes\**" />
+    <EmbeddedResource Remove="QrCodes\**" />
+    <EmbeddedResource Remove="Recipes\**" />
+    <None Remove="QrCodes\**" />
+    <None Remove="Recipes\**" />
+    <Page Remove="QrCodes\**" />
+    <Page Remove="Recipes\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Basket.png" />
     <None Remove="HomeButton.png" />
   </ItemGroup>
@@ -29,11 +40,6 @@
     <Resource Include="HomeButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Recipes\" />
-    <Folder Include="QrCodes\" />
   </ItemGroup>
 
 </Project>
