@@ -10,9 +10,9 @@ namespace Delta_Coop365
     internal class QrCodeService
     {
         QRCodeGenerator qrGenerator;
-        public QrCodeService(int orderId, string path)
+        public QrCodeService(int orderId)
         {
-            this.qrGenerator = new QRCodeGenerator();
+            qrGenerator = new QRCodeGenerator();
         }
         public Bitmap GenerateQRCodeImage(int orderId)
         {
@@ -21,22 +21,14 @@ namespace Delta_Coop365
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             return qrCodeImage;
         }
+        
         public void SaveQrCode(Bitmap qrCode, int orderId, string path)
         {
-            try
-            {
-                if (!Directory.Exists(path))
-                {
-                    Console.WriteLine("Failed to save QrCodeImage, no valid path. Trying to create one");
-                    Console.WriteLine("Creating directory: {0}", path);
-                    Directory.CreateDirectory(path);
-                }
+            
                 qrCode.Save(path + orderId + ".Jpeg", ImageFormat.Jpeg);
-            }
-            catch (System.Exception)
-            {
-                Console.WriteLine("Failed to generate QrCode");
-            }
+            
+            
         }
+        
     }
 }

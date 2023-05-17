@@ -101,10 +101,9 @@ namespace Delta_Coop365
         }
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
-        {
-            QrCodeService qRCodeGenerator = new QrCodeService(order.GetID(), DbAccessor.GetSolutionPath + "\\QrCodes\\");
+        {         
 
-            PrintPreview CreateRecipe = new PrintPreview(order, order.GetID(), DbAccessor.GetSolutionPath + "\\Recipes\\", 
+            GenerateService CreateRecipe = new GenerateService(order, order.GetID(), DbAccessor.GetSolutionPath + "\\Recipes\\", 
               DbAccessor.GetSolutionPath + "\\QrCodes\\");
         }
     }
