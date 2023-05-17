@@ -84,7 +84,6 @@ namespace Delta_Coop365
         {
             return orderLines;
         }
-        public List<OrderLine> GetOrderLines() { return orderLines; }
         public void ClearOrderLines()
         {
             orderLines.Clear();
