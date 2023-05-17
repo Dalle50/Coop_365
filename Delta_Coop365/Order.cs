@@ -33,7 +33,7 @@ namespace Delta_Coop365
         {
             /// Implement the code to calculate the total price
             /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
-            return TotalPrice;
+            return this.TotalPrice;
         }
 
         public int ProductsLeft(OrderLine ol)
@@ -81,10 +81,6 @@ namespace Delta_Coop365
             this.TotalPrice = tempTotal;
         }
         public List<OrderLine> GetOrderLines()
-        {
-            return orderLines;
-        }
-        public List<OrderLine> GetOrderLines() 
         {
             return orderLines;
         }

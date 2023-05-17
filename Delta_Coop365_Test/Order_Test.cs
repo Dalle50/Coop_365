@@ -3,12 +3,20 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
 using System.Windows.Media.Imaging;
 
+
 namespace Delta_Coop365_Test
 {
     public class Order_Test
     {
-        public Order o = new Order();
-        public OrderLine ol = new OrderLine(
+        private Order o;
+        private OrderLine ol;
+
+
+        [SetUp]
+        public void Setup()
+        {
+            o = new Order();
+            ol = new OrderLine(
                                     new Product(
                                     1,
                                         "snegl",
@@ -16,10 +24,12 @@ namespace Delta_Coop365_Test
                                                 20,
                                                     "mel",
                                                             "C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\ProductPictures\\1007.jpeg"),
-                                                                2);
-        [SetUp]
-        public void Setup()
+                                                                 2);
+    }
+        [TearDown]
+        public void TearDown()
         {
+            o = null;
         }
         [Test]
         public void Test_Constructor()
@@ -43,15 +53,19 @@ namespace Delta_Coop365_Test
         [Test]
         public void Test_UpdateTotalPrice()
         {
+
             o.AddOrderLine(ol);
             o.UpdateTotalPrice();
-            double x = o.GetPrice();
-            Assert.AreEqual(40, x);
+            Assert.AreEqual(40, o.GetPrice());
+            o.ClearOrderLines();
         }
         [Test]
         public void Test_GetPrice()
         {
             Assert.That(0, Is.EqualTo(o.GetPrice()));
+            o.AddOrderLine(ol);
+            Assert.That(40, Is.EqualTo(o.GetPrice()));
+            o.ClearOrderLines();
         }
         [Test]
         public void Test_ProductsLeft()
@@ -64,12 +78,14 @@ namespace Delta_Coop365_Test
         {
             o.AddOrderLine(ol);
             Assert.That(o.GetOrderLines()[0], Is.EqualTo(ol));
+            o.ClearOrderLines();
         }
         [Test]
         public void Test_DeleteOrderLine()
         {
             o.DeleteOrderLine(ol);
             Assert.That(o.GetOrderLines().IsNullOrEmpty(), Is.True);
+            o.ClearOrderLines();
         }
         [Test]
         public void Test_UpdateOrderLine()
@@ -77,6 +93,7 @@ namespace Delta_Coop365_Test
             o.AddOrderLine(ol);
             o.UpdateOrderLine(1, 4);
             Assert.That(o.GetOrderLines()[0].GetAmount(), Is.EqualTo(4));
+            o.ClearOrderLines();
         }
         [Test]
         public void Test_GetOrderLines()
@@ -85,6 +102,17 @@ namespace Delta_Coop365_Test
             ols.Add(ol);
             o.AddOrderLine(ol);
             CollectionAssert.AreEqual(ols, o.GetOrderLines());
+            o.ClearOrderLines();
         }
+        [Test]
+        public void Test_ClearOrderLines()
+        {
+            o.AddOrderLine(ol);
+            Assert.AreEqual(1, o.orderLines.Count());
+            o.ClearOrderLines();
+            Assert.AreEqual(0, o.orderLines.Count());
+            o.ClearOrderLines();
+        }
+
     }
 }
