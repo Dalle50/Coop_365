@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 
 
 namespace Delta_Coop365
@@ -16,8 +17,7 @@ namespace Delta_Coop365
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
 
-
-        public CheckOut(Order o)
+    public CheckOut(Order o)
         {
             InitializeComponent();
             order = o;
@@ -28,22 +28,43 @@ namespace Delta_Coop365
 
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
-            //orderLines.RemoveAt(orderLine);
-            Console.WriteLine("Remove item button is clicked.");
+            var button = sender as Button;
+            var context = button.DataContext;
+
+            if (context is OrderLine orderLine && orderLine.amount > 0)
+            {
+                orderLines.Remove(orderLine);
+                order.DeleteOrderLine(orderLine);
+            }
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
-            int amount = orderLine.amount;
-            amount = -1;
-            Console.WriteLine("Substracting 1 from " + amount + " which is the amount for the product: " + orderLine.GetProduct());
+            var button = sender as Button;
+            var context = button.DataContext;
+
+            if (context is OrderLine orderLine && orderLine.amount > 0)
+            {
+                orderLine.amount--;
+                orderLine.SetAmount(orderLine.amount);
+                order.UpdateTotalPrice();
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
+                cartItems.Items.Refresh();
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            int amount = orderLine.amount;
-            amount = +1;
-            Console.WriteLine("adding 1 to " + amount + " which is the amount for the product: " + orderLine.GetProduct());
+            var button = sender as Button;
+            var context = button.DataContext;
+            if (context is OrderLine orderLine)
+            {
+                orderLine.amount++;
+                orderLine.SetAmount(orderLine.amount);
+                order.UpdateTotalPrice();
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
+                cartItems.Items.Refresh();
+            }
         }
         private void GetCartItems()
         {
@@ -52,7 +73,7 @@ namespace Delta_Coop365
                 foreach (var item in order.GetOrderLines())
                 {
                     orderLines.Add(item);
-                    Console.WriteLine("Adding " + item.GetProduct() + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                    Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
                 }
             }
             else
@@ -63,6 +84,7 @@ namespace Delta_Coop365
         private void ShowCartItems()
         {
             cartItems.ItemsSource = orderLines;
+            txtTotal.Text = order.GetPrice().ToString();
         }
 
         private void btnReturn_Click(object sender, RoutedEventArgs e)
@@ -77,11 +99,9 @@ namespace Delta_Coop365
             Close();
             Console.WriteLine("Closing window so customer can add more items.");
         }
+
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            QrCodeService qRCodeGenerator = new QrCodeService(order.GetID(), DbAccessor.GetSolutionPath + "\\QrCodes\\");  //
-
-            PrintPreview CreateRecipe = new PrintPreview(order, order.GetID(), DbAccessor.GetSolutionPath + "\\Recipes\\");  //the thing you want to print/display
 
         }
     }
