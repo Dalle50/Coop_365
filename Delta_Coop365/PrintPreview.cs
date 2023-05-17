@@ -26,18 +26,12 @@ namespace Delta_Coop365
             gfx.DrawString(order.ToString(), font, XBrushes.Black,
             new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
             // Insert Image
-            DrawImage(gfx, qrPath + ordreId + ".Jpeg", 50, 50, 250, 250);
-            void DrawImage(XGraphics gfx, string qrPath, int x, int y, int width, int height)
-            {
-                XImage image = XImage.FromFile(qrPath + ordreId + ".Jpeg");
-                gfx.DrawImage(image, x, y, width, height);
-
-                // Save the document...
-                document.Save(path + ordreId + ".pdf");
-
-                // ...and start a viewer.
-                Process.Start(path + ordreId + ".pdf");
-            }
+            XImage image = XImage.FromFile(qrPath + ordreId + ".Jpeg");
+            gfx.DrawImage(image, 50, 50, 250, 250);          
+            // Save the document...
+            document.Save(path + ordreId + ".pdf");
+            // ...and start a viewer.
+            Process.Start(path + ordreId + ".pdf");            
         }
     }
 }
