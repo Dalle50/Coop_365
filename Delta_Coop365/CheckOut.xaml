@@ -54,7 +54,7 @@
         <Label Content="Total:" HorizontalAlignment="Left" Height="39" Margin="10,8,0,0" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971" Foreground="White" FontFamily="Cambria" Grid.Row="2"/>
         <Label Content="Check Ud" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30" Foreground="White" FontFamily="Cambria"/>
 
-        <Button x:Name="btnReturn" Content="Fortryd og slet alt" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="32" Width="110" Click="btnReturn_Click"  Background="#066a3f" Foreground="White" FontFamily="Cambria" Grid.Row="3"/>
+        <Button x:Name="btnUndoAll" Content="Fortryd og slet alt" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="32" Width="110" Click="btnUndoAll_Click"  Background="#066a3f" Foreground="White" FontFamily="Cambria" Grid.Row="3"/>
         <Button x:Name="btnConfirm" Content="Godkend og Print" HorizontalAlignment="Left" Margin="697,30,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20" Click="btnConfirm_Click" Background="#066a3f" Foreground="White" FontFamily="Cambria" Grid.Row="3"/>
         <Button x:Name="btnAddMore" Content="Tilføj mere" HorizontalAlignment="Left" Margin="496,30,0,0" VerticalAlignment="Top" Height="34" Width="176" FontSize="20" Click="btnAddMore_Click" Background="#066a3f" Foreground="White" FontFamily="Cambria" Grid.Row="3"/>
     </Grid>
