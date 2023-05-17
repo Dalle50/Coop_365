@@ -9,7 +9,7 @@ namespace Delta_Coop365
 {
     internal class DataStream
     {
-        string api;
+        private string api;
         public DataStream(string api) { this.api = api; }
 
         public IEnumerable<XElement> getData(string elementNames)

@@ -10,7 +10,7 @@ namespace Delta_Coop365
     internal class QrCodeService
     {
 
-        QRCodeGenerator qrGenerator;
+        private QRCodeGenerator qrGenerator;
         public QrCodeService() //Define string path and and ordreId in main and generate a QrCode with this: QrCodeService qRCodeGenerator = new QrCodeService(ordreId, path);
         {
             this.qrGenerator = new QRCodeGenerator();

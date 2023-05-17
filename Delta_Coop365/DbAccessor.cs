@@ -20,7 +20,7 @@ namespace Delta_Coop365
         /// This class main focus is handling the database
         /// connString variable is the source to the database(our case being local)
         /// </summary>
-        string connString;
+        private string connString;
         public string picturesUrl;
         /// <summary>
         /// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security=True"
