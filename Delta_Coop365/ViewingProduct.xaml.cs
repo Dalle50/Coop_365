@@ -21,6 +21,7 @@ namespace Delta_Coop365
     {
         Product product;
         Order order;
+        DateTime date = DateTime.Now.Date;
         public ViewingProduct(Product p)
         {
             InitializeComponent();
@@ -56,7 +57,7 @@ namespace Delta_Coop365
             int amount = Int32.Parse(txtAmount.Text);
             if (amount > 0)
             {
-                OrderLine orderLine = new OrderLine(product, amount);
+                OrderLine orderLine = new OrderLine(product, amount, date);
                 order.AddOrderLine(orderLine);
                 order.UpdateTotalPrice();
                 Console.WriteLine("Product added to cart");
