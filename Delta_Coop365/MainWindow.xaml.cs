@@ -102,8 +102,7 @@ namespace Delta_Coop365
             Image img = (Image)sender;
             BitmapImage clickedImagepath = (BitmapImage)img.Source;
 
-
-            foreach(Product product in products)
+            foreach (Product product in products)
             {
                 if (product.imgPath == clickedImagepath)
                 {
@@ -111,10 +110,14 @@ namespace Delta_Coop365
                     break;
                 }
             }
-
             ViewingProduct viewProduct = new ViewingProduct(p);
             vp = viewProduct;
             vp.Show();
+            if (p.GetStock() == 0)
+            {
+                //Grafik til at vise det her, aner ikke om vi kan opdatere tekst til at sige det.
+                Console.WriteLine("Produktet er udsolgt.");
+            }
         }
 
         public static void UpdateTotalPriceText(string text)
