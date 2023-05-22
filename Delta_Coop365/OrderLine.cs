@@ -11,11 +11,13 @@ namespace Delta_Coop365
     {
         private Product product;
         public int amount { get; set; }
+        private DateTime date;
 
-        public OrderLine(Product product, int amount)
+        public OrderLine(Product product, int amount, DateTime date)
         {
             this.product= product;
             this.amount= amount;
+            this.date = date;
         }
         
         public Product GetProduct()
@@ -34,6 +36,14 @@ namespace Delta_Coop365
 
         }
 
+        public DateTime GetDate()
+        {
+            return date;
+        }
+        public DateTime SetDate(DateTime date)
+        {
+            return date;
+        }
         //----- These are needed to return the bindings for the UI in checkout.
         public BitmapImage ImageUrl
         {

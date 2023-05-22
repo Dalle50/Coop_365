@@ -68,6 +68,7 @@ namespace Delta_Coop365
             {
                 orderLine.amount++;
                 orderLine.SetAmount(orderLine.amount);
+                orderLine.SetDate(date);
                 order.UpdateTotalPrice();
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
@@ -126,6 +127,9 @@ namespace Delta_Coop365
             PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
             CreateRecipe.CreatePDFReceipt(order, orderId);
             Close();
+            MainWindow.theOrder = new Order();
+            MainWindow.UpdateTotalPriceText("");
+            
         }
     }
 }
