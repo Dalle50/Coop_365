@@ -1,8 +1,12 @@
-﻿using System;
+﻿using PdfSharp.Pdf;
+using QRCoder;
+using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Media.Imaging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Delta_Coop365
 {
@@ -16,6 +20,9 @@ namespace Delta_Coop365
         Order order;
         OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
+        DbAccessor dbAccessor = new DbAccessor();
+        DateTime date = DateTime.Now;
+
 
         public CheckOut(Order o)
         {
@@ -35,6 +42,9 @@ namespace Delta_Coop365
             {
                 orderLines.Remove(orderLine);
                 order.DeleteOrderLine(orderLine);
+                order.UpdateTotalPrice();
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+                App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             }
         }
 
@@ -48,6 +58,7 @@ namespace Delta_Coop365
                 orderLine.amount--;
                 orderLine.SetAmount(orderLine.amount);
                 order.UpdateTotalPrice();
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
                 cartItems.Items.Refresh();
             }
@@ -62,6 +73,7 @@ namespace Delta_Coop365
                 orderLine.amount++;
                 orderLine.SetAmount(orderLine.amount);
                 order.UpdateTotalPrice();
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
                 cartItems.Items.Refresh();
             }
@@ -84,12 +96,15 @@ namespace Delta_Coop365
         private void ShowCartItems()
         {
             cartItems.ItemsSource = orderLines;
-            txtTotal.Text = order.GetPrice().ToString();
+            txtTotal.Text = order.GetPrice().ToString() + " Kr.";
         }
 
-        private void btnReturn_Click(object sender, RoutedEventArgs e)
+        private void btnUndoAll_Click(object sender, RoutedEventArgs e)
         {
             order.ClearOrderLines();
+            order.UpdateTotalPrice();
+            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+            App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
             Console.WriteLine("The order history was cleared and nothing was added to the database.");
         }
@@ -101,10 +116,22 @@ namespace Delta_Coop365
         }
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
-        {         
+        {
+            order.UpdateTotalPrice();
+            int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
+            order.SetId(orderId);
+            foreach (OrderLine ol in orderLines)
+            {
+                dbAccessor.InsertIntoOrderLines(orderId, ol);
 
-            GenerateService CreateRecipe = new GenerateService(order, order.GetID(), DbAccessor.GetSolutionPath + "\\Recipes\\", 
-              DbAccessor.GetSolutionPath + "\\QrCodes\\");
+            }
+            QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();  //
+            PdfDocument document = new PdfDocument();  //the thing you want to print/display
+            Close();
+        }
+        private void btnReturn_Click(object sender, RoutedEventArgs e)
+        {
+            order.ClearOrderLines();
         }
     }
 }

@@ -40,9 +40,23 @@ namespace Delta_Coop365
             // Create a font
             XFont font = new XFont("Verdana", 20, XFontStyle.BoldItalic);
             // Draw the text defined as the first parameter of the DrawString method
-            gfx.DrawString(order.ToString(), font, XBrushes.Black,
-            new XRect(0, 0, page.Width, page.Height), XStringFormats.Center);
-            //Define Insert Location for QrCode with 0 meaning last page
+            
+            gfx.DrawString("Ordernr : " + order.GetID().ToString(), font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height), XStringFormats.TopCenter);
+            int counter = 0;
+            foreach (OrderLine ol in order.GetOrderLines())
+            {
+                counter++;
+                font = new XFont("Verdana", 10, XFontStyle.BoldItalic);
+                // Draw the text
+                gfx.DrawString(ol.productName, font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height),
+                    XStringFormats.TopLeft);
+                gfx.DrawString(ol.amount.ToString(), font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height),
+                    XStringFormats.TopCenter);
+                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2) + "(" + ol.GetProduct().GetPrice() + "  pr. stk)", font, XBrushes.Black, new XRect(0, 0, page.Width, page.Height),
+                    XStringFormats.TopRight);                
+
+            }
+            //Define page Location for QrCode with 0 meaning last page
             PdfPage qrCodepage = document.Pages[0];
             // Get an XGraphics object for drawing
             XGraphics gfxQR = XGraphics.FromPdfPage(qrCodepage);
