@@ -82,8 +82,16 @@ namespace Delta_Coop365
             {
                 foreach (var item in order.GetOrderLines())
                 {
-                    orderLines.Add(item);
-                    Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                    if (orderLines.Contains(item.GetProduct()))
+                    {
+                        item.amount++;
+                        orderLine.SetAmount(orderLine.amount);
+                    }
+                    else
+                    {
+                        orderLines.Add(item);
+                        Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                    }
                 }
             }
             else
@@ -121,7 +129,6 @@ namespace Delta_Coop365
             foreach(OrderLine ol in orderLines)
             {
                 dbAccessor.InsertIntoOrderLines(orderId, ol);
-
             }
             QrCodeService qRCodeGenerator = new QrCodeService();  //
             Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);

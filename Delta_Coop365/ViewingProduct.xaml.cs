@@ -54,9 +54,14 @@ namespace Delta_Coop365
         private void AddToCart(object sender, RoutedEventArgs e)
         {
             int amount = Int32.Parse(txtAmount.Text);
+            OrderLine orderLine;
             if (amount > 0)
             {
-                OrderLine orderLine = new OrderLine(product, amount);
+                if (/*order.orderLines.Contains(orderLine)*/)
+                {
+                    order.UpdateOrderLine(product.GetID(), amount);
+                }
+                orderLine = new OrderLine(product, amount);
                 order.AddOrderLine(orderLine);
                 order.UpdateTotalPrice();
                 Console.WriteLine("Product added to cart");
