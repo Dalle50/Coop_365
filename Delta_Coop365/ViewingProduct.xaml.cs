@@ -33,9 +33,12 @@ namespace Delta_Coop365
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            int temp = Int32.Parse(txtAmount.Text);
-            temp++;
-            txtAmount.Text = temp.ToString();
+            if (Int32.Parse(txtAmount.Text) <= product.GetStock() - 1)
+            {
+                int temp = Int32.Parse(txtAmount.Text);
+                temp++;
+                txtAmount.Text = temp.ToString();
+            }
         }
 
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
@@ -55,18 +58,31 @@ namespace Delta_Coop365
         private void AddToCart(object sender, RoutedEventArgs e)
         {
             int amount = Int32.Parse(txtAmount.Text);
-            if (amount > 0)
+            if (amount > 0 || amount == product.GetStock() && product.GetStock() != 0)
             {
                 OrderLine orderLine = new OrderLine(product, amount, date);
                 order.AddOrderLine(orderLine);
                 order.UpdateTotalPrice();
                 Console.WriteLine("Product added to cart");
+
+                Console.WriteLine("Stock has been updated from " + product.GetStock());
+                product.SetStock(product.GetStock() - amount);
+                Console.WriteLine("to: " + product.GetStock());
+
+                DbAccessor d = new DbAccessor();
+                d.updateStock(product.GetID(), product.GetStock());
+
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 this.Close();
             }
-            else
+            else if(amount < 0)
             {
                 MessageBox.Show("Vælg en mængde");
+            }
+
+            if (product.GetStock() == 0)
+            {
+                Console.WriteLine("Produktet er nu udsolgt...");
             }
         }
         private void getInfo(Product product)
