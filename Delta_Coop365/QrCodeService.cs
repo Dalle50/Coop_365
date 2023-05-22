@@ -28,7 +28,6 @@ namespace Delta_Coop365
                 qrCode.Save(path + orderId + ".Jpeg", ImageFormat.Jpeg);
             
             
-        }
-        
+        }        
     }
 }
