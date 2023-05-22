@@ -57,10 +57,10 @@ namespace Delta_Coop365
             OrderLine orderLine;
             if (amount > 0)
             {
-                if (/*order.orderLines.Contains(orderLine)*/)
-                {
-                    order.UpdateOrderLine(product.GetID(), amount);
-                }
+                //if (/*order.orderLines.Contains(orderLine)*/)
+                //{
+                //    order.UpdateOrderLine(product.GetID(), amount);
+                //}
                 orderLine = new OrderLine(product, amount);
                 order.AddOrderLine(orderLine);
                 order.UpdateTotalPrice();
