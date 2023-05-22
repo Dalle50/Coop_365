@@ -87,6 +87,8 @@ namespace Delta_Coop365
             new XRect(x, y, page.Width, page.Height), XStringFormats.TopCenter);
             y += 40;
             int counter = 0;
+            double total = 0.0;
+            int totalMængde = 0;
             foreach (OrderLine ol in ols)
             {
                 counter++;
@@ -100,12 +102,17 @@ namespace Delta_Coop365
                 gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2) + "(" + ol.GetProduct().GetPrice() + "  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopRight);
                 y += 40;
-
+                total += (ol.amount * ol.GetProduct().GetPrice());
+                totalMængde += ol.amount;
             }
+            gfx.DrawString(("Total mængde produkter: " + totalMængde), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+    XStringFormats.TopLeft);
+            gfx.DrawString(("Total pris for  produkter: " + total), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+    XStringFormats.TopCenter);
+
             string path = DbAccessor.GetSolutionPath();
-            document.Save(path + "\\Receipts\\" + "Daglig Rapport for salg " + date.ToString() + ".pdf");
+            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_"+date.DayOfYear+ ".pdf");
 
         }
-
     }
 }
