@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.Setup.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Collections.ObjectModel;
 
+
 namespace Delta_Coop365
 {
     internal class DbAccessor
