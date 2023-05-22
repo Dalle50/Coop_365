@@ -91,6 +91,7 @@ namespace Delta_Coop365
         {
             CheckOut checkout = new CheckOut(theOrder);
             checkout.Show();
+
         }
         private void ReturnClick(object sender, MouseButtonEventArgs e)
         {
@@ -133,6 +134,13 @@ namespace Delta_Coop365
                 }
                 dbAccessor.updateStock(product.GetID(), temp);
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            List<OrderLine> ols = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
+            PrintPreview printer = new PrintPreview();
+            printer.CreateDailyPDF(ols);
         }
     }
 }

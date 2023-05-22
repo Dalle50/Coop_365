@@ -89,15 +89,24 @@ namespace Delta_Coop365
         public Product GetProduct(int productId)
         {
             Product tempProduct;
-            string query = "Select FROM Products WHERE ProductID=@productId";
+            string query = "Select * FROM Products WHERE ProductID=@productId";
             using (SqlConnection connection = new SqlConnection(connString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     SqlParameter productIdParam = new SqlParameter("@productId", productId);
+                    command.Parameters.AddWithValue("@productId", productId);
                     command.Connection.Open();
                     SqlDataReader sqlReader = command.ExecuteReader();
-                    tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+                    if (sqlReader.Read())
+                    {
+                        tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+
+                    }
+                    else
+                    {
+                        tempProduct = null;
+                    }
                     command.Connection.Close();
                 }
             }
@@ -214,11 +223,12 @@ namespace Delta_Coop365
         }
         public void InsertIntoOrderLines(int OrderID, OrderLine ol)
         {
-            string query = "Insert INTO OrderLines(Amount, ProductId, OrderId) VALUES(@Amount, @ProductId, @OrderId)";
+            string query = "Insert INTO OrderLines(Amount, ProductId, OrderId, Date) VALUES(@Amount, @ProductId, @OrderId, @Date)";
             SqlParameter AmountParam = new SqlParameter("@Amount", ol.GetAmount());
             SqlParameter ProductIdParam = new SqlParameter("@ProductId", ol.GetProduct().GetID());
             SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderID);
-            sqlQuery(query, AmountParam, ProductIdParam, OrderIdParam);
+            SqlParameter DateParam = new SqlParameter("@Date", ol.GetDate());
+            sqlQuery(query, AmountParam, ProductIdParam, OrderIdParam, DateParam);
         }
         public void UpdateOrderLine(OrderLine ol, int OrderId)
         {
@@ -244,11 +254,40 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(3).ToString())),
-                                                                        Int32.Parse(sqlReader.GetValue(1).ToString())));
+                        tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(2).ToString())),
+                                                                        Int32.Parse(sqlReader.GetValue(1).ToString()),
+                                                                            DateTime.Parse(sqlReader.GetValue(4).ToString())));
                     }
                     command.Connection.Close();
                 }
+            }
+            return tempOrderLines;
+        }
+        public List<OrderLine> GetDailyOrderLines(DateTime date)
+        {
+            List<OrderLine> tempOrderLines = new List<OrderLine>();
+            string query = "Select * FROM OrderLines WHERE Date = @Date";
+            SqlParameter DateParam = new SqlParameter("@Date", date);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(DateParam);
+                    command.Connection.Open();
+                    SqlDataReader sqlReader = command.ExecuteReader();
+
+                    while (sqlReader.Read())
+                    {
+                        if (DateTime.Parse(sqlReader.GetValue(4).ToString()) == date)
+                        {
+                            tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(2).ToString())),
+                                                                            Int32.Parse(sqlReader.GetValue(1).ToString()),
+                                                                                DateTime.Parse(sqlReader.GetValue(4).ToString())));
+                        }
+                    }
+                    command.Connection.Close();
+                }
+
             }
             return tempOrderLines;
         }

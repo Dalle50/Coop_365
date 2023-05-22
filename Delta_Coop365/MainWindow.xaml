@@ -68,6 +68,7 @@
             <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="132" Height="39" TextAlignment="Center" FontSize="24" Background="White" Margin="0,0,0,0"/>
         </Border>
         <Label Grid.Column="1" Grid.Row="1" Content="kr." HorizontalAlignment="Left" Margin="531,65,0,0" Height="40" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971" Foreground="White" FontFamily="Cambria"/>
+        <Button Content="Daily Report" HorizontalAlignment="Center" Margin="0,439,0,0" VerticalAlignment="Top" Height="51" Width="72" Click="Button_Click"/>
     </Grid>
 </Window>
 
