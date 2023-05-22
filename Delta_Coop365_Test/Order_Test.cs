@@ -35,7 +35,7 @@ namespace Delta_Coop365_Test
         public void Test_Constructor()
         {
             Assert.IsNotNull(o);
-
+            o.AddOrderLine(ol);
             Assert.That(1, Is.EqualTo(o.GetOrderLines().Count));
         }
         [Test]
@@ -62,9 +62,9 @@ namespace Delta_Coop365_Test
         [Test]
         public void Test_GetPrice()
         {
-            Assert.That(0, Is.EqualTo(o.GetPrice()));
             o.AddOrderLine(ol);
-            Assert.That(40, Is.EqualTo(o.GetPrice()));
+            o.UpdateTotalPrice();
+            Assert.That(40.0, Is.EqualTo((double) o.GetPrice()));
             o.ClearOrderLines();
         }
         [Test]

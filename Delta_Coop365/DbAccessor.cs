@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.Setup.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Collections.ObjectModel;
 
+
 namespace Delta_Coop365
 {
     internal class DbAccessor
@@ -132,10 +133,10 @@ namespace Delta_Coop365
         /// <param name="stock"></param>
         public void updateStock(int productid, int stock)
         {
-            SqlParameter productIdParam = new SqlParameter("@productid", productid);
-            SqlParameter nameParam = new SqlParameter("@stock", stock);
             string query = "UPDATE Products SET Stock = @stock WHERE ProductID = @productid";
-            sqlQuery(query, productIdParam);
+            SqlParameter productIdParam = new SqlParameter("@productid", productid);
+            SqlParameter stockParam = new SqlParameter("@stock", stock);
+            sqlQuery(query, productIdParam, stockParam);
         }
         public void updateProductsDaily(IEnumerable<XElement> results)
         {

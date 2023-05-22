@@ -1,6 +1,4 @@
-﻿using PdfSharp.Pdf;
-using QRCoder;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows;
@@ -120,18 +118,17 @@ namespace Delta_Coop365
             order.UpdateTotalPrice();
             int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
             order.SetId(orderId);
-            foreach (OrderLine ol in orderLines)
+            foreach(OrderLine ol in orderLines)
             {
                 dbAccessor.InsertIntoOrderLines(orderId, ol);
 
             }
-            QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();  //
-            PdfDocument document = new PdfDocument();  //the thing you want to print/display
+            QrCodeService qRCodeGenerator = new QrCodeService();  //
+            Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
+            qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
+            PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
+            CreateRecipe.CreatePDFReceipt(order, orderId);
             Close();
-        }
-        private void btnReturn_Click(object sender, RoutedEventArgs e)
-        {
-            order.ClearOrderLines();
         }
     }
 }
