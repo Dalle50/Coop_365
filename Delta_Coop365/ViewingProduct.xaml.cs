@@ -48,6 +48,7 @@ namespace Delta_Coop365
                 int temp = Int32.Parse(txtAmount.Text);
                 temp--;
                 txtAmount.Text = temp.ToString();
+
             }
         }
 
@@ -65,14 +66,8 @@ namespace Delta_Coop365
                 order.UpdateTotalPrice();
                 Console.WriteLine("Product added to cart");
 
-                Console.WriteLine("Stock has been updated from " + product.GetStock());
-                product.SetStock(product.GetStock() - amount);
-                Console.WriteLine("to: " + product.GetStock());
-
-                DbAccessor d = new DbAccessor();
-                d.updateStock(product.GetID(), product.GetStock());
-
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+                product.SetStock(product.GetStock() - amount);
                 this.Close();
             }
             else if(amount < 0)
