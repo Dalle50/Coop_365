@@ -70,6 +70,7 @@ namespace Delta_Coop365
                 {
                     orderLine.amount++;
                     orderLine.SetAmount(orderLine.amount);
+                    
                 }
 
                 orderLine.SetDate(date);
