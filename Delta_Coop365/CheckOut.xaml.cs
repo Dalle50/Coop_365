@@ -124,7 +124,7 @@ namespace Delta_Coop365
         {
             foreach (var item in orderLines)
             {
-                UpdateStockOnConfirm(item.GetProduct(), item.amount);
+                UpdateStockOnConfirm(item.GetProduct());
             }
 
             order.UpdateTotalPrice();
@@ -144,11 +144,10 @@ namespace Delta_Coop365
             MainWindow.UpdateTotalPriceText("");
             
         }
-        private void UpdateStockOnConfirm(Product p, int amount)
+        private void UpdateStockOnConfirm(Product p)
         {
-            Console.WriteLine("Stock has been updated from " + p.GetStock());
-            p.SetStock(p.GetStock() - amount);
-            Console.WriteLine("to: " + p.GetStock());
+            Console.WriteLine("Stock has been updated to " + p.GetStock());
+            p.SetStock(p.GetStock());
 
             DbAccessor d = new DbAccessor();
             d.updateStock(p.GetID(), p.GetStock());
