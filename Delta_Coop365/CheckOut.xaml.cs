@@ -66,8 +66,12 @@ namespace Delta_Coop365
             var context = button.DataContext;
             if (context is OrderLine orderLine)
             {
-                orderLine.amount++;
-                orderLine.SetAmount(orderLine.amount);
+                if (orderLine.amount <= orderLine.GetProduct().GetStock())
+                {
+                    orderLine.amount++;
+                    orderLine.SetAmount(orderLine.amount);
+                }
+
                 orderLine.SetDate(date);
                 order.UpdateTotalPrice();
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
@@ -100,10 +104,14 @@ namespace Delta_Coop365
         {
             order.ClearOrderLines();
             order.UpdateTotalPrice();
+
+
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
             Console.WriteLine("The order history was cleared and nothing was added to the database.");
+
+
         }
 
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
@@ -114,6 +122,11 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
+            foreach (var item in orderLines)
+            {
+                UpdateStockOnConfirm(item.GetProduct());
+            }
+
             order.UpdateTotalPrice();
             int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
             order.SetId(orderId);
@@ -130,6 +143,14 @@ namespace Delta_Coop365
             MainWindow.theOrder = new Order();
             MainWindow.UpdateTotalPriceText("");
             
+        }
+        private void UpdateStockOnConfirm(Product p)
+        {
+            Console.WriteLine("Stock has been updated to " + p.GetStock());
+            p.SetStock(p.GetStock());
+
+            DbAccessor d = new DbAccessor();
+            d.updateStock(p.GetID(), p.GetStock());
         }
     }
 }

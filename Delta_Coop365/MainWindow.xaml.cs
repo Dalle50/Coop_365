@@ -112,11 +112,15 @@ namespace Delta_Coop365
             }
             ViewingProduct viewProduct = new ViewingProduct(p);
             vp = viewProduct;
-            vp.Show();
             if (p.GetStock() == 0)
             {
                 //Grafik til at vise det her, aner ikke om vi kan opdatere tekst til at sige det.
                 Console.WriteLine("Produktet er udsolgt.");
+                MessageBox.Show("Produktet er udsolgt.");
+            }
+           else
+            {
+                vp.Show();
             }
         }
 
