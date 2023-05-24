@@ -49,7 +49,6 @@ namespace Delta_Coop365
                 int temp = Int32.Parse(txtAmount.Text);
                 temp--;
                 txtAmount.Text = temp.ToString();
-
             }
         }
 
@@ -62,14 +61,31 @@ namespace Delta_Coop365
             int amount = Int32.Parse(txtAmount.Text);
             if (amount > 0 || amount == product.GetStock() && product.GetStock() != 0)
             {
-                foreach(OrderLine ol in order.orderLines)
+                if (order.orderLines.Count == 0)
                 {
-                    
+                    CreateNewOrderLine();
+                    UpdateStock();
+                    Close();
                 }
-                
+                else if (order.orderLines.Count > 0)
+                {
+                    foreach (OrderLine ol in order.orderLines)
+                    {
+                        if (ol.GetProduct().GetID() == product.GetID())
+                        {
+                            UpdateExistingOrderLine(ol);
+                            UpdateStock();
+                            Close();
+                        }
+                        else
+                        {
+                            CreateNewOrderLine();
+                            UpdateStock();
+                            Close();
+                        }
+                    }
+                }
                 Console.WriteLine("Product added to cart");
-
-                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             }
             else if (amount < 0)
             {
@@ -87,21 +103,15 @@ namespace Delta_Coop365
             OrderLine orderLine = new OrderLine(product, amount, date);
             order.AddOrderLine(orderLine);
             order.UpdateTotalPrice();
+            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
         
-        private void UpdateExistingOrderLine()
+        private void UpdateExistingOrderLine(OrderLine ol)
         {
             int amount = Int32.Parse(txtAmount.Text);
-            foreach (OrderLine ol in order.GetOrderLines())
-            {
-                if (ol.GetProduct().GetID() == product.GetID())
-                {
-                    ol.SetAmount(ol.GetAmount() + amount);
-                    order.UpdateTotalPrice();
-                    MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
-                    return;
-                }
-            }
+            ol.SetAmount(ol.GetAmount() + amount);
+            order.UpdateTotalPrice();
+            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
         
         private void UpdateStock()
@@ -116,6 +126,7 @@ namespace Delta_Coop365
                     break;
                 }
             }
+            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             MainWindow.products[productIndex].SetStock(product.GetStock() - amount);
             product.SetStock(product.GetStock() - amount);
         }
