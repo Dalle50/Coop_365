@@ -1,6 +1,7 @@
 using Delta_Coop365;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
+using System.Printing;
 using System.Windows.Media.Imaging;
 
 
@@ -10,7 +11,7 @@ namespace Delta_Coop365_Test
     {
         private Order o;
         private OrderLine ol;
-
+        private DateTime date = DateTime.Now;
 
         [SetUp]
         public void Setup()
@@ -24,7 +25,7 @@ namespace Delta_Coop365_Test
                                                 20,
                                                     "mel",
                                                             "C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\ProductPictures\\1007.jpeg"),
-                                                                 2);
+                                                                 2, date);
     }
         [TearDown]
         public void TearDown()
