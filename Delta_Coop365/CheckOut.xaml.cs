@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PdfSharp.Pdf.Content.Objects;
+using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows;
@@ -134,15 +135,19 @@ namespace Delta_Coop365
             {
                 dbAccessor.InsertIntoOrderLines(orderId, ol);
             }
+            
             QrCodeService qRCodeGenerator = new QrCodeService();  //
             Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
             qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
             PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
             CreateRecipe.CreatePDFReceipt(order, orderId);
             Close();
+            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
+            Email email = new Email();
+            email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
             MainWindow.theOrder = new Order();
             MainWindow.UpdateTotalPriceText("");
-            
+
         }
         private void UpdateStockOnConfirm(Product p)
         {
