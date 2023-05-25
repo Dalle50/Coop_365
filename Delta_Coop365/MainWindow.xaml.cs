@@ -29,7 +29,7 @@ namespace Delta_Coop365
     {
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
-        ObservableCollection<Product> products;
+        public static ObservableCollection<Product> products;
         Product p;
         ViewingProduct vp;
         public static Order theOrder;
@@ -118,7 +118,7 @@ namespace Delta_Coop365
                 Console.WriteLine("Produktet er udsolgt.");
                 MessageBox.Show("Produktet er udsolgt.");
             }
-           else
+            else
             {
                 vp.Show();
             }

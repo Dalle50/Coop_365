@@ -51,7 +51,9 @@ namespace Delta_Coop365
             /// Implement code that sends a notice to bakery and store administration
             /// when the bakeoff has an item that's sold out
             Email e = new Email();
-            e.SendNotice(p);
+            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + OrderID + ".pdf";
+            e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out.", "The product " + p.productName
+                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { pathToOrderReciept } );
         }
         
         public void AddOrderLine(OrderLine ol)
