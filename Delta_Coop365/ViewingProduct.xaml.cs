@@ -80,7 +80,6 @@ namespace Delta_Coop365
                             UpdateStock();
                             Close();
                         }
-
                     }
                     if (!isExisting)
                     {
