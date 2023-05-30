@@ -39,6 +39,7 @@ namespace Delta_Coop365
             {
                 orderLines.Remove(orderLine);
                 order.DeleteOrderLine(orderLine);
+                DontUpdateStock(orderLine.GetProduct());
                 order.UpdateTotalPrice();
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
@@ -71,7 +72,6 @@ namespace Delta_Coop365
                 {
                     orderLine.amount++;
                     orderLine.SetAmount(orderLine.amount);
-                    
                 }
 
                 orderLine.SetDate(date);
@@ -111,7 +111,7 @@ namespace Delta_Coop365
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
-            Console.WriteLine("The order history was cleared and nothing was added to the database.");
+            Console.WriteLine("The order history was cleared.");
 
 
         }
@@ -119,6 +119,7 @@ namespace Delta_Coop365
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
+            
             Console.WriteLine("Closing window so customer can add more items.");
         }
 
@@ -166,6 +167,13 @@ namespace Delta_Coop365
                 dbAccessor.updateStock(p.GetID(), newStock);
                 Console.WriteLine("Stock has been updated to " + p.GetStock());
             }
+        }
+        private void DontUpdateStock(Product p)
+        {
+            Console.WriteLine("Stock is set back to: " + p.GetStock());
+            p.SetStock(p.GetStock());
+            DbAccessor d = new DbAccessor();
+            d.updateStock(p.GetID(), p.GetStock());
         }
     }
 }

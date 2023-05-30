@@ -97,7 +97,7 @@ namespace Delta_Coop365
 
             if (product.GetStock() == 0)
             {
-                Console.WriteLine("Produktet er nu udsolgt...");
+                Console.WriteLine($"Der er nu ikke flere {product.GetName()} tilbage i montren" );
             }
         }
         private void CreateNewOrderLine()
