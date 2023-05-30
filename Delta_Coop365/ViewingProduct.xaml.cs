@@ -64,22 +64,29 @@ namespace Delta_Coop365
                 if (order.orderLines.Count == 0)
                 {
                     CreateNewOrderLine();
+                    UpdateStock();
                     Close();
                 }
                 else if (order.orderLines.Count > 0)
                 {
+                    bool isExisting = false;
                     foreach (OrderLine ol in order.orderLines)
                     {
+                        
                         if (ol.GetProduct().GetID() == product.GetID())
                         {
+                            isExisting = true;
                             UpdateExistingOrderLine(ol);
+                            UpdateStock();
                             Close();
                         }
-                        else
-                        {
-                            CreateNewOrderLine();
-                            Close();
-                        }
+
+                    }
+                    if (!isExisting)
+                    {
+                        CreateNewOrderLine();
+                        UpdateStock();
+                        Close();
                     }
                 }
                 Console.WriteLine("Product added to cart");
@@ -109,6 +116,23 @@ namespace Delta_Coop365
             ol.SetAmount(ol.GetAmount() + amount);
             order.UpdateTotalPrice();
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+        }
+        
+        private void UpdateStock()
+        {
+            int amount = Int32.Parse(txtAmount.Text);
+            int productIndex = -1;
+            foreach (Product p in MainWindow.products)
+            {
+                productIndex++;
+                if (p.GetID() == product.GetID())
+                {
+                    break;
+                }
+            }
+            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+            MainWindow.products[productIndex].SetStock(product.GetStock() - amount);
+            product.SetStock(product.GetStock() - amount);
         }
 
         private void getInfo(Product product)
