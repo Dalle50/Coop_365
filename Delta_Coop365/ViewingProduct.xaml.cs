@@ -64,7 +64,6 @@ namespace Delta_Coop365
                 if (order.orderLines.Count == 0)
                 {
                     CreateNewOrderLine();
-                    UpdateStock();
                     Close();
                 }
                 else if (order.orderLines.Count > 0)
@@ -74,13 +73,11 @@ namespace Delta_Coop365
                         if (ol.GetProduct().GetID() == product.GetID())
                         {
                             UpdateExistingOrderLine(ol);
-                            UpdateStock();
                             Close();
                         }
                         else
                         {
                             CreateNewOrderLine();
-                            UpdateStock();
                             Close();
                         }
                     }
@@ -112,23 +109,6 @@ namespace Delta_Coop365
             ol.SetAmount(ol.GetAmount() + amount);
             order.UpdateTotalPrice();
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
-        }
-        
-        private void UpdateStock()
-        {
-            int amount = Int32.Parse(txtAmount.Text);
-            int productIndex = -1;
-            foreach (Product p in MainWindow.products)
-            {
-                productIndex++;
-                if (p.GetID() == product.GetID())
-                {
-                    break;
-                }
-            }
-            MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
-            MainWindow.products[productIndex].SetStock(product.GetStock() - amount);
-            product.SetStock(product.GetStock() - amount);
         }
 
         private void getInfo(Product product)

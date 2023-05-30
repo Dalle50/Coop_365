@@ -1,4 +1,5 @@
-﻿using PdfSharp.Pdf.Content.Objects;
+﻿using Microsoft.Office.Interop.Outlook;
+using PdfSharp.Pdf.Content.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -107,28 +108,18 @@ namespace Delta_Coop365
             order.ClearOrderLines();
             order.UpdateTotalPrice();
 
-
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
             Console.WriteLine("The order history was cleared and nothing was added to the database.");
-
-
         }
-
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
             Console.WriteLine("Closing window so customer can add more items.");
         }
-
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in orderLines)
-            {
-                UpdateStockOnConfirm(item.GetProduct());
-            }
-
             order.UpdateTotalPrice();
             int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
             order.SetId(orderId);
@@ -136,7 +127,7 @@ namespace Delta_Coop365
             {
                 dbAccessor.InsertIntoOrderLines(orderId, ol);
             }
-            
+            UpdateStock();
             QrCodeService qRCodeGenerator = new QrCodeService();  //
             Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
             qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
@@ -148,15 +139,27 @@ namespace Delta_Coop365
             email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
             MainWindow.theOrder = new Order();
             MainWindow.UpdateTotalPriceText("");
-
         }
-        private void UpdateStockOnConfirm(Product p)
+        private void UpdateStock()
         {
-            Console.WriteLine("Stock has been updated to " + p.GetStock());
-            p.SetStock(p.GetStock());
-
-            DbAccessor d = new DbAccessor();
-            d.updateStock(p.GetID(), p.GetStock());
+            foreach(OrderLine ol in order.orderLines)
+            {
+                int productIndex = -1;
+                Product p = ol.GetProduct();
+                int newStock = p.GetStock() - ol.amount;
+                foreach (Product collectiveProduct in MainWindow.products)
+                {
+                    productIndex++;
+                    if(p.GetID() == collectiveProduct.GetID())
+                    {
+                        break;
+                    }
+                    MainWindow.products[productIndex].SetStock(newStock);
+                    p.SetStock(newStock);
+                }
+                dbAccessor.updateStock(p.GetID(), newStock);
+                Console.WriteLine("Stock has been updated to " + p.GetStock());
+            }
         }
     }
 }
