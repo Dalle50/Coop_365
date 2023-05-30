@@ -155,8 +155,7 @@ namespace Delta_Coop365
             Console.WriteLine("Stock has been updated to " + p.GetStock());
             p.SetStock(p.GetStock());
 
-            DbAccessor d = new DbAccessor();
-            d.updateStock(p.GetID(), p.GetStock());
+            dbAccessor.updateStock(p.GetID(), p.GetStock());
         }
     }
 }
