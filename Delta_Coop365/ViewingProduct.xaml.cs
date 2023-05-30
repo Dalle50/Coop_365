@@ -69,20 +69,24 @@ namespace Delta_Coop365
                 }
                 else if (order.orderLines.Count > 0)
                 {
+                    bool isExisting = false;
                     foreach (OrderLine ol in order.orderLines)
                     {
+                        
                         if (ol.GetProduct().GetID() == product.GetID())
                         {
+                            isExisting = true;
                             UpdateExistingOrderLine(ol);
                             UpdateStock();
                             Close();
                         }
-                        else
-                        {
-                            CreateNewOrderLine();
-                            UpdateStock();
-                            Close();
-                        }
+
+                    }
+                    if (!isExisting)
+                    {
+                        CreateNewOrderLine();
+                        UpdateStock();
+                        Close();
                     }
                 }
                 Console.WriteLine("Product added to cart");
