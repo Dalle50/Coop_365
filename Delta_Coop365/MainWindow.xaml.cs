@@ -29,7 +29,7 @@ namespace Delta_Coop365
     {
         DbAccessor dbAccessor = new DbAccessor();
         DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
-        ObservableCollection<Product> products;
+        public static ObservableCollection<Product> products;
         Product p;
         ViewingProduct vp;
         public static Order theOrder;
@@ -102,8 +102,7 @@ namespace Delta_Coop365
             Image img = (Image)sender;
             BitmapImage clickedImagepath = (BitmapImage)img.Source;
 
-
-            foreach(Product product in products)
+            foreach (Product product in products)
             {
                 if (product.imgPath == clickedImagepath)
                 {
@@ -111,10 +110,18 @@ namespace Delta_Coop365
                     break;
                 }
             }
-
             ViewingProduct viewProduct = new ViewingProduct(p);
             vp = viewProduct;
-            vp.Show();
+            if (p.GetStock() == 0)
+            {
+                //Grafik til at vise det her, aner ikke om vi kan opdatere tekst til at sige det.
+                Console.WriteLine("Produktet er udsolgt.");
+                MessageBox.Show("Produktet er udsolgt.");
+            }
+            else
+            {
+                vp.Show();
+            }
         }
 
         public static void UpdateTotalPriceText(string text)
