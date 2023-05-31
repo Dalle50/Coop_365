@@ -124,11 +124,7 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in orderLines)
-            {
-                UpdateStockOnConfirm(item.GetProduct());
-            }
-
+            UpdateStockOnConfirm();
             order.UpdateTotalPrice();
             int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
             order.SetId(orderId);
@@ -150,12 +146,26 @@ namespace Delta_Coop365
             MainWindow.UpdateTotalPriceText("");
 
         }
-        private void UpdateStockOnConfirm(Product p)
+        private void UpdateStockOnConfirm()
         {
-            Console.WriteLine("Stock has been updated to " + p.GetStock());
-            p.SetStock(p.GetStock());
-
-            dbAccessor.updateStock(p.GetID(), p.GetStock());
+            foreach (OrderLine ol in order.orderLines)
+            {
+                int productIndex = -1;
+                Product p = ol.GetProduct();
+                int newStock = p.GetStock() - ol.amount;
+                foreach (Product collectiveProduct in MainWindow.products)
+                {
+                    productIndex++;
+                    if (p.GetID() == collectiveProduct.GetID())
+                    {
+                        break;
+                    }
+                    MainWindow.products[productIndex].SetStock(newStock);
+                    p.SetStock(newStock);
+                }
+                dbAccessor.updateStock(p.GetID(), newStock);
+                Console.WriteLine("Stock has been updated to " + p.GetStock());
+            }
         }
     }
 }
