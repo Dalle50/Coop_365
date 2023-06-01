@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Delta_Coop365
 {
@@ -20,7 +17,7 @@ namespace Delta_Coop365
         {
             return date;
         }
-        
+
         public void GeneratePDF()
         {
             /// Implement code that generates the PDF report

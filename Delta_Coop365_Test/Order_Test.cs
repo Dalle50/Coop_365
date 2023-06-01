@@ -26,7 +26,7 @@ namespace Delta_Coop365_Test
                                                     "mel",
                                                             "C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\ProductPictures\\1007.jpeg"),
                                                                  2, date);
-    }
+        }
         [TearDown]
         public void TearDown()
         {
@@ -65,7 +65,7 @@ namespace Delta_Coop365_Test
         {
             o.AddOrderLine(ol);
             o.UpdateTotalPrice();
-            Assert.That(40.0, Is.EqualTo((double) o.GetPrice()));
+            Assert.That(40.0, Is.EqualTo((double)o.GetPrice()));
             o.ClearOrderLines();
         }
         [Test]

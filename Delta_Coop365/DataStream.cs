@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Delta_Coop365
 {
     internal class DataStream
     {
-        private string api;
-        public DataStream(string api) { this.api = api; }
+        private string endpoint;
+        public DataStream(string endpoint) { this.endpoint = endpoint; }
 
         public IEnumerable<XElement> getData(string elementNames)
         {
-            XDocument document = XDocument.Load(this.api);
+            XDocument document = XDocument.Load(this.endpoint);
             IEnumerable<XElement> results = document.Descendants(elementNames);
             foreach (var element in results)
             {
@@ -31,5 +28,4 @@ namespace Delta_Coop365
             return results;
         }
     }
-
 }

@@ -1,24 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml.Linq;
-using Delta_Coop365;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Delta_Coop365
 {
@@ -27,39 +14,39 @@ namespace Delta_Coop365
     /// </summary>
     public partial class MainWindow : Window
     {
-        DbAccessor dbAccessor = new DbAccessor();
-        DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
+        private DbAccessor dbAccessor = new DbAccessor();
+        private DataStream dataStream = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         public static ObservableCollection<Product> products;
-        Product p;
-        ViewingProduct vp;
+        private Product product;
+        private ViewingProduct viewingProduct;        
         public static Order theOrder;
-        public static TextBlock tb;
+        public static TextBlock textBlock;
 
         public MainWindow()
         {
             InitializeComponent();
             products = new ObservableCollection<Product>();
             theOrder = new Order();
-            tb = tbTotalAmount;
-            updateDateBase();
+            textBlock = textBlockTotalAmount;
+            UpdateDatebase();
             GetProducts();
             ShowProducts();
             SetStock();
         }
-        
-        public IEnumerable<XElement> getData()
+
+        public IEnumerable<XElement> GetData()
         {
-            return data.getData("BakeOffVare");
+            return dataStream.getData("BakeOffVare");
         }
-        public void updateDateBase()
+        public void UpdateDatebase()
         {
-            if (dbAccessor.isDatabasePopulated("Products"))
+            if (dbAccessor.IsDatabasePopulated("Products"))
             {
-                dbAccessor.updateProductsDaily(getData());
+                dbAccessor.updateProductsDaily(GetData());
             }
             else
             {
-                foreach(XElement e in getData())
+                foreach (XElement e in GetData())
                 {
                     int productid = (int)e.Element("Varenummer");
                     double price = (double)e.Element("Pris");
@@ -69,11 +56,10 @@ namespace Delta_Coop365
 
                 }
             }
-            
         }
         public void GetProducts()
         {
-            foreach(Product product in dbAccessor.GetProducts())
+            foreach (Product product in dbAccessor.GetProducts())
             {
                 Console.WriteLine(product.GetID());
                 Console.WriteLine(product.GetPrice());
@@ -82,7 +68,7 @@ namespace Delta_Coop365
                 products.Add(product);
             }
         }
-        public void ShowProducts() 
+        public void ShowProducts()
         {
             ICProducts.ItemsSource = products;
         }
@@ -99,20 +85,20 @@ namespace Delta_Coop365
         }
         private void ProductClick(object sender, MouseButtonEventArgs e)
         {
-            Image img = (Image)sender;
-            BitmapImage clickedImagepath = (BitmapImage)img.Source;
+            Image image = (Image)sender;
+            BitmapImage clickedImagepath = (BitmapImage)image.Source;
 
             foreach (Product product in products)
             {
-                if (product.imgPath == clickedImagepath)
+                if (product.imagePath == clickedImagepath)
                 {
-                    p = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
+                    this.product = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
                     break;
                 }
             }
-            ViewingProduct viewProduct = new ViewingProduct(p);
-            vp = viewProduct;
-            if (p.GetStock() == 0)
+            ViewingProduct viewProduct = new ViewingProduct(product);
+            viewingProduct = viewProduct;
+            if (product.GetStock() == 0)
             {
                 //Grafik til at vise det her, aner ikke om vi kan opdatere tekst til at sige det.
                 Console.WriteLine("Produktet er udsolgt.");
@@ -120,13 +106,13 @@ namespace Delta_Coop365
             }
             else
             {
-                vp.Show();
+                viewingProduct.Show();
             }
         }
 
         public static void UpdateTotalPriceText(string text)
         {
-            App.Current.Dispatcher.Invoke(delegate { tb.Text = text; });
+            App.Current.Dispatcher.Invoke(delegate { textBlock.Text = text; });
         }
 
         private void SetStock()

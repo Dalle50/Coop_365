@@ -1,16 +1,9 @@
-﻿using Delta_Coop365;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
 using System.Configuration;
-using Microsoft.VisualStudio.Setup.Configuration;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.Collections.ObjectModel;
 
 
 namespace Delta_Coop365
@@ -19,30 +12,30 @@ namespace Delta_Coop365
     {
         /// <summary>
         /// This class main focus is handling the database
-        /// connString variable is the source to the database(our case being local)
+        /// The connectionString variable is the source to the database(our case being local)
         /// </summary>
-        private string connString;
+        private string connectionString;
         public string picturesUrl;
         /// <summary>
         /// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security=True"
         /// </summary>
         /// <param name="connString"></param>
-        public DbAccessor() 
+        public DbAccessor()
         {
-            this.connString = ConfigurationManager.ConnectionStrings["post"].ConnectionString;
-            this.picturesUrl = 
-                GetSolutionPath() + "\\productPictures\\"; }
+            this.connectionString = ConfigurationManager.ConnectionStrings["post"].ConnectionString;
+            this.picturesUrl = GetSolutionPath() + "\\productPictures\\";
+        }
         /// <summary>
         /// This functions is made to check if database is populated with data. 
         /// This controls if we have to created the data or just update it.
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns>Boolean value true if the database is populated false if not</returns>
-        public bool isDatabasePopulated(string tableName)
+        public bool IsDatabasePopulated(string tableName)
         {
             string query = "SELECT COUNT(*) FROM " + tableName;
             bool returnBool = false;
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -66,18 +59,18 @@ namespace Delta_Coop365
         {
             List<Product> products = new List<Product>();
             string query = "Select * FROM Products";
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
 
                     command.Connection.Open();
-                    SqlDataReader sqlReader = command.ExecuteReader();  
+                    SqlDataReader sqlReader = command.ExecuteReader();
 
                     while (sqlReader.Read())
                     {
-                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
-                        products.Add(temp);
+                        Product product = new Product(int.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+                        products.Add(product);
                     }
 
                     command.Connection.Close();
@@ -88,9 +81,9 @@ namespace Delta_Coop365
         }
         public Product GetProduct(int productId)
         {
-            Product tempProduct;
+            Product product = null;
             string query = "Select * FROM Products WHERE ProductID=@productId";
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -98,19 +91,16 @@ namespace Delta_Coop365
                     command.Parameters.AddWithValue("@productId", productId);
                     command.Connection.Open();
                     SqlDataReader sqlReader = command.ExecuteReader();
+
                     if (sqlReader.Read())
                     {
-                        tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+                        product = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+                    }
 
-                    }
-                    else
-                    {
-                        tempProduct = null;
-                    }
                     command.Connection.Close();
                 }
             }
-            return tempProduct;
+            return product;
 
         }
         /// <summary>
@@ -181,19 +171,19 @@ namespace Delta_Coop365
             Order tempOrder;
             string query = "Select FROM Orders WHERE OrderID = @orderId";
             SqlParameter orderIdParam = new SqlParameter("@orderId", OrderId);
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.Add(orderIdParam);
                     command.Connection.Open();
-                    
+
                     SqlDataReader sqlReader = command.ExecuteReader();
 
-                    var result  = sqlReader.Read();
+                    var result = sqlReader.Read();
                     tempOrder = new Order();
-                    foreach(OrderLine ol in GetOrderLines(OrderId)) 
-                    { 
+                    foreach (OrderLine ol in GetOrderLines(OrderId))
+                    {
                         tempOrder.AddOrderLine(ol);
                     }
                     tempOrder.UpdateTotalPrice();
@@ -208,7 +198,7 @@ namespace Delta_Coop365
             string query = "Insert INTO Orders(TotalPrice, Date) VALUES(@TotalPrice, @Date); SELECT CONVERT(int, SCOPE_IDENTITY()) as OrderID;";
             SqlParameter TotalPriceParam = new SqlParameter("@TotalPrice", TotalPrice);
             SqlParameter DateParam = new SqlParameter("@Date", date);
-            using (SqlConnection connection = new SqlConnection(this.connString))
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 using (var command = new SqlCommand(query, connection))
                 {
@@ -243,7 +233,7 @@ namespace Delta_Coop365
             List<OrderLine> tempOrderLines = new List<OrderLine>();
             string query = "Select * FROM OrderLines WHERE OrderID = @orderId";
             SqlParameter orderIdParam = new SqlParameter("@orderId", OrderId);
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -254,8 +244,8 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(2).ToString())),
-                                                                        Int32.Parse(sqlReader.GetValue(1).ToString()),
+                        tempOrderLines.Add(new OrderLine(GetProduct(int.Parse(sqlReader.GetValue(2).ToString())),
+                                                                        int.Parse(sqlReader.GetValue(1).ToString()),
                                                                             DateTime.Parse(sqlReader.GetValue(4).ToString())));
                     }
                     command.Connection.Close();
@@ -268,7 +258,7 @@ namespace Delta_Coop365
             List<OrderLine> tempOrderLines = new List<OrderLine>();
             string query = "Select * FROM OrderLines WHERE Date = @Date";
             SqlParameter DateParam = new SqlParameter("@Date", date);
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -280,8 +270,8 @@ namespace Delta_Coop365
                     {
                         if (DateTime.Parse(sqlReader.GetValue(4).ToString()) == date)
                         {
-                            tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(2).ToString())),
-                                                                            Int32.Parse(sqlReader.GetValue(1).ToString()),
+                            tempOrderLines.Add(new OrderLine(GetProduct(int.Parse(sqlReader.GetValue(2).ToString())),
+                                                                            int.Parse(sqlReader.GetValue(1).ToString()),
                                                                                 DateTime.Parse(sqlReader.GetValue(4).ToString())));
                         }
                     }
@@ -303,7 +293,7 @@ namespace Delta_Coop365
         }
         public void sqlQuery(string query, params SqlParameter[] parameters)
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

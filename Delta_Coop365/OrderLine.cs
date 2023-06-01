@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace Delta_Coop365
@@ -15,11 +11,11 @@ namespace Delta_Coop365
 
         public OrderLine(Product product, int amount, DateTime date)
         {
-            this.product= product;
-            this.amount= amount;
+            this.product = product;
+            this.amount = amount;
             this.date = date;
         }
-        
+
         public Product GetProduct()
         {
             return product;
@@ -44,10 +40,11 @@ namespace Delta_Coop365
         {
             return date;
         }
+
         //----- These are needed to return the bindings for the UI in checkout.
         public BitmapImage ImageUrl
         {
-            get { return GetProduct().imgPath; }
+            get { return GetProduct().imagePath; }
         }
         public string productName
         {

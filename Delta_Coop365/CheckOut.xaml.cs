@@ -1,11 +1,8 @@
-﻿using PdfSharp.Pdf.Content.Objects;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Delta_Coop365
 {
@@ -14,17 +11,16 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOut : Window
     {
-        Order order;
-        OrderLine orderLine;
+        Order order;        
         ObservableCollection<OrderLine> orderLines;
         DbAccessor dbAccessor = new DbAccessor();
         DateTime date = DateTime.Now;
 
 
-        public CheckOut(Order o)
+        public CheckOut(Order checkOutOrder)
         {
             InitializeComponent();
-            order = o;
+            order = checkOutOrder;
             orderLines = new ObservableCollection<OrderLine>();
             GetCartItems();
             ShowCartItems();
@@ -71,7 +67,7 @@ namespace Delta_Coop365
                 {
                     orderLine.amount++;
                     orderLine.SetAmount(orderLine.amount);
-                    
+
                 }
 
                 orderLine.SetDate(date);
@@ -87,8 +83,8 @@ namespace Delta_Coop365
             {
                 foreach (var item in order.GetOrderLines())
                 {
-                        orderLines.Add(item);
-                        Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
+                    orderLines.Add(item);
+                    Console.WriteLine("Adding " + item.GetProduct().productName + " ( " + "amount: " + item.GetAmount() + ") " + "to the collection");
                 }
             }
             else
@@ -128,19 +124,19 @@ namespace Delta_Coop365
             order.UpdateTotalPrice();
             int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
             order.SetId(orderId);
-            foreach(OrderLine ol in orderLines)
+            foreach (OrderLine ol in orderLines)
             {
                 dbAccessor.InsertIntoOrderLines(orderId, ol);
             }
-            
+
             QrCodeService qRCodeGenerator = new QrCodeService();  //
             Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
             qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
             PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
             CreateRecipe.CreatePDFReceipt(order, orderId);
             Close();
-            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
-            Email email = new Email();
+            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + orderId + ".pdf";
+            EmailService email = new EmailService();
             email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
             MainWindow.theOrder = new Order();
             MainWindow.UpdateTotalPriceText("");
