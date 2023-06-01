@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Delta_Coop365
 {
@@ -37,51 +32,50 @@ namespace Delta_Coop365
             return TotalPrice;
         }
 
-        public int ProductsLeft(OrderLine ol)
+        public int ProductsLeft(OrderLine orderLine)
         {
-            Product p = ol.GetProduct();
-            int productsLeft = p.GetStock() - ol.GetAmount(); // Implement the actual calculation of the productsleft after order made
-            if (productsLeft == 0) Notify(p);
+            Product product = orderLine.GetProduct();
+            int productsLeft = product.GetStock() - orderLine.GetAmount(); // Implement the actual calculation of the productsleft after order made
+            if (productsLeft == 0) Notify(product);
 
             return productsLeft;
         }
 
-        public void Notify(Product p)
+        public void Notify(Product product)
         {
             /// Implement code that sends a notice to bakery and store administration
             /// when the bakeoff has an item that's sold out
-            Email e = new Email();
+            EmailService emailService = new EmailService();
             string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + OrderID + ".pdf";
-            e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out.", "The product " + p.productName
-                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { pathToOrderReciept } );
-        }
-        
-        public void AddOrderLine(OrderLine ol)
-        {
-            /// Adds the OrderLine to the list
-            orderLines.Add(ol);
+            emailService.SendNotice("daniel.htc.jacobsen@gmail.com", product.productName + " is sold out.", "The product " + product.productName
+                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { pathToOrderReciept });
         }
 
-        public void DeleteOrderLine(OrderLine ol)
+        public void AddOrderLine(OrderLine orderLine)
         {
-            /// Removes the OrderLine from the list
-            orderLines.Remove(ol);
+            orderLines.Add(orderLine);
+        }
+
+        public void DeleteOrderLine(OrderLine orderLine)
+        {
+            orderLines.Remove(orderLine);
         }
 
         public void UpdateOrderLine(int productID, int amount)
         {
-            var ol = orderLines.Find(o => o.GetProduct().GetID() == productID);
-            ol.SetAmount(amount);
+            var orderLine = orderLines.Find(order => order.GetProduct().GetID() == productID);
+            orderLine.SetAmount(amount);
         }
         public void UpdateTotalPrice()
         {
-            double tempTotal = 0.0;
+            double total = 0.0;
+
             foreach (OrderLine line in orderLines)
             {
-                double total = (double) line.GetProduct().GetPrice() * line.GetAmount();
-                tempTotal += total;
+                total += (double)line.GetProduct().GetPrice() * line.GetAmount();
             }
-            this.TotalPrice = tempTotal;
+
+            TotalPrice = total;
         }
         public List<OrderLine> GetOrderLines()
         {

@@ -3,7 +3,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Shapes;
 
 namespace Delta_Coop365
 {
@@ -12,10 +11,9 @@ namespace Delta_Coop365
         QRCodeGenerator qrGenerator;
         public QrCodeService()
         {
-
-            this.qrGenerator = new QRCodeGenerator();
-
+            qrGenerator = new QRCodeGenerator();
         }
+
         public Bitmap GenerateQRCodeImage(int ordreId)
         {
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(ordreId.ToString(), QRCodeGenerator.ECCLevel.Q);
@@ -23,6 +21,7 @@ namespace Delta_Coop365
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             return qrCodeImage;
         }
+
         public void SaveQrCode(Bitmap qrCode, int ordreId, string path)
         {
             try
@@ -36,7 +35,7 @@ namespace Delta_Coop365
                 qrCode.Save(path + ordreId + ".Jpeg", ImageFormat.Jpeg);
                 Console.WriteLine("Saved the qr code.");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 Console.WriteLine("Failed to generate QrCode");
             }

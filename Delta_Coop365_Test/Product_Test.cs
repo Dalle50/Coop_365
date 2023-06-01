@@ -6,8 +6,8 @@ namespace Delta_Coop365_Test
     public class Product_Test
     {
         public Product p = new Product(1, "Kanelsnegl"
-            , 20, 200, 
-            "Mel, vand, eddike", 
+            , 20, 200,
+            "Mel, vand, eddike",
             "C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\ProductPictures\\1007.jpeg");
         [SetUp]
         public void Setup()
@@ -62,7 +62,7 @@ namespace Delta_Coop365_Test
         {
             BitmapImage image = new BitmapImage(new Uri("C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\ProductPictures\\1007.jpeg"));
             //ASSERT
-            Assert.That(p.imgPath.UriSource, Is.EqualTo(image.UriSource));
+            Assert.That(p.imagePath.UriSource, Is.EqualTo(image.UriSource));
         }
     }
 }

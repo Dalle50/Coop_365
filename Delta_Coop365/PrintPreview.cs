@@ -2,33 +2,12 @@
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Controls;
-using System.Windows.Media.Media3D;
 
 namespace Delta_Coop365
 {
     internal class PrintPreview
     {
 
-
-        public PrintPreview()
-        {
-            // Create a new PDF document
-            // Set the starting position
-
-
-        }
-        //public XImage DrawImage(XGraphics gfx, string jpegSamplePath, int x, int y, int width, int height)
-        //{
-
-        //    XImage image = XImage.FromFile(qrPath + "\\Receipts\\" + ordreId + ".Jpeg");
-        //    gfx.DrawImage(image, x, y, width, height);
-        //     Save the document...
-
-        //     ...and start a viewer.
-        //    Process.Start(path + "\\" + ordreId + ".pdf");
-        //}
         public void CreatePDFReceipt(Order order, int orderId)
         {
             double x = 0;
@@ -54,21 +33,17 @@ namespace Delta_Coop365
                 font = new XFont("Verdana", 10, XFontStyle.BoldItalic);
 
                 // Draw the text
-                gfx.DrawString(ol.productName, font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
-                    XStringFormats.TopLeft);
-                gfx.DrawString(ol.amount.ToString(), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
-    XStringFormats.TopCenter);
-                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2)+ "("+ ol.GetProduct().GetPrice()+"  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
-    XStringFormats.TopRight);
+                DrawOrderLineSimple(x, y, page, gfx, font, ol);
                 y += 40;
 
             }
             XImage image = XImage.FromFile(DbAccessor.GetSolutionPath() + "\\QrCodes\\" + orderId + ".Jpeg");
             gfx.DrawImage(image, x, y, page.Width, page.Width);
-            
+
             document.Save(DbAccessor.GetSolutionPath() + "\\Receipts\\" + orderId + ".pdf");
         }
-        public void CreateDailyPDF(List<OrderLine> ols)
+
+        public void CreateDailyPDF(List<OrderLine> orderLines)
         {
             DateTime date = DateTime.Now;
             double x = 0;
@@ -89,30 +64,40 @@ namespace Delta_Coop365
             int counter = 0;
             double total = 0.0;
             int totalMængde = 0;
-            foreach (OrderLine ol in ols)
+            foreach (OrderLine orderLine in orderLines)
             {
                 counter++;
                 font = new XFont("Verdana", 10, XFontStyle.BoldItalic);
 
                 // Draw the text
-                gfx.DrawString(ol.productName, font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
-                    XStringFormats.TopLeft);
-                gfx.DrawString(ol.amount.ToString(), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
-    XStringFormats.TopCenter);
-                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2) + "(" + ol.GetProduct().GetPrice() + "  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
-    XStringFormats.TopRight);
-                y += 40;
-                total += (ol.amount * ol.GetProduct().GetPrice());
-                totalMængde += ol.amount;
+                DrawOrderLine(x, ref y, page, gfx, font, ref total, ref totalMængde, orderLine);
             }
+
             gfx.DrawString(("Total mængde produkter: " + totalMængde), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopLeft);
             gfx.DrawString(("Total pris for  produkter: " + total), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopCenter);
 
             string path = DbAccessor.GetSolutionPath();
-            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_"+date.DayOfYear+ ".pdf");
+            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_" + date.DayOfYear + ".pdf");
 
+        }
+
+        private static void DrawOrderLine(double x, ref double y, PdfPage page, XGraphics gfx, XFont font, ref double total, ref int totalMængde, OrderLine orderLine)
+        {
+            DrawOrderLine(x, ref y, page, gfx, font, ref total, ref totalMængde, orderLine);
+            y += 40;
+            total += (orderLine.amount * orderLine.GetProduct().GetPrice());
+            totalMængde += orderLine.amount;
+        }
+        private static void DrawOrderLineSimple(double x, double y, PdfPage page, XGraphics gfx, XFont font, OrderLine orderLine)
+        {
+            gfx.DrawString(orderLine.productName, font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+                                XStringFormats.TopLeft);
+            gfx.DrawString(orderLine.amount.ToString(), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+XStringFormats.TopCenter);
+            gfx.DrawString((orderLine.GetAmount() * orderLine.GetProduct().GetPrice()).ToString("N" + 2) + "(" + orderLine.GetProduct().GetPrice() + "  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+XStringFormats.TopRight);
         }
     }
 }

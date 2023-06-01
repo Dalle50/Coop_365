@@ -1,13 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query.Internal;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System;
 using System.Windows.Media.Imaging;
 
 namespace Delta_Coop365
@@ -23,8 +14,7 @@ namespace Delta_Coop365
         private int stock;
         public double price { get; set; }
         private string ingredients;
-        public BitmapImage imgPath { get; set; }
-
+        public BitmapImage imagePath { get; set; }
 
         /// <summary>
         /// The values tied to the Product such as name, id, stock, price and nutritional information.
@@ -35,16 +25,17 @@ namespace Delta_Coop365
         /// <param name="stock"></param>
         /// <param name="price"></param>
         /// <param name="ingredients"></param>
-        
-        public Product(int productID, string productName, int stock, double price, string ingredients, string imgPath)
+
+        public Product(int productID, string productName, int stock, double price, string ingredients, string imagePath)
         {
             this.productID = productID;
             this.productName = productName;
             this.stock = stock;
             this.price = price;
             this.ingredients = ingredients;
-            this.imgPath = Makebitmap(imgPath);
+            this.imagePath = MakeBitmapImage(imagePath);
         }
+
         /// <summary>
         /// Returns the name of the Product.
         /// </summary>
@@ -52,6 +43,7 @@ namespace Delta_Coop365
         {
             return productName;
         }
+
         /// <summary>
         /// Returns the ID of the Product.
         /// </summary>
@@ -59,10 +51,12 @@ namespace Delta_Coop365
         {
             return productID;
         }
+
         public void SetStock(int newStock)
         {
             stock = newStock;
         }
+
         /// <summary>
         /// Returns the number of the given Product left.
         /// </summary>
@@ -70,6 +64,7 @@ namespace Delta_Coop365
         {
             return stock;
         }
+
         /// <summary>
         /// Returns the Price of the Product
         /// </summary>
@@ -77,6 +72,7 @@ namespace Delta_Coop365
         {
             return price;
         }
+
         /// <summary>
         /// Returns the nutritional information about the Product.
         /// </summary>
@@ -85,16 +81,17 @@ namespace Delta_Coop365
             return ingredients;
         }
 
-        public BitmapImage Makebitmap(string path)
+        public BitmapImage MakeBitmapImage(string path)
         {
-            string imgPath = path;
+            string imagePath = path;
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imgPath);
+            bitmap.UriSource = new Uri(imagePath);
             Console.WriteLine(path);
             bitmap.EndInit();
             return bitmap;
         }
+
         public string Price
         {
             get { return "Pris: " + GetPrice().ToString() + " kr."; }
