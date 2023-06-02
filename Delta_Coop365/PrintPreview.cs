@@ -70,7 +70,7 @@ namespace Delta_Coop365
         }
         public void CreateDailyPDF(List<OrderLine> ols)
         {
-            DateTime date = DateTime.Now;
+            string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
             double x = 0;
             double y = 50;
             PdfDocument document = new PdfDocument();
@@ -111,7 +111,7 @@ namespace Delta_Coop365
     XStringFormats.TopCenter);
 
             string path = DbAccessor.GetSolutionPath();
-            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_"+date.DayOfYear+ ".pdf");
+            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_"+date+ ".pdf");
 
         }
     }
