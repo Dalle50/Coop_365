@@ -14,12 +14,36 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <ScrollViewer x:Name="orderScrollview" Margin="0,0,0,0" Background="White" Grid.Row="1">
-            <ItemsControl x:Name="cartItems" Grid.Row="1" >
+            <ItemsControl x:Name="cartItems" ItemsSource="{Binding orderLines}" Grid.Row="1" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" Background="White"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Background="#0dc144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="277"/>
+                                    <ColumnDefinition Width="33"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border BorderBrush="#066a3f" BorderThickness="0.5" Height="100" Grid.ColumnSpan="5" Margin="0,0,-83,0"/>
+                                <Image Source="{Binding Path=ImageUrl}" Grid.Column="1" Stretch="Uniform" Margin="5,5,5,5"/>
+                                <Button x:Name="removeItem" Content="Fjern fra kurv" Grid.Column="0" Click="removeItem_Click"  Background="#066a3f" Foreground="White" FontFamily="Cambria" FontSize="15" Margin="5,35,5,35"/>
+                                <TextBlock Text="{Binding Path= productName}" Height="30" Background="White" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="2" Width="186" TextAlignment="Center" TextWrapping="Wrap" Margin="10,0,0,0" FontFamily="Cambria"/>
+                                <TextBlock Text="{Binding Path= price}" Height="30" Background="White" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Width="68" Margin="204,0,0,0" TextAlignment="Center" Padding="0" FontFamily="Cambria"/>
+                                <Label Content="kr." VerticalAlignment="Top" Grid.Column="2"  Foreground="#066a3f" Height="29" RenderTransformOrigin="0.542,0.928" HorizontalAlignment="Left" Margin="272,46,0,0" Width="22" Grid.ColumnSpan="2" />
+                                <Button x:Name="btnSubstract" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="4" Content=" - " FontSize="20" Height="30" Width="30" Margin="-150,0,0,0" Click="btnSubstract_Click"  Background="#066a3f" Foreground="White"/>
+                                <TextBlock Text="{Binding amount}" Grid.Column="4" Height="30" Width="150" Margin="50,0,0,0" TextAlignment="Center" Background="White" FontFamily="Cambria" FontSize="25"/>
+                                <Button x:Name="btnAdd" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="top" Grid.Column="4" Content=" + " FontSize="20" Height="30" Width="30" Click="btnAdd_Click" Background="#066a3f" Foreground="White" Margin="250,0,0,0" />
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
         <Rectangle HorizontalAlignment="Center" Height="50" Stroke="#066a3f" Fill="#066a3f" VerticalAlignment="Top" Width="900" Grid.Row="0"/>
