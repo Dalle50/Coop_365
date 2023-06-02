@@ -143,7 +143,7 @@ namespace Delta_Coop365
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GeneratedDailyPDF(object sender, RoutedEventArgs e)
         {
             List<OrderLine> ols = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
             PrintPreview printer = new PrintPreview();
