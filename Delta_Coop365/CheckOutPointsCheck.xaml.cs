@@ -46,7 +46,7 @@ namespace Delta_Coop365
             }
             else
             {
-                Console.WriteLine("Phone number is not valid");
+                Console.WriteLine($"Telefon nummeret er ikke gyldigt. bruger instastede {phoneNumberTextBox.Text}");
                 invalidNumber.Content = "Ikke gyldigt telefon nummer.";
             }
         }

@@ -164,6 +164,7 @@ namespace Delta_Coop365
             qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
             PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
             CreateRecipe.CreatePDFReceipt(order, orderId);
+            Console.WriteLine("QR-Kode has been generated and added onto the PDF file.");
         }
         private void UpdateStockOnConfirm()
         {
