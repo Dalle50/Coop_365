@@ -10,7 +10,8 @@ using static System.Net.Mime.MediaTypeNames;
 namespace Delta_Coop365
 {
     /// <summary>
-    /// Interaction logic for CheckOut.xaml
+    /// [ Author: Pernille ]
+    /// - Interaction logic for CheckOut.xaml
     /// </summary>
     public partial class CheckOut : Window
     {
@@ -174,6 +175,11 @@ namespace Delta_Coop365
             p.SetStock(p.GetStock());
             DbAccessor d = new DbAccessor();
             d.updateStock(p.GetID(), p.GetStock());
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
