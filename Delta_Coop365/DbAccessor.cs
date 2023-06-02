@@ -218,7 +218,7 @@ namespace Delta_Coop365
 
                 using (SqlConnection connection = new SqlConnection(this.connString))
                 {
-                    using (var command = new SqlCommand(query, connection))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.Add(TotalPriceParam);
                         command.Parameters.Add(DateParam);
@@ -234,7 +234,7 @@ namespace Delta_Coop365
 
                 using (SqlConnection connection = new SqlConnection(this.connString))
                 {
-                    using (var command = new SqlCommand(query, connection))
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.Add(TotalPriceParam);
                         command.Parameters.Add(DateParam);
