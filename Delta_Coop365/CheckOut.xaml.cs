@@ -1,4 +1,5 @@
-﻿using PdfSharp.Pdf.Content.Objects;
+﻿using MailKit.Search;
+using PdfSharp.Pdf.Content.Objects;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -113,8 +114,6 @@ namespace Delta_Coop365
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
             Console.WriteLine("The order history was cleared.");
-
-
         }
 
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
@@ -126,27 +125,45 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            UpdateStockOnConfirm();
-            order.UpdateTotalPrice();
-            int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
-            order.SetId(orderId);
-            foreach(OrderLine ol in orderLines)
+            if ((bool)checkBox.IsChecked)
             {
-                dbAccessor.InsertIntoOrderLines(orderId, ol);
+                CheckOutPointsCheck phoneNumberCheck= new CheckOutPointsCheck();
+                phoneNumberCheck.Show();
+                if (phoneNumberCheck.phoneNumberExsist == true)
+                {
+                    phoneNumberCheck.Close();
+                    UpdateStockOnConfirm();
+                    order.UpdateTotalPrice();
+                    int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
+                    order.SetId(orderId);
+                    foreach (OrderLine ol in orderLines)
+                    {
+                        dbAccessor.InsertIntoOrderLines(orderId, ol);
+                    }
+                    CreateQRCode(orderId);
+                }
             }
-            
-            QrCodeService qRCodeGenerator = new QrCodeService();  //
+            else
+            {
+                UpdateStockOnConfirm();
+                order.UpdateTotalPrice();
+                int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
+                order.SetId(orderId);
+                foreach (OrderLine ol in orderLines)
+                {
+                    dbAccessor.InsertIntoOrderLines(orderId, ol);
+                }
+                CreateQRCode(orderId);
+            }
+            Close();
+        }
+        private void CreateQRCode(int orderId)
+        {
+            QrCodeService qRCodeGenerator = new QrCodeService();
             Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
             qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
             PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
             CreateRecipe.CreatePDFReceipt(order, orderId);
-            Close();
-            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
-            Email email = new Email();
-            email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
-            MainWindow.theOrder = new Order();
-            MainWindow.UpdateTotalPriceText("");
-
         }
         private void UpdateStockOnConfirm()
         {
@@ -177,9 +194,14 @@ namespace Delta_Coop365
             d.updateStock(p.GetID(), p.GetStock());
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        //Skal implementeres.
+        private void Email()
         {
-
+            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
+            Email email = new Email();
+            email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
+            MainWindow.theOrder = new Order();
+            MainWindow.UpdateTotalPriceText("");
         }
     }
 }
