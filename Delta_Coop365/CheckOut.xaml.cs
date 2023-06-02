@@ -17,7 +17,6 @@ namespace Delta_Coop365
     public partial class CheckOut : Window
     {
         Order order;
-        OrderLine orderLine;
         ObservableCollection<OrderLine> orderLines;
         DbAccessor dbAccessor = new DbAccessor();
         DateTime date = DateTime.Now;
