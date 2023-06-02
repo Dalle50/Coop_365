@@ -11,6 +11,8 @@ using System.Configuration;
 using Microsoft.VisualStudio.Setup.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Collections.ObjectModel;
+using MailKit.Search;
+using static QRCoder.PayloadGenerator;
 
 
 namespace Delta_Coop365
@@ -202,23 +204,46 @@ namespace Delta_Coop365
             }
             return tempOrder;
         }
-        public int InsertIntoOrders(double TotalPrice, DateTime date)
+        public int InsertIntoOrders(double TotalPrice, DateTime date, int? KundeID = null)
         {
             int OrderID;
-            string query = "Insert INTO Orders(TotalPrice, Date) VALUES(@TotalPrice, @Date); SELECT CONVERT(int, SCOPE_IDENTITY()) as OrderID;";
+            string query;
             SqlParameter TotalPriceParam = new SqlParameter("@TotalPrice", TotalPrice);
             SqlParameter DateParam = new SqlParameter("@Date", date);
-            using (SqlConnection connection = new SqlConnection(this.connString))
-            {
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.Add(TotalPriceParam);
-                    command.Parameters.Add(DateParam);
-                    connection.Open();
-                    OrderID = (int)command.ExecuteScalar();
 
+            if (KundeID.HasValue)
+            {
+                query = "INSERT INTO Orders(TotalPrice, Date, KundeID) VALUES(@TotalPrice, @Date, @KundeId); SELECT CONVERT(int, SCOPE_IDENTITY()) AS OrderID;";
+                SqlParameter KundeIdParam = new SqlParameter("@KundeId", KundeID.Value);
+
+                using (SqlConnection connection = new SqlConnection(this.connString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.Add(TotalPriceParam);
+                        command.Parameters.Add(DateParam);
+                        command.Parameters.Add(KundeIdParam);
+                        connection.Open();
+                        OrderID = (int)command.ExecuteScalar();
+                    }
                 }
             }
+            else
+            {
+                query = "INSERT INTO Orders(TotalPrice, Date) VALUES(@TotalPrice, @Date); SELECT CONVERT(int, SCOPE_IDENTITY()) AS OrderID;";
+
+                using (SqlConnection connection = new SqlConnection(this.connString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.Add(TotalPriceParam);
+                        command.Parameters.Add(DateParam);
+                        connection.Open();
+                        OrderID = (int)command.ExecuteScalar();
+                    }
+                }
+            }
+
             return OrderID;
         }
         public void InsertIntoOrderLines(int OrderID, OrderLine ol)
@@ -291,6 +316,130 @@ namespace Delta_Coop365
             }
             return tempOrderLines;
         }
+        /// CREATE, READ, UPDATE <summary>
+        /// </summary>
+        public void InsertIntoKunder(string name, string address, int zipCode, string city, string email, int phoneNumber, double coopPoints)
+        {
+            string query = "Insert INTO Kunder(Name, Address, Zipcode, City, Email, PhoneNumber, CoopPoints) VALUES(@Name, @Address, @Zipcode, @City, @Email, @PhoneNumber, @CoopPoints)";
+            SqlParameter NameParam = new SqlParameter("@Name", name);
+            SqlParameter AddressParam = new SqlParameter("@Address", address);
+            SqlParameter ZipcodeParam = new SqlParameter("@Zipcode", zipCode);
+            SqlParameter CityParam = new SqlParameter("@City", city);
+            SqlParameter EmailParam = new SqlParameter("@Email", email);
+            SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
+            SqlParameter CoopPointsParam = new SqlParameter("@CoopPoints", coopPoints);
+            sqlQuery(query, NameParam, AddressParam, ZipcodeParam, CityParam, EmailParam, PhoneNumberParam, CoopPointsParam);
+        }
+
+        public bool IsCustomerExisting(int phoneNumber)
+        {
+            bool customerExists;
+            string query = "SELECT * FROM Kunder WHERE PhoneNumber = "+phoneNumber;
+            SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(PhoneNumberParam);
+                    command.Connection.Open();
+                    int count = (int)command.ExecuteScalar();
+
+                    if(count > 0)
+                    {
+                        customerExists = true;
+                    }
+                    else
+                    {
+                        customerExists = false;
+                    }
+                    command.Connection.Close();
+                }
+            }
+            return customerExists;
+        }
+        public Customer GetCustomer(int phoneNumber)
+        {
+            Customer tempC = null;
+            string query = "Select FROM Kunder WHERE PhoneNumber = @phoneNumber";
+            SqlParameter phoneNumberParam = new SqlParameter("@phoneNumber", phoneNumber);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(phoneNumberParam);
+                    command.Connection.Open();
+
+                    SqlDataReader sqlReader = command.ExecuteReader();
+
+                    if (sqlReader.Read())
+                    {
+                        string name = sqlReader.GetString(sqlReader.GetOrdinal("Name"));
+                        string address = sqlReader.GetString(sqlReader.GetOrdinal("Address"));
+                        int zipCode = sqlReader.GetInt32(sqlReader.GetOrdinal("zipCode"));
+                        string city = sqlReader.GetString(sqlReader.GetOrdinal("City"));
+                        string email = sqlReader.GetString(sqlReader.GetOrdinal("Email"));
+                        double coopPoints = sqlReader.GetDouble(sqlReader.GetOrdinal("CoopPoints"));
+
+                        tempC = new Customer(name, address, zipCode, city, email, phoneNumber, coopPoints);
+                    }
+                    command.Connection.Close();
+                }
+            }
+            return tempC;
+        }
+
+        public void UpdateCustomer(Customer c, int phoneNumber)
+        {
+            string query = "UPDATE Kunder SET (Name, Address, Zipcode, City, Email, PhoneNumber) VALUES(@Name,@Address,@Zipcode,@City,@Email,@PhoneNumber) WHERE PhoneNumber = @oldPhoneNumber";
+            SqlParameter nameParam = new SqlParameter("@Name", c.name);
+            SqlParameter addressParam = new SqlParameter("@Address", c.address);
+            SqlParameter zipCodeParam = new SqlParameter("@Zipcode", c.zipCode);
+            SqlParameter cityParam = new SqlParameter("@City", c.city);
+            SqlParameter emailParam = new SqlParameter("@Email", c.email);
+            SqlParameter phoneNumberParam = new SqlParameter("@PhoneNumber", c.phoneNumber);
+            SqlParameter oldPhoneNumberParam = new SqlParameter("@oldPhoneNumber", phoneNumber);
+            sqlQuery(query, nameParam, addressParam, zipCodeParam, cityParam, emailParam, phoneNumberParam, oldPhoneNumberParam);
+        }
+        public void UpdateCustomerPoints(int phoneNumber, double points)
+        {
+            string query = "UPDATE Kunder SET CoopPoints = @points WHERE PhoneNumber = @phoneNumber";
+            SqlParameter phoneNumberParam = new SqlParameter("@phoneNumber", phoneNumber);
+            SqlParameter pointsParam = new SqlParameter("@points", points);
+            sqlQuery(query, phoneNumberParam, pointsParam);
+        }
+
+        public double GetCustomerPoints(int phoneNumber)
+        {
+            double coopPoints = 0.0;
+            string query = "SELECT CoopPoints FROM Kunder WHERE PhoneNumber = @PhoneNumber";
+            SqlParameter phoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(phoneNumberParam);
+                    command.Connection.Open();
+                    SqlDataReader sqlReader = command.ExecuteReader();
+
+                    if (sqlReader.Read())
+                    {
+                        coopPoints = sqlReader.GetDouble(sqlReader.GetOrdinal("CoopPoints"));
+                    }
+
+                    command.Connection.Close();
+                }
+            }
+            return coopPoints;
+        }
+
+
+
+
+
+
+
+
+
         /// </summary>
         /// <returns></returns>
         public static string GetSolutionPath()
@@ -318,11 +467,6 @@ namespace Delta_Coop365
                     command.Connection.Close();
                 }
             }
-        }
-
-        internal object GetOrders()
-        {
-            throw new NotImplementedException();
         }
     }
 }
