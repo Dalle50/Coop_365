@@ -41,25 +41,25 @@ namespace Delta_Coop365
             productsCollection = new ObservableCollection<Product>();
             theOrder = new Order();
             textBlock = tbTotalAmount;
-            updateDateBase();
+            UpdateDateBase();
             GetProducts();
             ShowProducts();
             SetStock();
         }
         
-        public IEnumerable<XElement> getData()
+        public IEnumerable<XElement> GetData()
         {
             return data.getData("BakeOffVare");
         }
-        public void updateDateBase()
+        public void UpdateDateBase()
         {
             if (dbAccessor.isDatabasePopulated("Products"))
             {
-                dbAccessor.updateProductsDaily(getData());
+                dbAccessor.updateProductsDaily(GetData());
             }
             else
             {
-                foreach(XElement e in getData())
+                foreach(XElement e in GetData())
                 {
                     int productid = (int)e.Element("Varenummer");
                     double price = (double)e.Element("Pris");
@@ -142,7 +142,7 @@ namespace Delta_Coop365
             }
         }
 
-        private void GeneratedDailyPDF(object sender, RoutedEventArgs e)
+        private void GenerateDailyPDF(object sender, RoutedEventArgs e)
         {
             List<OrderLine> orderLines = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
             PrintPreview printer = new PrintPreview();
