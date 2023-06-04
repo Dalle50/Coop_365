@@ -121,7 +121,7 @@ namespace Delta_Coop365
         {
             int amount = Int32.Parse(txtAmount.Text);
             int productIndex = -1;
-            foreach (Product p in MainWindow.products)
+            foreach (Product p in MainWindow.productsCollection)
             {
                 productIndex++;
                 if (p.GetID() == product.GetID())
@@ -130,7 +130,7 @@ namespace Delta_Coop365
                 }
             }
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
-            MainWindow.products[productIndex].SetStock(product.GetStock() - amount);
+            MainWindow.productsCollection[productIndex].SetStock(product.GetStock() - amount);
             product.SetStock(product.GetStock() - amount);
         }
 
