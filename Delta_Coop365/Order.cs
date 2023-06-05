@@ -52,8 +52,8 @@ namespace Delta_Coop365
             /// when the bakeoff has an item that's sold out
             Email e = new Email();
             string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + OrderID + ".pdf";
-            e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out.", "The product " + p.productName
-                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { pathToOrderReciept } );
+            e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out at the time: " + DateTime.Now.ToString(), "The product " + p.productName
+                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { } );
         }
         
         public void AddOrderLine(OrderLine ol)
