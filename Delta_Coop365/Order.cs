@@ -13,7 +13,7 @@ namespace Delta_Coop365
         public List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
-
+        private double discount = 0.0;
         public Order()
         {
             orderLines = new List<OrderLine>();
@@ -52,8 +52,8 @@ namespace Delta_Coop365
             /// when the bakeoff has an item that's sold out
             Email e = new Email();
             string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + OrderID + ".pdf";
-            e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out.", "The product " + p.productName
-                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { pathToOrderReciept } );
+            e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out at the time: " + DateTime.Now.ToString(), "The product " + p.productName
+                + "has been sold out at: " + DateTime.Now + "\n Attached is the order, that has sold out the item.", new string[] { } );
         }
         
         public void AddOrderLine(OrderLine ol)
@@ -81,7 +81,12 @@ namespace Delta_Coop365
                 double total = (double) line.GetProduct().GetPrice() * line.GetAmount();
                 tempTotal += total;
             }
-            this.TotalPrice = tempTotal;
+            this.TotalPrice = tempTotal - discount;
+        }
+        public void AddDiscount(double amount)
+        {
+            this.discount = amount;
+            UpdateTotalPrice();
         }
         public List<OrderLine> GetOrderLines()
         {

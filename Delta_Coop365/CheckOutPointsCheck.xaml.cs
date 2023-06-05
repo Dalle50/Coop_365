@@ -19,29 +19,73 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOutPointsCheck : Window
     {
-        public bool phoneNumberExsist;
-        public CheckOutPointsCheck()
+        public bool phoneNumberExist;
+        private double points;
+        DbAccessor dbAccessor = new DbAccessor();
+        Customer customer;
+        public CheckOutPointsCheck(double points)
         {
             InitializeComponent();
+            this.points = points;
         }
 
 
         private void ConfirmClick(object sender, RoutedEventArgs e)
         {
-            int phoneNumber = phoneNumberTextBox.Text.Length;
-            if (phoneNumber == 8 && phoneNumber > 0)
+            int phoneNumber = Int32.Parse(phoneNumberTextBox.Text);
+            Console.WriteLine(phoneNumber.ToString().Length);
+            if (phoneNumber.ToString().Length == 8)
             {
-                CheckPhoneNumber();
-                if (CheckPhoneNumber() == true)
+                bool exists = dbAccessor.IsCustomerExisting(phoneNumber);
+                if (exists)
                 {
-                    phoneNumberExsist = true;
+                    phoneNumberExist = true;
                     //Point system implemented here that adds points to customer.
+                    customer = dbAccessor.GetCustomer(phoneNumber);
+                    CheckOut.customer = customer;
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Vil du betale med dine points? Du har "+customer.coopPoints+" som svarer til: "+ConvertPointsToCash(customer), "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        double remainingPoints = 0.0;
+                        double pointsToCash = ConvertPointsToCash(customer);
+                        if(pointsToCash > CheckOut.order.GetPrice())
+                        {
+                            remainingPoints = pointsToCash - CheckOut.order.GetPrice();
+                            dbAccessor.UpdateCustomerPoints(phoneNumber, remainingPoints * 100);
+                            pointsToCash = pointsToCash - remainingPoints;
+                            CheckOut.order.AddDiscount(pointsToCash);
+                            Close();
+                        }
+                        else
+                        {
+                            CheckOut.order.AddDiscount(pointsToCash);
+                            dbAccessor.UpdateCustomerPoints(phoneNumber, 0);
+                            Close();
+                        }
+
+                        CheckOut.order.AddDiscount(ConvertPointsToCash(customer));
+                    }
+                    else if(messageBoxResult == MessageBoxResult.No)
+                    {
+                        dbAccessor.UpdateCustomerPoints(phoneNumber, 0);
+                        Close();
+                    }
                 }
-                if (CheckPhoneNumber() == false)
+                else 
                 {
                     Console.WriteLine("Opening another window to ask if they'd like to be registered....");
                     //Open the window here to register.
-                    phoneNumberExsist = false;
+                    MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Vil du registreres i systemet?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
+                    {
+                        Register register = new Register(points ,phoneNumber);
+                        register.Show();
+
+                    }
+                    else if (messageBoxResult == MessageBoxResult.No)
+                    {
+                        Close();
+                    }
                 }
             }
             else
@@ -49,23 +93,16 @@ namespace Delta_Coop365
                 Console.WriteLine($"Telefon nummeret er ikke gyldigt. bruger instastede: {phoneNumberTextBox.Text}");
                 invalidNumber.Content = "Ikke gyldigt telefon nummer.";
             }
+            
         }
         private void UndoClick(object sender, RoutedEventArgs e)
         {
-            phoneNumberExsist = false;
+            phoneNumberExist = false;
             Close();
         }
-        private bool CheckPhoneNumber()
+        private double ConvertPointsToCash(Customer c)
         {
-            int phoneNumber = int.Parse(phoneNumberTextBox.Text);
-            DbAccessor dbAccessor= new DbAccessor();
-            if (dbAccessor.IsCustomerExisting(phoneNumber) == true)
-            {
-                dbAccessor.GetCustomerPoints(phoneNumber);
-                phoneNumberExsist = true;
-                return true;
-            }
-            return false;
+            return c.coopPoints / 100;
         }
     }
 }
