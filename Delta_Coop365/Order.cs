@@ -13,7 +13,7 @@ namespace Delta_Coop365
         public List<OrderLine> orderLines;
         private int OrderID;
         private double TotalPrice;
-
+        private double discount = 0.0;
         public Order()
         {
             orderLines = new List<OrderLine>();
@@ -81,7 +81,12 @@ namespace Delta_Coop365
                 double total = (double) line.GetProduct().GetPrice() * line.GetAmount();
                 tempTotal += total;
             }
-            this.TotalPrice = tempTotal;
+            this.TotalPrice = tempTotal - discount;
+        }
+        public void AddDiscount(double amount)
+        {
+            this.discount = amount;
+            UpdateTotalPrice();
         }
         public List<OrderLine> GetOrderLines()
         {

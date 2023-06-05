@@ -23,10 +23,6 @@ namespace Delta_Coop365
         private string senderEmail = "deltacoop365@outlook.dk";
         private string senderPassword = "projekt1234";
 
-        public void SendReport(Report report)
-        {
-            /// Implement code that sends the report to the receiver
-        }
         public void SendNotice(string reciever, string subject, string body, string[] attachments)
         {
             //Create a new MailMessage instance
