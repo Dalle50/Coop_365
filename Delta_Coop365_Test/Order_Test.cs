@@ -71,7 +71,6 @@ namespace Delta_Coop365_Test
         [Test]
         public void Test_ProductsLeft()
         {
-
             Assert.That(o.ProductsLeft(ol), Is.EqualTo(0));
         }
         [Test]

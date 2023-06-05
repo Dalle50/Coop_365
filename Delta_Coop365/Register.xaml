@@ -1,0 +1,29 @@
+﻿<Window x:Class="Delta_Coop365.Register"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Delta_Coop365"
+        mc:Ignorable="d"
+        Title="Register" Height="299" Width="413">
+    <Grid Margin="0,0,511,181">
+
+        <Grid Margin="42,18,-332,-169">
+            <TextBlock HorizontalAlignment="Left" Margin="73,42,0,0" TextWrapping="Wrap" Text="Navn" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,63,0,0" TextWrapping="Wrap" Text="Adresse" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,87,0,0" TextWrapping="Wrap" Text="Postnr" VerticalAlignment="Top" RenderTransformOrigin="1.17,1.147"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,112,0,0" TextWrapping="Wrap" Text="By" VerticalAlignment="Top" RenderTransformOrigin="1.245,1.372"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,135,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" RenderTransformOrigin="1.145,1.443"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,156,0,0" TextWrapping="Wrap" Text="TelefonNr" VerticalAlignment="Top"/>
+            <TextBox x:Name="Navn" HorizontalAlignment="Left" Margin="127,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="Adresse" HorizontalAlignment="Left" Margin="127,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="zip" HorizontalAlignment="Left" Margin="127,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="city" HorizontalAlignment="Left" Margin="127,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="email" HorizontalAlignment="Left" Margin="127,133,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="phoneNumber" HorizontalAlignment="Left" Margin="127,156,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <Button Content="Register" HorizontalAlignment="Left" Margin="241,223,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click" RenderTransformOrigin="-0.136,0.37"/>
+
+        </Grid>
+
+    </Grid>
+</Window>

@@ -1,8 +1,10 @@
 ﻿using MailKit.Search;
 using PdfSharp.Pdf.Content.Objects;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -16,9 +18,11 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOut : Window
     {
-        Order order;
+        public static Order order;
         ObservableCollection<OrderLine> orderLines;
         DbAccessor dbAccessor = new DbAccessor();
+        Email emailService = new Email();
+        public static Customer customer = null;
         DateTime date = DateTime.Now;
 
 
@@ -126,21 +130,10 @@ namespace Delta_Coop365
         {
             if ((bool)checkBox.IsChecked)
             {
-                CheckOutPointsCheck phoneNumberCheck= new CheckOutPointsCheck();
+                CheckOutPointsCheck phoneNumberCheck = new CheckOutPointsCheck(ConvertItemsToPoints(orderLines.ToList()));
+                phoneNumberCheck.Closing += PhoneNumberCheck_Closing; // Attach the event handler
                 phoneNumberCheck.Show();
-                if (phoneNumberCheck.phoneNumberExsist == true)
-                {
-                    phoneNumberCheck.Close();
-                    UpdateStockOnConfirm();
-                    order.UpdateTotalPrice();
-                    int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
-                    order.SetId(orderId);
-                    foreach (OrderLine ol in orderLines)
-                    {
-                        dbAccessor.InsertIntoOrderLines(orderId, ol);
-                    }
-                    CreateQRCode(orderId);
-                }
+                
             }
             else
             {
@@ -153,7 +146,30 @@ namespace Delta_Coop365
                     dbAccessor.InsertIntoOrderLines(orderId, ol);
                 }
                 CreateQRCode(orderId);
+                order = new Order();
+                Close();
             }
+        }
+        private void PhoneNumberCheck_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CheckOutPointsCheck phoneNumberCheck = (CheckOutPointsCheck)sender;
+            if (phoneNumberCheck.phoneNumberExist)
+            {
+                UpdateStockOnConfirm();
+                order.UpdateTotalPrice();
+                Customer c = dbAccessor.GetCustomer(Int32.Parse(phoneNumberCheck.phoneNumberTextBox.Text));
+                int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date, c.KundeID);
+                order.SetId(orderId);
+                foreach (OrderLine ol in orderLines)
+                {
+                    dbAccessor.InsertIntoOrderLines(orderId, ol);
+                }
+
+                CreateQRCode(orderId);
+                
+            }
+            dbAccessor.UpdateCustomerPoints(customer.phoneNumber, dbAccessor.GetCustomerPoints(customer.phoneNumber) + ConvertItemsToPoints(MainWindow.theOrder.GetOrderLines()));
+            MainWindow.ResetOrder();
             Close();
         }
         private void btnGoBack_Click(object sender, RoutedEventArgs e)
@@ -177,6 +193,14 @@ namespace Delta_Coop365
                 int productIndex = -1;
                 Product p = ol.GetProduct();
                 int newStock = p.GetStock() - ol.amount;
+                string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
+                if ( newStock <= 0) 
+                {
+                    Console.WriteLine("Sender mail.....");
+                    emailService.SendNotice("daniel.htc.jacobsen@gmail.com",
+                        "Stock is empty", 
+                        "The stock of: "+ p.GetName() +" is emptied out at the time: " + date,new string[] {});
+                }
                 foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
                     productIndex++;
@@ -195,18 +219,30 @@ namespace Delta_Coop365
         {
             Console.WriteLine("Stock is set back to: " + p.GetStock());
             p.SetStock(p.GetStock());
-            DbAccessor d = new DbAccessor();
-            d.updateStock(p.GetID(), p.GetStock());
+            dbAccessor.updateStock(p.GetID(), p.GetStock());
         }
 
         //Skal implementeres.
         private void Email()
         {
             string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
-            Email email = new Email();
-            email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
+            emailService.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
             MainWindow.theOrder = new Order();
             MainWindow.UpdateTotalPriceText("");
         }
+        private double ConvertItemsToPoints(List<OrderLine> orderLines)
+        {
+            double points = 0;
+            foreach(OrderLine line in orderLines)
+            {
+                points += line.amount * 5;
+            }
+            return points;
+        }
+        private void resetOrder()
+        {
+
+        }
+
     }
 }

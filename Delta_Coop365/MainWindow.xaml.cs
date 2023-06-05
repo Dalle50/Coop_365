@@ -148,5 +148,12 @@ namespace Delta_Coop365
             PrintPreview printer = new PrintPreview();
             printer.CreateDailyPDF(orderLines);
         }
+        public static void ResetOrder()
+        {
+            theOrder = new Order();
+            UpdateTotalPriceText(" ");
+
+            
+        }
     }
 }
