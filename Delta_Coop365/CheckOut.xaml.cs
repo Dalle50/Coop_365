@@ -195,7 +195,8 @@ namespace Delta_Coop365
                 int newStock = p.GetStock() - ol.amount;
                 string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
                 if ( newStock <= 0) 
-                { 
+                {
+                    Console.WriteLine("Sender mail.....");
                     emailService.SendNotice("daniel.htc.jacobsen@gmail.com",
                         "Stock is empty", 
                         "The stock of: "+ p.GetName() +" is emptied out at the time: " + date,new string[] {});
