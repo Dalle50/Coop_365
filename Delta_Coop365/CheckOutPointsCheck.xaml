@@ -1,0 +1,31 @@
+﻿<Window x:Class="Delta_Coop365.CheckOutPointsCheck"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Delta_Coop365"
+        mc:Ignorable="d"
+        Title="CheckOutPointsCheck" Height="350" Width="400" ResizeMode="NoResize" Background="#0dc144">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="154"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Row="0" Stroke="#066a3f" Fill="#066a3f"/>
+        <Label Content="Indskriv telefon-nummer:" HorizontalAlignment="Left"  Grid.Row="3" VerticalAlignment="Top" Height="26" Width="182" FontSize="15" Margin="14,10,0,0" FontFamily="cambria"/>
+        <TextBlock Grid.Row="1" Text="Spar tid og penge med Coop app’en" TextWrapping="Wrap" FontFamily="cambria" FontSize="25" TextAlignment="Center" Margin="10,10,10,110" Background="#066a3f" Foreground="White"/>
+        <TextBlock Grid.Row="1" Margin="0,49,0,17" Text="Optjen point hver gang du handler hos os, blot indskriv dit telefonnummer i tekstfeltet nedenfor." TextWrapping="Wrap" FontSize="15" TextAlignment="Center" HorizontalAlignment="Center" Width="380" Background="#066a3f" Foreground="White"/>
+
+        <Rectangle Grid.Row="2" Stroke="#066a3f" Fill="#066a3f"/>
+
+        <TextBox x:Name="phoneNumberTextBox" HorizontalAlignment="Right" Margin="0,10,32,0" Grid.Row="3" TextWrapping="Wrap" Text="" FontFamily="cambria" VerticalAlignment="Top" VerticalContentAlignment="Center"  Width="160" Height="26" Background="#066a3f" Foreground="White"/>
+        <Label Name="invalidNumber" Content="" HorizontalAlignment="Right" Margin="0,41,32,0" Grid.Row="3" VerticalAlignment="Top" Width="168" Foreground="Yellow" Height="26"/>
+
+        <Button Content="Bekræft" Grid.Row="3" Height="30" Width="100" Click="ConfirmClick" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="238,75,0,0" Background="#066a3f" Foreground="White" FontFamily="Cambria" RenderTransformOrigin="0.518,0.199"/>
+        <Button Content="Fortryd" Grid.Row="3" Height="30" Width="100" Click="UndoClick" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="55,75,0,0" Background="#066a3f" Foreground="White" FontFamily="Cambria"/>
+
+    </Grid>
+</Window>

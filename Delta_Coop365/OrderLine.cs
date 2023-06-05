@@ -7,6 +7,9 @@ using System.Windows.Media.Imaging;
 
 namespace Delta_Coop365
 {
+    /// <summary>
+    /// [ Author: Pernille ]
+    /// </summary>
     public class OrderLine
     {
         private Product product;
@@ -44,7 +47,7 @@ namespace Delta_Coop365
         {
             return date;
         }
-        //----- These are needed to return the bindings for the UI in checkout.
+        //----- These are needed to return the various products that you find in CheckOut.xaml.
         public BitmapImage ImageUrl
         {
             get { return GetProduct().imgPath; }

@@ -107,14 +107,19 @@ namespace Delta_Coop365
                 if (product.imgPath == clickedImagepath)
                 {
                     p = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
+                    if (p.GetStock() == 0)
+                    {
+                        p.productName = "--- UDSOLGT ---";
+                        p.price = 0;
+                    }
                     break;
                 }
+
             }
             ViewingProduct viewProduct = new ViewingProduct(p);
             vp = viewProduct;
             if (p.GetStock() == 0)
             {
-                //Grafik til at vise det her, aner ikke om vi kan opdatere tekst til at sige det.
                 Console.WriteLine("Produktet er udsolgt.");
                 MessageBox.Show("Produktet er udsolgt.");
             }

@@ -334,7 +334,7 @@ namespace Delta_Coop365
         public bool IsCustomerExisting(int phoneNumber)
         {
             bool customerExists;
-            string query = "SELECT * FROM Kunder WHERE PhoneNumber = "+phoneNumber;
+            string query = "SELECT * FROM Kunder WHERE PhoneNumber = "+ phoneNumber;
             SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
             using (SqlConnection connection = new SqlConnection(connString))
             {
