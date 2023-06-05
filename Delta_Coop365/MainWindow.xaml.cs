@@ -27,11 +27,11 @@ namespace Delta_Coop365
     /// </summary>
     public partial class MainWindow : Window
     {
-        DbAccessor dbAccessor = new DbAccessor();
-        DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
+        private DbAccessor dbAccessor = new DbAccessor();
+        private DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         public static ObservableCollection<Product> productsCollection;
-        Product product;
-        ViewingProduct viewingProduct;
+        private Product product;
+        private ViewingProduct viewingProduct;
         public static Order theOrder;
         public static TextBlock textBlock;
 
