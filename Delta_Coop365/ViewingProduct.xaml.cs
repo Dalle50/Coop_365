@@ -19,17 +19,17 @@ namespace Delta_Coop365
     /// </summary>
     public partial class ViewingProduct : Window
     {
-        Product product;
-        Order order;
-        DateTime date = DateTime.Now.Date;
+        private Product product;
+        private Order order;
+        private DateTime date = DateTime.Now.Date;
         
-        public ViewingProduct(Product p)
+        public ViewingProduct(Product currentProduct)
         {
             InitializeComponent();
             order = MainWindow.theOrder;
-            product = p;
+            product = currentProduct;
             getImg();
-            getInfo(p);
+            getInfo(currentProduct);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -97,7 +97,7 @@ namespace Delta_Coop365
 
             if (product.GetStock() == 0)
             {
-                Console.WriteLine("Produktet er nu udsolgt...");
+                Console.WriteLine($"Der er nu ikke flere {product.GetName()} tilbage i montren" );
             }
         }
         private void CreateNewOrderLine()
@@ -121,7 +121,7 @@ namespace Delta_Coop365
         {
             int amount = Int32.Parse(txtAmount.Text);
             int productIndex = -1;
-            foreach (Product p in MainWindow.products)
+            foreach (Product p in MainWindow.productsCollection)
             {
                 productIndex++;
                 if (p.GetID() == product.GetID())
@@ -130,7 +130,7 @@ namespace Delta_Coop365
                 }
             }
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
-            MainWindow.products[productIndex].SetStock(product.GetStock() - amount);
+            MainWindow.productsCollection[productIndex].SetStock(product.GetStock() - amount);
             product.SetStock(product.GetStock() - amount);
         }
 

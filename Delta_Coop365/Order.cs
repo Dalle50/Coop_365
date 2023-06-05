@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Delta_Coop365
 {
-    public class Order : IBakeOff
+    public class Order
     {
         public List<OrderLine> orderLines;
         private int OrderID;
