@@ -19,17 +19,17 @@ namespace Delta_Coop365
     /// </summary>
     public partial class ViewingProduct : Window
     {
-        Product product;
-        Order order;
-        DateTime date = DateTime.Now.Date;
+        private Product product;
+        private Order order;
+        private DateTime date = DateTime.Now.Date;
         
-        public ViewingProduct(Product p)
+        public ViewingProduct(Product currentProduct)
         {
             InitializeComponent();
             order = MainWindow.theOrder;
-            product = p;
+            product = currentProduct;
             getImg();
-            getInfo(p);
+            getInfo(currentProduct);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
