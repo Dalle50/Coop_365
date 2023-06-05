@@ -156,6 +156,11 @@ namespace Delta_Coop365
             }
             Close();
         }
+        private void btnGoBack_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            Console.WriteLine("Window closing but order is still saved.");
+        }
         private void CreateQRCode(int orderId)
         {
             QrCodeService qRCodeGenerator = new QrCodeService();
