@@ -16,7 +16,7 @@ namespace Delta_Coop365
     ///  Model class for Product.
     ///  - contains all the things needed for the Product object.
     /// </summary>
-    public class Product : IBakeOff
+    public class Product
     {
         public string productName { get; set; }
         private int productID;

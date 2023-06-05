@@ -177,14 +177,14 @@ namespace Delta_Coop365
                 int productIndex = -1;
                 Product p = ol.GetProduct();
                 int newStock = p.GetStock() - ol.amount;
-                foreach (Product collectiveProduct in MainWindow.products)
+                foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
                     productIndex++;
                     if (p.GetID() == collectiveProduct.GetID())
                     {
                         break;
                     }
-                    MainWindow.products[productIndex].SetStock(newStock);
+                    MainWindow.productsCollection[productIndex].SetStock(newStock);
                     p.SetStock(newStock);
                 }
                 dbAccessor.updateStock(p.GetID(), newStock);
