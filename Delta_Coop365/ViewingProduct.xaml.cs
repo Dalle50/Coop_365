@@ -28,8 +28,8 @@ namespace Delta_Coop365
             InitializeComponent();
             order = MainWindow.theOrder;
             product = currentProduct;
-            getImg();
-            getInfo(currentProduct);
+            GetImage();
+            GetInfo(currentProduct);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -70,13 +70,13 @@ namespace Delta_Coop365
                 else if (order.orderLines.Count > 0)
                 {
                     bool isExisting = false;
-                    foreach (OrderLine ol in order.orderLines)
+                    foreach (OrderLine orderLine in order.orderLines)
                     {
                         
-                        if (ol.GetProduct().GetID() == product.GetID())
+                        if (orderLine.GetProduct().GetID() == product.GetID())
                         {
                             isExisting = true;
-                            UpdateExistingOrderLine(ol);
+                            UpdateExistingOrderLine(orderLine);
                             UpdateStock();
                             Close();
                         }
@@ -109,10 +109,10 @@ namespace Delta_Coop365
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
         
-        private void UpdateExistingOrderLine(OrderLine ol)
+        private void UpdateExistingOrderLine(OrderLine orderLine)
         {
             int amount = Int32.Parse(txtAmount.Text);
-            ol.SetAmount(ol.GetAmount() + amount);
+            orderLine.SetAmount(orderLine.GetAmount() + amount);
             order.UpdateTotalPrice();
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
@@ -121,10 +121,10 @@ namespace Delta_Coop365
         {
             int amount = Int32.Parse(txtAmount.Text);
             int productIndex = -1;
-            foreach (Product p in MainWindow.productsCollection)
+            foreach (Product product in MainWindow.productsCollection)
             {
                 productIndex++;
-                if (p.GetID() == product.GetID())
+                if (product.GetID() == this.product.GetID())
                 {
                     break;
                 }
@@ -134,13 +134,13 @@ namespace Delta_Coop365
             product.SetStock(product.GetStock() - amount);
         }
 
-        private void getInfo(Product product)
+        private void GetInfo(Product product)
         {
             txtProductName.Text = product.GetName();
             txtNutrition.Text = product.GetIngredients();
             txtPrice.Text = product.GetPrice().ToString();
         }
-        private void getImg()
+        private void GetImage()
         {
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
