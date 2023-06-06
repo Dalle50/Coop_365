@@ -194,7 +194,6 @@ namespace Delta_Coop365
                 Product p = orderline.GetProduct();
                 int newStock = p.GetStock() - orderline.amount;
                 string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
-                //---- Curveball implementering ----
                 if ( newStock <= 0) 
                 {
                     Console.WriteLine("Sender mail.....");
@@ -202,7 +201,6 @@ namespace Delta_Coop365
                         "Stock is empty", 
                         "The stock of: "+ p.GetName() +" is emptied out at the time: " + date,new string[] {});
                 }
-                //--------
                 foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
                     productIndex++;
