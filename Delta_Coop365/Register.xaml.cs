@@ -20,11 +20,10 @@ namespace Delta_Coop365
     public partial class Register : Window
     {
         DbAccessor dbAccessor = new DbAccessor();
-        double points = 0;
-        public Register(double points, int phone)
+        public CheckOutPointsCheck CheckOutPointsCheckWindow { get; set; }
+        public Register(int phone)
         {
             InitializeComponent();
-            this.points = points;
             phoneNumber.Text = phone.ToString();
         }
 
@@ -48,7 +47,12 @@ namespace Delta_Coop365
             {
                 if (!dbAccessor.IsCustomerExisting(phone))
                 {
-                    dbAccessor.InsertIntoKunder(name, address, zipCode, by, mail, phone, points);
+                    dbAccessor.InsertIntoKunder(name, address, zipCode, by, mail, phone, 0);
+                    CheckOut.customer = dbAccessor.GetCustomer(phone);
+                    if (CheckOutPointsCheckWindow != null)
+                    {
+                        CheckOutPointsCheckWindow.RegistrationSuccessful = true;
+                    }
                     this.Close();
                 }
                 else
@@ -57,6 +61,24 @@ namespace Delta_Coop365
                 }
             }
 
+        }
+        private void CharCheck_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Cancel the input
+            }
+            else if(e.Text.Length == 4)
+            {
+                e.Handled = true;
+            }
+        }
+        private void NumberCheck_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Cancel the input
+            }
         }
     }
 }

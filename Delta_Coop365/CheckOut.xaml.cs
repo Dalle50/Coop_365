@@ -24,6 +24,7 @@ namespace Delta_Coop365
         Email emailService = new Email();
         public static Customer customer = null;
         DateTime date = DateTime.Now;
+        private bool isPhoneNumberCheckOpened = false;
 
 
         public CheckOut(Order o)
@@ -128,12 +129,20 @@ namespace Delta_Coop365
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
+            if (isPhoneNumberCheckOpened)
+            {
+                MessageBox.Show("Please finish what you started");
+            }
             if ((bool)checkBox.IsChecked)
             {
-                CheckOutPointsCheck phoneNumberCheck = new CheckOutPointsCheck(ConvertItemsToPoints(orderLines.ToList()));
-                phoneNumberCheck.Closing += PhoneNumberCheck_Closing; // Attach the event handler
-                phoneNumberCheck.Show();
-                
+                if (!isPhoneNumberCheckOpened)
+                {
+                    CheckOutPointsCheck phoneNumberCheck = new CheckOutPointsCheck(ConvertItemsToPoints(orderLines.ToList()));
+                    phoneNumberCheck.Closing += PhoneNumberCheck_Closing; // Attach the event handler
+                    phoneNumberCheck.Show();
+                    isPhoneNumberCheckOpened = true; // Set the flag to indicate that phoneNumberCheck window is opened
+                }
+
             }
             else
             {
@@ -152,6 +161,8 @@ namespace Delta_Coop365
         }
         private void PhoneNumberCheck_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            isPhoneNumberCheckOpened = false;
+            bool isCustomerRegistered = false;
             CheckOutPointsCheck phoneNumberCheck = (CheckOutPointsCheck)sender;
             if (phoneNumberCheck.phoneNumberExist)
             {
@@ -166,9 +177,14 @@ namespace Delta_Coop365
                 }
 
                 CreateQRCode(orderId);
+                isCustomerRegistered = true;
+
                 
             }
-            dbAccessor.UpdateCustomerPoints(customer.phoneNumber, dbAccessor.GetCustomerPoints(customer.phoneNumber) + ConvertItemsToPoints(MainWindow.theOrder.GetOrderLines()));
+            if (isCustomerRegistered)
+            {
+                dbAccessor.UpdateCustomerPoints(customer.phoneNumber, dbAccessor.GetCustomerPoints(customer.phoneNumber) + ConvertItemsToPoints(MainWindow.theOrder.GetOrderLines()));
+            }
             MainWindow.ResetOrder();
             Close();
         }
@@ -230,7 +246,7 @@ namespace Delta_Coop365
             MainWindow.theOrder = new Order();
             MainWindow.UpdateTotalPriceText("");
         }
-        private double ConvertItemsToPoints(List<OrderLine> orderLines)
+        public static double ConvertItemsToPoints(List<OrderLine> orderLines)
         {
             double points = 0;
             foreach(OrderLine line in orderLines)
