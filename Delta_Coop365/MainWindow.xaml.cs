@@ -51,7 +51,7 @@ namespace Delta_Coop365
         {
             return dataStream.getData("BakeOffVare");
         }
-        public void UpdateDateBase()
+        public void UpdateDataBase()
         {
             if (dbAccessor.isDatabasePopulated("Products"))
             {
