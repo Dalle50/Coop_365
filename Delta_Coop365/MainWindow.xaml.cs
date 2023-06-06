@@ -82,21 +82,37 @@ namespace Delta_Coop365
                 productsCollection.Add(product);
             }
         }
-        public void ShowProducts() 
+
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        public void ShowProducts()
         {
             ICProducts.ItemsSource = productsCollection;
         }
 
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BasketClick(object sender, MouseButtonEventArgs e)
         {
             CheckOut checkout = new CheckOut(theOrder);
             checkout.Show();
 
         }
+
         private void ReturnClick(object sender, MouseButtonEventArgs e)
         {
 
         }
+
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ProductClick(object sender, MouseButtonEventArgs e)
         {
             Image img = (Image)sender;
@@ -123,11 +139,18 @@ namespace Delta_Coop365
             }
         }
 
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        /// <param name="text"></param>
         public static void UpdateTotalPriceText(string text)
         {
             App.Current.Dispatcher.Invoke(delegate { textBlock.Text = text; });
         }
 
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
         private void SetStock()
         {
             Random rand = new Random();
@@ -142,12 +165,15 @@ namespace Delta_Coop365
             }
         }
 
+
         private void GenerateDailyPDF(object sender, RoutedEventArgs e)
         {
             List<OrderLine> orderLines = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
             PrintPreview printer = new PrintPreview();
             printer.CreateDailyPDF(orderLines);
         }
+
+
         public static void ResetOrder()
         {
             theOrder = new Order();

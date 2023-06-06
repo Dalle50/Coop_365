@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
         Title="Email" Height="350" Width="560">
+    <!-- [ Author: Rebecca] -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

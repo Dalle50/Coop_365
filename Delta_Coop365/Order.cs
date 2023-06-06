@@ -32,8 +32,6 @@ namespace Delta_Coop365
         public double GetPrice()
         {
             UpdateTotalPrice();
-            /// Implement the code to calculate the total price
-            /// remember that you can take the price from OrderLines, since the total amount of products price are already added up on the OrderLine
             return TotalPrice;
         }
 
@@ -48,8 +46,6 @@ namespace Delta_Coop365
 
         public void Notify(Product p)
         {
-            /// Implement code that sends a notice to bakery and store administration
-            /// when the bakeoff has an item that's sold out
             Email e = new Email();
             string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + OrderID + ".pdf";
             e.SendNotice("daniel.htc.jacobsen@gmail.com", p.productName + " is sold out at the time: " + DateTime.Now.ToString(), "The product " + p.productName
