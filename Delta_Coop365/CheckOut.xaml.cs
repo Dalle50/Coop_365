@@ -109,6 +109,22 @@ namespace Delta_Coop365
 
         private void btnUndoAll_Click(object sender, RoutedEventArgs e)
         {
+            foreach (OrderLine orderLine in orderLines)
+            {
+                int amount = orderLine.amount;
+                int productIndex = -1;
+                foreach (Product product in MainWindow.productsCollection)
+                {
+                    productIndex++;
+                    if (product.GetID() == orderLine.GetProduct().GetID())
+                    {
+                        break;
+                    }
+                }
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+                MainWindow.productsCollection[productIndex].SetStock(orderLine.GetProduct().GetStock() + amount);
+                orderLine.GetProduct().SetStock(orderLine.GetProduct().GetStock() + amount);
+            }
             order.ClearOrderLines();
             order.UpdateTotalPrice();
 
