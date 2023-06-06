@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
         Title="CheckOut" Height="610" Width="900" ResizeMode="NoResize">
+    <!-- [ Author: Pernille ] -->
     <Grid Background="#0dc144">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

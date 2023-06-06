@@ -204,11 +204,11 @@ namespace Delta_Coop365
         }
         private void UpdateStockOnConfirm()
         {
-            foreach (OrderLine ol in order.orderLines)
+            foreach (OrderLine orderline in order.orderLines)
             {
                 int productIndex = -1;
-                Product p = ol.GetProduct();
-                int newStock = p.GetStock() - ol.amount;
+                Product p = orderline.GetProduct();
+                int newStock = p.GetStock() - orderline.amount;
                 string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
                 if ( newStock <= 0) 
                 {
@@ -237,15 +237,6 @@ namespace Delta_Coop365
             p.SetStock(p.GetStock());
             dbAccessor.updateStock(p.GetID(), p.GetStock());
         }
-
-        //Skal implementeres.
-        private void Email()
-        {
-            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
-            emailService.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
-            MainWindow.theOrder = new Order();
-            MainWindow.UpdateTotalPriceText("");
-        }
         private double ConvertItemsToPoints(List<OrderLine> orderLines)
         {
             double points = 0;
@@ -255,10 +246,5 @@ namespace Delta_Coop365
             }
             return points;
         }
-        private void resetOrder()
-        {
-
-        }
-
     }
 }
