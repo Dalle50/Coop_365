@@ -28,7 +28,7 @@ namespace Delta_Coop365
     public partial class MainWindow : Window
     {
         private DbAccessor dbAccessor = new DbAccessor();
-        private DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
+        private DataStream dataStream = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
         public static ObservableCollection<Product> productsCollection;
         private Product product;
         private ViewingProduct viewingProduct;
@@ -49,7 +49,7 @@ namespace Delta_Coop365
         
         public IEnumerable<XElement> GetData()
         {
-            return data.getData("BakeOffVare");
+            return dataStream.getData("BakeOffVare");
         }
         public void UpdateDateBase()
         {
@@ -152,7 +152,6 @@ namespace Delta_Coop365
         {
             theOrder = new Order();
             UpdateTotalPriceText(" ");
-
             
         }
     }
