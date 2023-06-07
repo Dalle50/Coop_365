@@ -15,8 +15,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="536" />
-            <RowDefinition  Height="103"/>
-            <RowDefinition/>
+            <RowDefinition Height="103"/>
         </Grid.RowDefinitions>
 
         <!-- col 0, row 0-->
@@ -26,42 +25,40 @@
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White" Height="18" Width="54"/>
         <!-- col 1, row 0-->
         <ScrollViewer Grid.Column="1" Grid.Row="0" Background="#0dc144" Margin="0,0,0,4">
-            <StackPanel>
-                <StackPanel x:Name="BakeOff">
-                    <ItemsControl x:Name="ICProducts" ItemsSource="{Binding products}" >
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="3" HorizontalAlignment="Center"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="190"/>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="25" />
-                                        </Grid.RowDefinitions>
-                                        <Border Width="185" Height="185" BorderBrush="#066a3f" BorderThickness="10">
-                                            <Image Source="{Binding Path=imgPath}" Width="200" Height="200" MouseDown="ProductClick"/>
-                                        </Border>
-                                        <TextBlock Text="{Binding Path=productName}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" FontFamily="Cambria" Foreground="White" FontSize="18" TextWrapping="WrapWithOverflow" Background="#066a3f" MinWidth="100" MaxWidth="200"/>
-                                        <TextBlock Text="{Binding Path=Price}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="2" FontFamily="Cambria" Foreground="White"  Background="#066a3f" MinWidth="100" MaxWidth="200" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
-                                    </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+            <StackPanel x:Name="BakeOff">
+                <ItemsControl x:Name="ICProducts" ItemsSource="{Binding productsCollection}" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="190"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Border Width="185" Height="185" BorderBrush="#066a3f" BorderThickness="10">
+                                    <Image Source="{Binding Path=imgPath}" Width="200" Height="200" MouseDown="ProductClick"/>
+                                </Border>
+                                <TextBlock Text="{Binding Path=productName}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" FontFamily="Cambria"
+                                                   Foreground="White" FontSize="18" TextWrapping="WrapWithOverflow" Background="#066a3f" MinWidth="100" MaxWidth="200"/>
+                                <TextBlock Text="{Binding Path=Price}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="2" FontFamily="Cambria"
+                                                   Foreground="White"  Background="#066a3f" MinWidth="100" MaxWidth="200" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </ScrollViewer>
         <!-- col 0, row 1-->
         <Image Height="NaN" Margin="21,0,23,2" Source="/HomeButton.png" MouseDown="ReturnClick" RenderTransformOrigin="0.616,0.626" Grid.Row="1"/>
-        <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Center"  VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15" Height="34" Width="136" Margin="0,102,0,0" Grid.RowSpan="2"/>
+        <Label Grid.Row="1" Content="Gå Tilbage til start" HorizontalAlignment="Center"  VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15" Height="34" Width="136" Margin="0,82,0,0"/>
         <!-- col 1, row 1-->
         <Label Grid.Column="1" Grid.Row="1" Content="TOTAL:" HorizontalAlignment="Left" Margin="284,59,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Cambria" Foreground="White" Height="38" Width="86" RenderTransformOrigin="0.507,0.433"/>
         <Image Grid.Column="1" Height="NaN" Margin="560,21,17,0" Source="/Basket.png" MouseDown="BasketClick" Grid.Row="1"/>

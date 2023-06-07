@@ -41,7 +41,7 @@ namespace Delta_Coop365
             productsCollection = new ObservableCollection<Product>();
             theOrder = new Order();
             textBlock = tbTotalAmount;
-            UpdateDateBase();
+            UpdateDataBase();
             GetProducts();
             ShowProducts();
             SetStock();
