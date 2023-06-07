@@ -43,8 +43,13 @@ namespace Delta_Coop365
             textBlock = tbTotalAmount;
             UpdateDateBase();
             GetProducts();
-            ShowProducts();
             SetStock();
+            ShowProducts();
+            if (!dbAccessor.isDatabasePopulated("Orders"))
+            {
+                TestData testDataGenerator = new TestData();
+                testDataGenerator.GenerateTestData();
+            }
         }
         
         public IEnumerable<XElement> GetData()

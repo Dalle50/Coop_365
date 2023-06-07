@@ -103,6 +103,7 @@ namespace Delta_Coop365
         {
             if (registrationSuccessful)
             {
+                phoneNumberExist = true;
                 // Close the current window when the Register window is closed and registration was successful
                 Close();
             }

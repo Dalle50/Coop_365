@@ -80,7 +80,15 @@ namespace Delta_Coop365
                     {
                         int productId = sqlReader.GetInt32(sqlReader.GetOrdinal("ProductID"));
                         string productName = sqlReader.GetString(sqlReader.GetOrdinal("ProductName"));
-                        int stock = sqlReader.GetInt32(sqlReader.GetOrdinal("Stock"));
+                        int stock;
+                        if(sqlReader.IsDBNull(sqlReader.GetOrdinal("Stock")))
+                        {
+                            stock = 0;
+                        }
+                        else
+                        {
+                            stock = sqlReader.GetInt32(sqlReader.GetOrdinal("Stock"));
+                        }
                         double price = sqlReader.GetDouble(sqlReader.GetOrdinal("Price"));
                         string ingredients = sqlReader.GetString(sqlReader.GetOrdinal("Description"));
                         string pathToPicture = sqlReader.GetString(sqlReader.GetOrdinal("Url"));
@@ -402,6 +410,39 @@ namespace Delta_Coop365
                         double coopPoints = sqlReader.GetDouble(sqlReader.GetOrdinal("CoopPoints"));
 
                         tempC = new Customer(KundeId,name, address, zipCode, city, email, phoneNumber, coopPoints) ;
+                    }
+                    command.Connection.Close();
+                }
+            }
+            return tempC;
+        }
+        public Customer GetCustomerById(int KundeId)
+        {
+            Customer tempC = null;
+            string query = "Select * FROM Kunder WHERE KundeID = @KundeId";
+            SqlParameter kundeIdParam = new SqlParameter("@KundeId", KundeId);
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add(kundeIdParam);
+                    command.Connection.Open();
+
+                    SqlDataReader sqlReader = command.ExecuteReader();
+
+                    if (sqlReader.Read())
+                    {
+
+                        int id = sqlReader.GetInt32(sqlReader.GetOrdinal("KundeID"));
+                        string name = sqlReader.GetString(sqlReader.GetOrdinal("Name"));
+                        string address = sqlReader.GetString(sqlReader.GetOrdinal("Address"));
+                        int zipCode = sqlReader.GetInt32(sqlReader.GetOrdinal("zipCode"));
+                        int phoneNumber = sqlReader.GetInt32(sqlReader.GetOrdinal("PhoneNumber"));
+                        string city = sqlReader.GetString(sqlReader.GetOrdinal("City"));
+                        string email = sqlReader.GetString(sqlReader.GetOrdinal("Email"));
+                        double coopPoints = sqlReader.GetDouble(sqlReader.GetOrdinal("CoopPoints"));
+
+                        tempC = new Customer(id, name, address, zipCode, city, email, phoneNumber, coopPoints);
                     }
                     command.Connection.Close();
                 }

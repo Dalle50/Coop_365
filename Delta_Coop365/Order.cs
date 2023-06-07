@@ -14,6 +14,7 @@ namespace Delta_Coop365
         private int OrderID;
         private double TotalPrice;
         private double discount = 0.0;
+        private int CustomerId;
         public Order()
         {
             orderLines = new List<OrderLine>();
@@ -95,6 +96,14 @@ namespace Delta_Coop365
         public void ClearOrderLines()
         {
             orderLines.Clear();
+        }
+        public void SetCustomerId(int KundeId)
+        {
+            CustomerId = KundeId;
+        }
+        public int GetCustomerId()
+        {
+            return CustomerId;
         }
     }
 }

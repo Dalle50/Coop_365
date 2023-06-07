@@ -21,7 +21,8 @@
             <TextBox x:Name="city" IsReadOnly="true" HorizontalAlignment="Left" Margin="127,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="email" HorizontalAlignment="Left" Margin="127,133,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="phoneNumber" IsReadOnly="True" HorizontalAlignment="Left" Margin="127,156,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <Button Content="Register" HorizontalAlignment="Left" Margin="241,223,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click" RenderTransformOrigin="-0.136,0.37"/>
+            <Button Content="Register" HorizontalAlignment="Left" Margin="162,203,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click" RenderTransformOrigin="-0.136,0.37"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,10,0,0" TextWrapping="Wrap" Text="Indtast dine informationer her" VerticalAlignment="Top"/>
 
         </Grid>
 

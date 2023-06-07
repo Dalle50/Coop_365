@@ -140,7 +140,7 @@ namespace Delta_Coop365
                         }
                         else
                         {
-                            Console.WriteLine("No data or invalid response format.");
+                            Console.WriteLine("Ikke gyldigt postnummer.");
                         }
                     }
                     else
@@ -151,6 +151,7 @@ namespace Delta_Coop365
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"An error occurred: {ex.Message}");
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
             return returnPostalCode;
