@@ -1,0 +1,51 @@
+﻿<Window x:Class="Delta_Coop365.EmailView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Delta_Coop365"
+        mc:Ignorable="d"
+        Title="Email" Height="350" Width="560">
+    <!-- [ Author: Rebecca] -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--col 1, row 1-->
+        <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Black" Margin="1,1,1,1" VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="To"  VerticalAlignment="Top"/>
+        </Border>
+
+        <!--col 1, row 2-->
+        <Border Grid.Column="1" Grid.Row="2" BorderThickness="1" BorderBrush="Black" Margin="1,1,1,1" VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Cc"  VerticalAlignment="Top"/>
+        </Border>
+        <!--col 1, row 3-->
+        <Rectangle Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" Height="1" Stroke="Black" VerticalAlignment="Top" Width="519" Grid.ColumnSpan="2" Margin="0,34,0,0"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Text="Add a subject" Margin="10,10,0,0" Width="73" Grid.ColumnSpan="2" Foreground="Black"/>
+
+        <!--col 2, row 1-->
+        <Rectangle Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Height="1" Stroke="Black" VerticalAlignment="Top" Width="470" RenderTransformOrigin="0.5,0.5" Margin="0,23,0,0"/>
+        <TextBlock Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Text="Enter text" Margin="10,5,0,5" Width="73" Foreground="Black"/>
+
+        <!-- col 2, row 2-->
+        <Rectangle Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" Height="1" Stroke="Black" VerticalAlignment="Top" Width="470" RenderTransformOrigin="0.5,0.5" Margin="0,23,0,0"/>
+        <TextBlock Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Text="Enter text" Margin="10,5,0,5" Width="73" Foreground="Black"/>
+
+        <!--col 2, row 4-->
+        <Rectangle Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" Height="190" Stroke="Black" VerticalAlignment="Top" Width="519" RenderTransformOrigin="0.5,0.5" Margin="0,10,0,0" Grid.ColumnSpan="2"/>
+        <!--col 2, row 5-->
+        <Button Grid.Column="2" Grid.Row="5" Content="Send" HorizontalAlignment="Left" Margin="429,0,0,0" VerticalAlignment="Center"/>
+    </Grid>
+</Window>

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Delta_Coop365"
         mc:Ignorable="d"
         Title="ViewingProduct" Height="600" Width="560" ResizeMode="NoResize">
+    <!-- [ Author: Pernille ] -->
     <Grid Background="#0dc144">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="205"/>

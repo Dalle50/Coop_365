@@ -334,7 +334,7 @@ namespace Delta_Coop365
         public bool IsCustomerExisting(int phoneNumber)
         {
             bool customerExists;
-            string query = "SELECT * FROM Kunder WHERE PhoneNumber = "+phoneNumber;
+            string query = "SELECT COUNT(*) FROM Kunder WHERE PhoneNumber = " + phoneNumber;
             SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
             using (SqlConnection connection = new SqlConnection(connString))
             {
@@ -342,7 +342,7 @@ namespace Delta_Coop365
                 {
                     command.Parameters.Add(PhoneNumberParam);
                     command.Connection.Open();
-                    int count = (int)command.ExecuteScalar();
+                    var count = (int)command.ExecuteScalar();
 
                     if(count > 0)
                     {
@@ -360,7 +360,7 @@ namespace Delta_Coop365
         public Customer GetCustomer(int phoneNumber)
         {
             Customer tempC = null;
-            string query = "Select FROM Kunder WHERE PhoneNumber = @phoneNumber";
+            string query = "Select * FROM Kunder WHERE PhoneNumber = @phoneNumber";
             SqlParameter phoneNumberParam = new SqlParameter("@phoneNumber", phoneNumber);
             using (SqlConnection connection = new SqlConnection(connString))
             {
@@ -373,6 +373,8 @@ namespace Delta_Coop365
 
                     if (sqlReader.Read())
                     {
+
+                        int KundeId = sqlReader.GetInt32(sqlReader.GetOrdinal("KundeID"));
                         string name = sqlReader.GetString(sqlReader.GetOrdinal("Name"));
                         string address = sqlReader.GetString(sqlReader.GetOrdinal("Address"));
                         int zipCode = sqlReader.GetInt32(sqlReader.GetOrdinal("zipCode"));
@@ -380,7 +382,7 @@ namespace Delta_Coop365
                         string email = sqlReader.GetString(sqlReader.GetOrdinal("Email"));
                         double coopPoints = sqlReader.GetDouble(sqlReader.GetOrdinal("CoopPoints"));
 
-                        tempC = new Customer(name, address, zipCode, city, email, phoneNumber, coopPoints);
+                        tempC = new Customer(KundeId,name, address, zipCode, city, email, phoneNumber, coopPoints) ;
                     }
                     command.Connection.Close();
                 }

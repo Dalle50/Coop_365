@@ -1,7 +1,10 @@
-﻿using PdfSharp.Pdf.Content.Objects;
+﻿using MailKit.Search;
+using PdfSharp.Pdf.Content.Objects;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -10,14 +13,16 @@ using static System.Net.Mime.MediaTypeNames;
 namespace Delta_Coop365
 {
     /// <summary>
-    /// Interaction logic for CheckOut.xaml
+    /// [ Author: Pernille ]
+    /// - Interaction logic for CheckOut.xaml
     /// </summary>
     public partial class CheckOut : Window
     {
-        Order order;
-        OrderLine orderLine;
+        public static Order order;
         ObservableCollection<OrderLine> orderLines;
         DbAccessor dbAccessor = new DbAccessor();
+        Email emailService = new Email();
+        public static Customer customer = null;
         DateTime date = DateTime.Now;
 
 
@@ -39,6 +44,7 @@ namespace Delta_Coop365
             {
                 orderLines.Remove(orderLine);
                 order.DeleteOrderLine(orderLine);
+                DontUpdateStock(orderLine.GetProduct());
                 order.UpdateTotalPrice();
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
@@ -71,7 +77,6 @@ namespace Delta_Coop365
                 {
                     orderLine.amount++;
                     orderLine.SetAmount(orderLine.amount);
-                    
                 }
 
                 orderLine.SetDate(date);
@@ -104,6 +109,22 @@ namespace Delta_Coop365
 
         private void btnUndoAll_Click(object sender, RoutedEventArgs e)
         {
+            foreach (OrderLine orderLine in orderLines)
+            {
+                int amount = orderLine.amount;
+                int productIndex = -1;
+                foreach (Product product in MainWindow.productsCollection)
+                {
+                    productIndex++;
+                    if (product.GetID() == orderLine.GetProduct().GetID())
+                    {
+                        break;
+                    }
+                }
+                MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
+                MainWindow.productsCollection[productIndex].SetStock(orderLine.GetProduct().GetStock() + amount);
+                orderLine.GetProduct().SetStock(orderLine.GetProduct().GetStock() + amount);
+            }
             order.ClearOrderLines();
             order.UpdateTotalPrice();
 
@@ -111,61 +132,119 @@ namespace Delta_Coop365
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
-            Console.WriteLine("The order history was cleared and nothing was added to the database.");
-
-
+            Console.WriteLine("The order history was cleared.");
         }
 
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
+            
             Console.WriteLine("Closing window so customer can add more items.");
         }
 
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
-            UpdateStockOnConfirm();
-            order.UpdateTotalPrice();
-            int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
-            order.SetId(orderId);
-            foreach(OrderLine ol in orderLines)
+            if ((bool)checkBox.IsChecked)
             {
-                dbAccessor.InsertIntoOrderLines(orderId, ol);
+                CheckOutPointsCheck phoneNumberCheck = new CheckOutPointsCheck(ConvertItemsToPoints(orderLines.ToList()));
+                phoneNumberCheck.Closing += PhoneNumberCheck_Closing; // Attach the event handler
+                phoneNumberCheck.Show();
+                
             }
-            
-            QrCodeService qRCodeGenerator = new QrCodeService();  //
+            else
+            {
+                UpdateStockOnConfirm();
+                order.UpdateTotalPrice();
+                int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date);
+                order.SetId(orderId);
+                foreach (OrderLine ol in orderLines)
+                {
+                    dbAccessor.InsertIntoOrderLines(orderId, ol);
+                }
+                CreateQRCode(orderId);
+                order = new Order();
+                Close();
+            }
+        }
+        private void PhoneNumberCheck_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CheckOutPointsCheck phoneNumberCheck = (CheckOutPointsCheck)sender;
+            if (phoneNumberCheck.phoneNumberExist)
+            {
+                UpdateStockOnConfirm();
+                order.UpdateTotalPrice();
+                Customer c = dbAccessor.GetCustomer(Int32.Parse(phoneNumberCheck.phoneNumberTextBox.Text));
+                int orderId = dbAccessor.InsertIntoOrders(order.GetPrice(), date, c.KundeID);
+                order.SetId(orderId);
+                foreach (OrderLine ol in orderLines)
+                {
+                    dbAccessor.InsertIntoOrderLines(orderId, ol);
+                }
+
+                CreateQRCode(orderId);
+                
+            }
+            dbAccessor.UpdateCustomerPoints(customer.phoneNumber, dbAccessor.GetCustomerPoints(customer.phoneNumber) + ConvertItemsToPoints(MainWindow.theOrder.GetOrderLines()));
+            MainWindow.ResetOrder();
+            Close();
+        }
+        private void btnGoBack_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            Console.WriteLine("Window closing but order is still saved.");
+        }
+        private void CreateQRCode(int orderId)
+        {
+            QrCodeService qRCodeGenerator = new QrCodeService();
             Bitmap qrCode = qRCodeGenerator.GenerateQRCodeImage(orderId);
             qRCodeGenerator.SaveQrCode(qrCode, orderId, DbAccessor.GetSolutionPath() + "\\QrCodes\\");
             PrintPreview CreateRecipe = new PrintPreview();  //the thing you want to print/display
             CreateRecipe.CreatePDFReceipt(order, orderId);
-            Close();
-            string pathToOrderReciept = DbAccessor.GetSolutionPath() + "\\Receipts\\" + MainWindow.theOrder.GetID() + ".pdf";
-            Email email = new Email();
-            email.SendNotice("daniel.htc.jacobsen@gmail.com", "Produkt er blevet solgt", "Produkterne er solgt på dette tidspunkt: " + date, new[] { pathToOrderReciept });
-            MainWindow.theOrder = new Order();
-            MainWindow.UpdateTotalPriceText("");
-
+            Console.WriteLine("QR-Kode has been generated and added onto the PDF file.");
         }
         private void UpdateStockOnConfirm()
         {
-            foreach (OrderLine ol in order.orderLines)
+            foreach (OrderLine orderline in order.orderLines)
             {
                 int productIndex = -1;
-                Product p = ol.GetProduct();
-                int newStock = p.GetStock() - ol.amount;
-                foreach (Product collectiveProduct in MainWindow.products)
+                Product p = orderline.GetProduct();
+                int newStock = p.GetStock() - orderline.amount;
+                string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
+                if ( newStock <= 0) 
+                {
+                    Console.WriteLine("Sender mail.....");
+                    emailService.SendNotice("daniel.htc.jacobsen@gmail.com",
+                        "Stock is empty", 
+                        "The stock of: "+ p.GetName() +" is emptied out at the time: " + date,new string[] {});
+                }
+                foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
                     productIndex++;
                     if (p.GetID() == collectiveProduct.GetID())
                     {
                         break;
                     }
-                    MainWindow.products[productIndex].SetStock(newStock);
+                    MainWindow.productsCollection[productIndex].SetStock(newStock);
                     p.SetStock(newStock);
                 }
                 dbAccessor.updateStock(p.GetID(), newStock);
                 Console.WriteLine("Stock has been updated to " + p.GetStock());
             }
+        }
+        private void DontUpdateStock(Product p)
+        {
+            Console.WriteLine("Stock is set back to: " + p.GetStock());
+            p.SetStock(p.GetStock());
+            dbAccessor.updateStock(p.GetID(), p.GetStock());
+        }
+        private double ConvertItemsToPoints(List<OrderLine> orderLines)
+        {
+            double points = 0;
+            foreach(OrderLine line in orderLines)
+            {
+                points += line.amount * 5;
+            }
+            return points;
         }
     }
 }

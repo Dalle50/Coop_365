@@ -16,7 +16,7 @@ namespace Delta_Coop365
     ///  Model class for Product.
     ///  - contains all the things needed for the Product object.
     /// </summary>
-    public class Product : IBakeOff
+    public class Product
     {
         public string productName { get; set; }
         private int productID;
@@ -84,7 +84,11 @@ namespace Delta_Coop365
         {
             return ingredients;
         }
-
+        /// <summary>
+        /// Method to create the Bitmap(pictures) of the products so that they display on the window.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public BitmapImage Makebitmap(string path)
         {
             string imgPath = path;
@@ -95,6 +99,9 @@ namespace Delta_Coop365
             bitmap.EndInit();
             return bitmap;
         }
+        /// <summary>
+        /// Returns the price as a string, to make it easier to display in WPF window.
+        /// </summary>
         public string Price
         {
             get { return "Pris: " + GetPrice().ToString() + " kr."; }

@@ -15,21 +15,22 @@ using System.Windows.Shapes;
 namespace Delta_Coop365
 {
     /// <summary>
+    /// [ Author: Rebecca ]
     /// Interaction logic for ViewingProduct.xaml
     /// </summary>
     public partial class ViewingProduct : Window
     {
-        Product product;
-        Order order;
-        DateTime date = DateTime.Now.Date;
+        private Product product;
+        private Order order;
+        private DateTime date = DateTime.Now.Date;
         
-        public ViewingProduct(Product p)
+        public ViewingProduct(Product currentProduct)
         {
             InitializeComponent();
             order = MainWindow.theOrder;
-            product = p;
-            getImg();
-            getInfo(p);
+            product = currentProduct;
+            GetImage();
+            GetInfo(currentProduct);
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -70,13 +71,13 @@ namespace Delta_Coop365
                 else if (order.orderLines.Count > 0)
                 {
                     bool isExisting = false;
-                    foreach (OrderLine ol in order.orderLines)
+                    foreach (OrderLine orderLine in order.orderLines)
                     {
                         
-                        if (ol.GetProduct().GetID() == product.GetID())
+                        if (orderLine.GetProduct().GetID() == product.GetID())
                         {
                             isExisting = true;
-                            UpdateExistingOrderLine(ol);
+                            UpdateExistingOrderLine(orderLine);
                             UpdateStock();
                             Close();
                         }
@@ -97,7 +98,7 @@ namespace Delta_Coop365
 
             if (product.GetStock() == 0)
             {
-                Console.WriteLine("Produktet er nu udsolgt...");
+                Console.WriteLine($"Der er nu ikke flere {product.GetName()} tilbage i montren" );
             }
         }
         private void CreateNewOrderLine()
@@ -109,10 +110,10 @@ namespace Delta_Coop365
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
         
-        private void UpdateExistingOrderLine(OrderLine ol)
+        private void UpdateExistingOrderLine(OrderLine orderLine)
         {
             int amount = Int32.Parse(txtAmount.Text);
-            ol.SetAmount(ol.GetAmount() + amount);
+            orderLine.SetAmount(orderLine.GetAmount() + amount);
             order.UpdateTotalPrice();
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
@@ -121,26 +122,26 @@ namespace Delta_Coop365
         {
             int amount = Int32.Parse(txtAmount.Text);
             int productIndex = -1;
-            foreach (Product p in MainWindow.products)
+            foreach (Product product in MainWindow.productsCollection)
             {
                 productIndex++;
-                if (p.GetID() == product.GetID())
+                if (product.GetID() == this.product.GetID())
                 {
                     break;
                 }
             }
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
-            MainWindow.products[productIndex].SetStock(product.GetStock() - amount);
+            MainWindow.productsCollection[productIndex].SetStock(product.GetStock() - amount);
             product.SetStock(product.GetStock() - amount);
         }
 
-        private void getInfo(Product product)
+        private void GetInfo(Product product)
         {
             txtProductName.Text = product.GetName();
             txtNutrition.Text = product.GetIngredients();
             txtPrice.Text = product.GetPrice().ToString();
         }
-        private void getImg()
+        private void GetImage()
         {
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();

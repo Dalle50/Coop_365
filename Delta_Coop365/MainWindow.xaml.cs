@@ -27,39 +27,39 @@ namespace Delta_Coop365
     /// </summary>
     public partial class MainWindow : Window
     {
-        DbAccessor dbAccessor = new DbAccessor();
-        DataStream data = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
-        public static ObservableCollection<Product> products;
-        Product p;
-        ViewingProduct vp;
+        private DbAccessor dbAccessor = new DbAccessor();
+        private DataStream dataStream = new DataStream("https://coop365.junoeuro.dk/api/Coop365/BakeOffVare");
+        public static ObservableCollection<Product> productsCollection;
+        private Product product;
+        private ViewingProduct viewingProduct;
         public static Order theOrder;
-        public static TextBlock tb;
+        public static TextBlock textBlock;
 
         public MainWindow()
         {
             InitializeComponent();
-            products = new ObservableCollection<Product>();
+            productsCollection = new ObservableCollection<Product>();
             theOrder = new Order();
-            tb = tbTotalAmount;
-            updateDateBase();
+            textBlock = tbTotalAmount;
+            UpdateDateBase();
             GetProducts();
             ShowProducts();
             SetStock();
         }
         
-        public IEnumerable<XElement> getData()
+        public IEnumerable<XElement> GetData()
         {
-            return data.getData("BakeOffVare");
+            return dataStream.getData("BakeOffVare");
         }
-        public void updateDateBase()
+        public void UpdateDataBase()
         {
             if (dbAccessor.isDatabasePopulated("Products"))
             {
-                dbAccessor.updateProductsDaily(getData());
+                dbAccessor.updateProductsDaily(GetData());
             }
             else
             {
-                foreach(XElement e in getData())
+                foreach(XElement e in GetData())
                 {
                     int productid = (int)e.Element("Varenummer");
                     double price = (double)e.Element("Pris");
@@ -79,40 +79,55 @@ namespace Delta_Coop365
                 Console.WriteLine(product.GetPrice());
                 Console.WriteLine(product.GetName());
                 Console.WriteLine(product.GetIngredients());
-                products.Add(product);
+                productsCollection.Add(product);
             }
         }
-        public void ShowProducts() 
+
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        public void ShowProducts()
         {
-            ICProducts.ItemsSource = products;
+            ICProducts.ItemsSource = productsCollection;
         }
 
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BasketClick(object sender, MouseButtonEventArgs e)
         {
             CheckOut checkout = new CheckOut(theOrder);
             checkout.Show();
 
         }
+
         private void ReturnClick(object sender, MouseButtonEventArgs e)
         {
 
         }
+
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ProductClick(object sender, MouseButtonEventArgs e)
         {
             Image img = (Image)sender;
             BitmapImage clickedImagepath = (BitmapImage)img.Source;
 
-            foreach (Product product in products)
+            foreach (Product product in productsCollection)
             {
                 if (product.imgPath == clickedImagepath)
                 {
-                    p = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
+                    this.product = new Product(product.GetID(), product.productName, product.GetStock(), product.GetPrice(), product.GetIngredients(), clickedImagepath.UriSource.AbsolutePath);
                     break;
                 }
             }
-            ViewingProduct viewProduct = new ViewingProduct(p);
-            vp = viewProduct;
-            if (p.GetStock() == 0)
+            viewingProduct = new ViewingProduct(product);
+            if (product.GetStock() == 0)
             {
                 //Grafik til at vise det her, aner ikke om vi kan opdatere tekst til at sige det.
                 Console.WriteLine("Produktet er udsolgt.");
@@ -120,19 +135,26 @@ namespace Delta_Coop365
             }
             else
             {
-                vp.Show();
+                viewingProduct.Show();
             }
         }
 
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
+        /// <param name="text"></param>
         public static void UpdateTotalPriceText(string text)
         {
-            App.Current.Dispatcher.Invoke(delegate { tb.Text = text; });
+            App.Current.Dispatcher.Invoke(delegate { textBlock.Text = text; });
         }
 
+        /// <summary>
+        /// [ Author: Rebecca ]
+        /// </summary>
         private void SetStock()
         {
             Random rand = new Random();
-            foreach (Product product in products)
+            foreach (Product product in productsCollection)
             {
                 int temp = rand.Next(5, 25);
                 if (product.GetStock() == 0 || product.GetStock() == null)
@@ -143,11 +165,20 @@ namespace Delta_Coop365
             }
         }
 
-        private void GeneratedDailyPDF(object sender, RoutedEventArgs e)
+
+        private void GenerateDailyPDF(object sender, RoutedEventArgs e)
         {
-            List<OrderLine> ols = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
+            List<OrderLine> orderLines = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
             PrintPreview printer = new PrintPreview();
-            printer.CreateDailyPDF(ols);
+            printer.CreateDailyPDF(orderLines);
+        }
+
+
+        public static void ResetOrder()
+        {
+            theOrder = new Order();
+            UpdateTotalPriceText(" ");
+            
         }
     }
 }
