@@ -17,8 +17,8 @@
             <TextBlock HorizontalAlignment="Left" Margin="73,156,0,0" TextWrapping="Wrap" Text="TelefonNr" VerticalAlignment="Top"/>
             <TextBox x:Name="Navn" PreviewTextInput="NumberCheck_PreviewTextInput" HorizontalAlignment="Left" Margin="127,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="Adresse" HorizontalAlignment="Left" Margin="127,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="zip" PreviewTextInput="CharCheck_PreviewTextInput" HorizontalAlignment="Left" Margin="127,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="city" PreviewTextInput="NumberCheck_PreviewTextInput" HorizontalAlignment="Left" Margin="127,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="zip" PreviewTextInput="zipCheck_PreviewTextInput" HorizontalAlignment="Left" Margin="127,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="city" IsReadOnly="true" HorizontalAlignment="Left" Margin="127,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="email" HorizontalAlignment="Left" Margin="127,133,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="phoneNumber" IsReadOnly="True" HorizontalAlignment="Left" Margin="127,156,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             <Button Content="Register" HorizontalAlignment="Left" Margin="241,223,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click" RenderTransformOrigin="-0.136,0.37"/>

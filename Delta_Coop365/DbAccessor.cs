@@ -78,7 +78,14 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        Product temp = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), 0, Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+                        int productId = sqlReader.GetInt32(sqlReader.GetOrdinal("ProductID"));
+                        string productName = sqlReader.GetString(sqlReader.GetOrdinal("ProductName"));
+                        int stock = sqlReader.GetInt32(sqlReader.GetOrdinal("Stock"));
+                        double price = sqlReader.GetDouble(sqlReader.GetOrdinal("Price"));
+                        string ingredients = sqlReader.GetString(sqlReader.GetOrdinal("Description"));
+                        string pathToPicture = sqlReader.GetString(sqlReader.GetOrdinal("Url"));
+       
+                        Product temp = new Product(productId, productName, stock, price, ingredients, pathToPicture);
                         products.Add(temp);
                     }
 
@@ -102,7 +109,12 @@ namespace Delta_Coop365
                     SqlDataReader sqlReader = command.ExecuteReader();
                     if (sqlReader.Read())
                     {
-                        tempProduct = new Product(Int32.Parse(sqlReader.GetValue(0).ToString()), sqlReader.GetValue(1).ToString(), Int32.Parse(sqlReader.GetValue(2).ToString()), Double.Parse(sqlReader.GetValue(3).ToString()), sqlReader.GetValue(4).ToString(), sqlReader.GetValue(5).ToString());
+                        string productName = sqlReader.GetString(sqlReader.GetOrdinal("ProductName"));
+                        int stock = sqlReader.GetInt32(sqlReader.GetOrdinal("Stock"));
+                        double price = sqlReader.GetDouble(sqlReader.GetOrdinal("Price"));
+                        string ingredients = sqlReader.GetString(sqlReader.GetOrdinal("Description"));
+                        string pathToPicture = sqlReader.GetString(sqlReader.GetOrdinal("Url"));
+                        tempProduct = new Product(productId, productName, stock, price, ingredients, pathToPicture);
 
                     }
                     else
@@ -279,9 +291,12 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(2).ToString())),
-                                                                        Int32.Parse(sqlReader.GetValue(1).ToString()),
-                                                                            DateTime.Parse(sqlReader.GetValue(4).ToString())));
+                        int ProductId = sqlReader.GetInt32(sqlReader.GetOrdinal("ProductID"));
+                        int amount = sqlReader.GetInt32(sqlReader.GetOrdinal("Amount"));
+                        DateTime orderLineDate = sqlReader.GetDateTime(sqlReader.GetOrdinal("Date"));
+                        tempOrderLines.Add(new OrderLine(GetProduct(ProductId),
+                                                                        amount,
+                                                                            orderLineDate));
                     }
                     command.Connection.Close();
                 }
@@ -303,11 +318,15 @@ namespace Delta_Coop365
 
                     while (sqlReader.Read())
                     {
-                        if (DateTime.Parse(sqlReader.GetValue(4).ToString()) == date)
+                        DateTime orderLineDate = sqlReader.GetDateTime(sqlReader.GetOrdinal("Date"));
+                        if (orderLineDate == date)
                         {
-                            tempOrderLines.Add(new OrderLine(GetProduct(Int32.Parse(sqlReader.GetValue(2).ToString())),
-                                                                            Int32.Parse(sqlReader.GetValue(1).ToString()),
-                                                                                DateTime.Parse(sqlReader.GetValue(4).ToString())));
+                            int ProductId = sqlReader.GetInt32(sqlReader.GetOrdinal("ProductID"));
+                            int amount = sqlReader.GetInt32(sqlReader.GetOrdinal("Amount"));
+
+                            tempOrderLines.Add(new OrderLine(GetProduct(ProductId),
+                                                                            amount,
+                                                                                orderLineDate));
                         }
                     }
                     command.Connection.Close();
@@ -316,21 +335,6 @@ namespace Delta_Coop365
             }
             return tempOrderLines;
         }
-        /// CREATE, READ, UPDATE <summary>
-        /// </summary>
-        public void InsertIntoKunder(string name, string address, int zipCode, string city, string email, int phoneNumber, double coopPoints)
-        {
-            string query = "Insert INTO Kunder(Name, Address, Zipcode, City, Email, PhoneNumber, CoopPoints) VALUES(@Name, @Address, @Zipcode, @City, @Email, @PhoneNumber, @CoopPoints)";
-            SqlParameter NameParam = new SqlParameter("@Name", name);
-            SqlParameter AddressParam = new SqlParameter("@Address", address);
-            SqlParameter ZipcodeParam = new SqlParameter("@Zipcode", zipCode);
-            SqlParameter CityParam = new SqlParameter("@City", city);
-            SqlParameter EmailParam = new SqlParameter("@Email", email);
-            SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
-            SqlParameter CoopPointsParam = new SqlParameter("@CoopPoints", coopPoints);
-            sqlQuery(query, NameParam, AddressParam, ZipcodeParam, CityParam, EmailParam, PhoneNumberParam, CoopPointsParam);
-        }
-
         public bool IsCustomerExisting(int phoneNumber)
         {
             bool customerExists;
@@ -357,6 +361,21 @@ namespace Delta_Coop365
             }
             return customerExists;
         }
+        /// CREATE, READ, UPDATE <summary>
+        /// </summary>
+        public void InsertIntoKunder(string name, string address, int zipCode, string city, string email, int phoneNumber, double coopPoints)
+        {
+            string query = "Insert INTO Kunder(Name, Address, Zipcode, City, Email, PhoneNumber, CoopPoints) VALUES(@Name, @Address, @Zipcode, @City, @Email, @PhoneNumber, @CoopPoints)";
+            SqlParameter NameParam = new SqlParameter("@Name", name);
+            SqlParameter AddressParam = new SqlParameter("@Address", address);
+            SqlParameter ZipcodeParam = new SqlParameter("@Zipcode", zipCode);
+            SqlParameter CityParam = new SqlParameter("@City", city);
+            SqlParameter EmailParam = new SqlParameter("@Email", email);
+            SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
+            SqlParameter CoopPointsParam = new SqlParameter("@CoopPoints", coopPoints);
+            sqlQuery(query, NameParam, AddressParam, ZipcodeParam, CityParam, EmailParam, PhoneNumberParam, CoopPointsParam);
+        }
+
         public Customer GetCustomer(int phoneNumber)
         {
             Customer tempC = null;

@@ -157,6 +157,7 @@ namespace Delta_Coop365
                 CreateQRCode(orderId);
                 order = new Order();
                 Close();
+                MainWindow.ResetOrder();
             }
         }
         private void PhoneNumberCheck_Closing(object sender, System.ComponentModel.CancelEventArgs e)
