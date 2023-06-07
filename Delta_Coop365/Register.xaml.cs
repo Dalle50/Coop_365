@@ -17,6 +17,7 @@ namespace Delta_Coop365
 {
     /// <summary>
     /// Interaction logic for Register.xaml
+    /// [Author] Daniel
     /// </summary>
     public partial class Register : Window
     {

@@ -34,7 +34,9 @@ namespace Delta_Coop365
         private ViewingProduct viewingProduct;
         public static Order theOrder;
         public static TextBlock textBlock;
-
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -51,11 +53,17 @@ namespace Delta_Coop365
                 testDataGenerator.GenerateTestData();
             }
         }
-        
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<XElement> GetData()
         {
             return dataStream.getData("BakeOffVare");
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
         public void UpdateDataBase()
         {
             if (dbAccessor.isDatabasePopulated("Products"))
@@ -76,6 +84,9 @@ namespace Delta_Coop365
             }
             
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
         public void GetProducts()
         {
             foreach(Product product in dbAccessor.GetProducts())
@@ -170,7 +181,11 @@ namespace Delta_Coop365
             }
         }
 
-
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GenerateDailyPDF(object sender, RoutedEventArgs e)
         {
             List<OrderLine> orderLines = dbAccessor.GetDailyOrderLines(DateTime.Now.Date);
@@ -178,7 +193,9 @@ namespace Delta_Coop365
             printer.CreateDailyPDF(orderLines);
         }
 
-
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
         public static void ResetOrder()
         {
             theOrder = new Order();

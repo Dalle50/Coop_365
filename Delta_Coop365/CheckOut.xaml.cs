@@ -142,7 +142,11 @@ namespace Delta_Coop365
             
             Console.WriteLine("Closing window so customer can add more items.");
         }
-
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnConfirm_Click(object sender, RoutedEventArgs e)
         {
             if (isPhoneNumberCheckOpened)
@@ -176,6 +180,11 @@ namespace Delta_Coop365
                 MainWindow.ResetOrder();
             }
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PhoneNumberCheck_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             isPhoneNumberCheckOpened = false;
@@ -254,6 +263,11 @@ namespace Delta_Coop365
             p.SetStock(p.GetStock());
             dbAccessor.updateStock(p.GetID(), p.GetStock());
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="orderLines"></param>
+        /// <returns></returns>
         public static double ConvertItemsToPoints(List<OrderLine> orderLines)
         {
             double points = 0;
