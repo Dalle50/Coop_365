@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 namespace Delta_Coop365
 {
     /// <summary>
+    /// [ Author: Rebecca ]
     /// Interaction logic for ViewingProduct.xaml
     /// </summary>
     public partial class ViewingProduct : Window
