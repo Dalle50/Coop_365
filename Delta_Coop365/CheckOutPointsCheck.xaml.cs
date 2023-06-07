@@ -16,6 +16,7 @@ namespace Delta_Coop365
 {
     /// <summary>
     /// Interaction logic for CheckOutPointsCheck.xaml
+    /// [Author] Daniel
     /// </summary>
     public partial class CheckOutPointsCheck : Window
     {

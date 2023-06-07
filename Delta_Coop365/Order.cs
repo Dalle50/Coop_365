@@ -44,7 +44,10 @@ namespace Delta_Coop365
 
             return productsLeft;
         }
-
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="p"></param>
         public void Notify(Product p)
         {
             Email e = new Email();
@@ -70,6 +73,9 @@ namespace Delta_Coop365
             var ol = orderLines.Find(o => o.GetProduct().GetID() == productID);
             ol.SetAmount(amount);
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
         public void UpdateTotalPrice()
         {
             double tempTotal = 0.0;
@@ -80,6 +86,10 @@ namespace Delta_Coop365
             }
             this.TotalPrice = tempTotal - discount;
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="amount"></param>
         public void AddDiscount(double amount)
         {
             this.discount = amount;
@@ -93,10 +103,18 @@ namespace Delta_Coop365
         {
             orderLines.Clear();
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <param name="KundeId"></param>
         public void SetCustomerId(int KundeId)
         {
             CustomerId = KundeId;
         }
+        /// <summary>
+        /// [Author] Daniel
+        /// </summary>
+        /// <returns></returns>
         public int GetCustomerId()
         {
             return CustomerId;

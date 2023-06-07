@@ -16,10 +16,11 @@ using Microsoft.Office.Interop.Outlook;
 
 namespace Delta_Coop365
 {
+    /// <summary>
+    /// [Author] Daniel
+    /// </summary>
     public class Email
     {
-        //private receiver;
-        private Report report;
         private string senderEmail = "deltacoop365@outlook.dk";
         private string senderPassword = "projekt1234";
 

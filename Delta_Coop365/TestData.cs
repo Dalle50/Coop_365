@@ -9,6 +9,10 @@ namespace Delta_Coop365
 {
     internal class TestData
     {
+        /// <summary>
+        /// [Author] Daniel
+        /// Generates test data for visualisation purpose
+        /// </summary>
         DbAccessor dbAccessor = new DbAccessor();
         DateTime date = DateTime.Now;
 
