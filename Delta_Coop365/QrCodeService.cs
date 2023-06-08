@@ -3,19 +3,26 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Shapes;
 
 namespace Delta_Coop365
 {
     internal class QrCodeService
     {
         QRCodeGenerator qrGenerator;
+        /// <summary>
+        /// [Author] Palle
+        /// </summary>
         public QrCodeService()
         {
 
             this.qrGenerator = new QRCodeGenerator();
 
         }
+        /// <summary>
+        /// Generates the QrCode image and returns it.
+        /// </summary>
+        /// <param name="ordreId"></param>
+        /// <returns></returns>
         public Bitmap GenerateQRCodeImage(int ordreId)
         {
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(ordreId.ToString(), QRCodeGenerator.ECCLevel.Q);
@@ -23,6 +30,13 @@ namespace Delta_Coop365
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             return qrCodeImage;
         }
+        /// <summary>
+        /// Saves the given QrCode into the QrCodes folder in the project
+        /// If the folder is not created it will create it
+        /// </summary>
+        /// <param name="qrCode"></param>
+        /// <param name="ordreId"></param>
+        /// <param name="path"></param>
         public void SaveQrCode(Bitmap qrCode, int ordreId, string path)
         {
             try

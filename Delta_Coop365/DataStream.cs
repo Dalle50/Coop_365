@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Delta_Coop365
@@ -15,10 +12,18 @@ namespace Delta_Coop365
         private string api;
         public DataStream(string api) { this.api = api; }
 
+        /// <summary>
+        /// Loads XAML document from the given api url
+        /// Takes descandants which is objects categorised by names
+        /// Returns a IEnumerable of the type XELement which is the object we want from the XAML file 
+        /// </summary>
+        /// <param name="elementNames"></param>
+        /// <returns></returns>
         public IEnumerable<XElement> getData(string elementNames)
         {
             XDocument document = XDocument.Load(this.api);
             IEnumerable<XElement> results = document.Descendants(elementNames);
+            // Looping through the elements to visualize in console window that we're accessing it
             foreach (var element in results)
             {
                 int productid = (int)element.Element("Varenummer");

@@ -1,34 +1,21 @@
-﻿using Delta_Coop365;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
 using System.Configuration;
-using Microsoft.VisualStudio.Setup.Configuration;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.Collections.ObjectModel;
-using MailKit.Search;
-using static QRCoder.PayloadGenerator;
-
 
 namespace Delta_Coop365
 {
     internal class DbAccessor
     {
         /// <summary>
-        /// This class main focus is handling the database
-        /// connString variable is the source to the database(our case being local)
+        /// [ Author ] Daniel
+        /// This class handles all the calls to the database
+        /// Connection string is saved in App.Config.
         /// </summary>
         private string connString;
         public string picturesUrl;
-        /// <summary>
-        /// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\danie\\source\\repos\\Delta_Coop365\\Delta_Coop365\\Database1.mdf;Integrated Security=True"
-        /// </summary>
-        /// <param name="connString"></param>
         public DbAccessor() 
         {
             this.connString = ConfigurationManager.ConnectionStrings["post"].ConnectionString;
@@ -64,6 +51,10 @@ namespace Delta_Coop365
             }
             return returnBool;
         }
+        /// <summary>
+        /// Returns a list of all the products in the database
+        /// </summary>
+        /// <returns>List<Product></returns>
         public List<Product> GetProducts()
         {
             List<Product> products = new List<Product>();
@@ -103,6 +94,11 @@ namespace Delta_Coop365
             return products;
 
         }
+        /// <summary>
+        /// Recieves product from the database and returns a produt object.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public Product GetProduct(int productId)
         {
             Product tempProduct;
@@ -133,7 +129,6 @@ namespace Delta_Coop365
                 }
             }
             return tempProduct;
-
         }
         /// <summary>
         /// Inserts object data of Products into the database.
@@ -155,8 +150,6 @@ namespace Delta_Coop365
             sqlQuery(query, productIdParam, nameParam, priceParam, ingredientsParam, pictureUrlParam);
 
         }
-
-
         /// <summary>
         /// Updates the stock of the product with the given ProductID
         /// </summary>
@@ -169,6 +162,11 @@ namespace Delta_Coop365
             SqlParameter stockParam = new SqlParameter("@stock", stock);
             sqlQuery(query, productIdParam, stockParam);
         }
+        /// <summary>
+        /// Is used to update an IEnumerable of the type XElement 
+        /// Calls update function for every element.
+        /// </summary>
+        /// <param name="results"></param>
         public void updateProductsDaily(IEnumerable<XElement> results)
         {
 
@@ -196,8 +194,11 @@ namespace Delta_Coop365
             SqlParameter productIdParam = new SqlParameter("@price", productid);
             sqlQuery(query, priceParam, productIdParam);
         }
-
-        /// Order starts here
+        /// <summary>
+        /// Recieves order with machign orderid from the database
+        /// </summary>
+        /// <param name="OrderId"></param>
+        /// <returns>Order</returns>
         public Order GetOrder(int OrderId)
         {
             Order tempOrder;
@@ -224,6 +225,15 @@ namespace Delta_Coop365
             }
             return tempOrder;
         }
+        /// <summary>
+        /// Creates an order in the database and controls if a customer id is in the parameter
+        /// Default customer id is null, and only changes if value is passed
+        /// If customer has a value Customer id is added to the order
+        /// </summary>
+        /// <param name="TotalPrice"></param>
+        /// <param name="date"></param>
+        /// <param name="KundeID"></param>
+        /// <returns>OrderId</returns>
         public int InsertIntoOrders(double TotalPrice, DateTime date, int? KundeID = null)
         {
             int OrderID;
@@ -266,6 +276,11 @@ namespace Delta_Coop365
 
             return OrderID;
         }
+        /// <summary>
+        /// Saves the orderline into the database and attaching it to order with orderid
+        /// </summary>
+        /// <param name="OrderID"></param>
+        /// <param name="ol"></param>
         public void InsertIntoOrderLines(int OrderID, OrderLine ol)
         {
             string query = "Insert INTO OrderLines(Amount, ProductId, OrderId, Date) VALUES(@Amount, @ProductId, @OrderId, @Date)";
@@ -275,6 +290,11 @@ namespace Delta_Coop365
             SqlParameter DateParam = new SqlParameter("@Date", ol.GetDate());
             sqlQuery(query, AmountParam, ProductIdParam, OrderIdParam, DateParam);
         }
+        /// <summary>
+        /// Updates orderline in the database with the given orderid and productid
+        /// </summary>
+        /// <param name="ol"></param>
+        /// <param name="OrderId"></param>
         public void UpdateOrderLine(OrderLine ol, int OrderId)
         {
             string query = "UPDATE OrderLines SET Amount = @amount WHERE ProductID = @ProductId AND OrderID = @OrderId";
@@ -283,6 +303,11 @@ namespace Delta_Coop365
             SqlParameter OrderIdParam = new SqlParameter("@OrderId", OrderId);
             sqlQuery(query, AmountParam, ProductIdParam, OrderIdParam);
         }
+        /// <summary>
+        /// Returns the orderlines from the database that is attached to orderid
+        /// </summary>
+        /// <param name="OrderId"></param>
+        /// <returns>List<Orderline></returns>
         public List<OrderLine> GetOrderLines(int OrderId)
         {
             List<OrderLine> tempOrderLines = new List<OrderLine>();
@@ -311,6 +336,11 @@ namespace Delta_Coop365
             }
             return tempOrderLines;
         }
+        /// <summary>
+        /// Recieves all the orderlines in the database, that was created the same date as the given param
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns>List<OrderLine></returns>
         public List<OrderLine> GetDailyOrderLines(DateTime date)
         {
             List<OrderLine> tempOrderLines = new List<OrderLine>();
@@ -343,6 +373,11 @@ namespace Delta_Coop365
             }
             return tempOrderLines;
         }
+        /// <summary>
+        /// Checks if a customer exists in the database with given phoneNumber
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <returns>True if customer exists false if not</returns>
         public bool IsCustomerExisting(int phoneNumber)
         {
             bool customerExists;
@@ -369,8 +404,16 @@ namespace Delta_Coop365
             }
             return customerExists;
         }
-        /// CREATE, READ, UPDATE <summary>
+        /// <summary>
+        /// Saves a customer into the database
         /// </summary>
+        /// <param name="name"></param>
+        /// <param name="address"></param>
+        /// <param name="zipCode"></param>
+        /// <param name="city"></param>
+        /// <param name="email"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="coopPoints"></param>
         public void InsertIntoKunder(string name, string address, int zipCode, string city, string email, int phoneNumber, double coopPoints)
         {
             string query = "Insert INTO Kunder(Name, Address, Zipcode, City, Email, PhoneNumber, CoopPoints) VALUES(@Name, @Address, @Zipcode, @City, @Email, @PhoneNumber, @CoopPoints)";
@@ -383,7 +426,11 @@ namespace Delta_Coop365
             SqlParameter CoopPointsParam = new SqlParameter("@CoopPoints", coopPoints);
             sqlQuery(query, NameParam, AddressParam, ZipcodeParam, CityParam, EmailParam, PhoneNumberParam, CoopPointsParam);
         }
-
+        /// <summary>
+        /// Gets customer from the database that maches the phoneNumber
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
         public Customer GetCustomer(int phoneNumber)
         {
             Customer tempC = null;
@@ -416,6 +463,12 @@ namespace Delta_Coop365
             }
             return tempC;
         }
+        /// <summary>
+        /// Gets customer by KundeId for the single purpose of generating test data
+        /// since we dont enter any phonenumbers in the test
+        /// </summary>
+        /// <param name="KundeId"></param>
+        /// <returns></returns>
         public Customer GetCustomerById(int KundeId)
         {
             Customer tempC = null;
@@ -449,7 +502,13 @@ namespace Delta_Coop365
             }
             return tempC;
         }
-
+        /// <summary>
+        /// Updates all of the customer values in the database
+        /// Has the option to use "old" phonenumber, so if a new phonenumer occurs, 
+        /// it is passed in the customer object, and finds the customer with the old number to change it.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="phoneNumber"></param>
         public void UpdateCustomer(Customer c, int phoneNumber)
         {
             string query = "UPDATE Kunder SET (Name, Address, Zipcode, City, Email, PhoneNumber) VALUES(@Name,@Address,@Zipcode,@City,@Email,@PhoneNumber) WHERE PhoneNumber = @oldPhoneNumber";
@@ -462,6 +521,11 @@ namespace Delta_Coop365
             SqlParameter oldPhoneNumberParam = new SqlParameter("@oldPhoneNumber", phoneNumber);
             sqlQuery(query, nameParam, addressParam, zipCodeParam, cityParam, emailParam, phoneNumberParam, oldPhoneNumberParam);
         }
+        /// <summary>
+        /// Updates the points in customer table with a value.
+        /// </summary>
+        /// <param name="phoneNumber"></param>
+        /// <param name="points"></param>
         public void UpdateCustomerPoints(int phoneNumber, double points)
         {
             string query = "UPDATE Kunder SET CoopPoints = @points WHERE PhoneNumber = @phoneNumber";
@@ -493,17 +557,10 @@ namespace Delta_Coop365
             }
             return coopPoints;
         }
-
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// Function to get the project path whereever in the code.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>string path</returns>
         public static string GetSolutionPath()
         {
             // This will get the current PROJECT directory
@@ -512,6 +569,11 @@ namespace Delta_Coop365
 
             return projectDirectory;
         }
+        /// <summary>
+        /// Main sql query, that handles a query string with using statements to ensure secore closing of the instances when done.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="parameters"></param>
         public void sqlQuery(string query, params SqlParameter[] parameters)
         {
             using (SqlConnection connection = new SqlConnection(connString))

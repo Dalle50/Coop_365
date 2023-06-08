@@ -38,7 +38,7 @@ namespace Delta_Coop365
         public static Order theOrder;
         public static TextBlock textBlock;
         /// <summary>
-        /// [Author] Daniel
+        /// [Authors] Pernille & Rebecca
         /// </summary>
         public MainWindow()
         {
@@ -80,6 +80,7 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// Returns data from XAML file 
         /// </summary>
         /// <returns></returns>
         public IEnumerable<XElement> GetData()
@@ -88,6 +89,7 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// If products table in database is populated it updates all the products withe current data from XML File
         /// </summary>
         public void UpdateDataBase()
         {
@@ -111,6 +113,7 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// Gets products into ObservableCollection
         /// </summary>
         public void GetProducts()
         {
@@ -126,6 +129,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Sets ItemSource of our products to the Observable collection
         /// </summary>
         public void ShowProducts()
         {
@@ -134,6 +138,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Starts the CheckoutWindow passing the order.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -144,6 +149,11 @@ namespace Delta_Coop365
 
         }
 
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ReturnClick(object sender, MouseButtonEventArgs e)
         {
 
@@ -151,6 +161,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Registers click on a picture and finds the product with imagepath. Then starts new viewingProduct window
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -182,6 +193,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Updates total price textbox
         /// </summary>
         /// <param name="text"></param>
         public static void UpdateTotalPriceText(string text)
@@ -191,6 +203,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Generates random stock everytime program is launched.
         /// </summary>
         private void SetStock()
         {
@@ -220,6 +233,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [Author] Daniel
+        /// Function to reset the text field and order
         /// </summary>
         public static void ResetOrder()
         {

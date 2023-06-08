@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static QRCoder.PayloadGenerator;
-
+﻿
 namespace Delta_Coop365
 {
     /// <summary>
     /// [Author] Daniel
+    /// Quickly generated customer class
+    /// Curveball customer class
     /// </summary>
     public class Customer
     {
