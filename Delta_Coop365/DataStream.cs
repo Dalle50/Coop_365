@@ -7,6 +7,9 @@ using System.Xml.Linq;
 
 namespace Delta_Coop365
 {
+    /// <summary>
+    /// [Author] Daniel
+    /// </summary>
     internal class DataStream
     {
         private string api;

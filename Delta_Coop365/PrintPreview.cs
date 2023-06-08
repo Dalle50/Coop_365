@@ -10,6 +10,9 @@ namespace Delta_Coop365
 {
     internal class PrintPreview
     {
+        public PrintPreview()
+        {
+        }
         public void CreatePDFReceipt(Order order, int orderId)
         {
             double x = 0;
