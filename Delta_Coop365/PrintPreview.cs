@@ -42,14 +42,14 @@ namespace Delta_Coop365
                     XStringFormats.TopLeft);
                 gfx.DrawString(ol.amount.ToString(), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopCenter);
-                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2)+ "("+ ol.GetProduct().GetPrice()+"  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2) + "(" + ol.GetProduct().GetPrice() + "  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopRight);
                 y += 40;
 
             }
             XImage image = XImage.FromFile(DbAccessor.GetSolutionPath() + "\\QrCodes\\" + orderId + ".Jpeg");
             gfx.DrawImage(image, x, y, page.Width, page.Width);
-            
+
             document.Save(DbAccessor.GetSolutionPath() + "\\Receipts\\" + orderId + ".pdf");
         }
         public void CreateDailyPDF(List<OrderLine> ols)
@@ -95,7 +95,7 @@ namespace Delta_Coop365
     XStringFormats.TopCenter);
 
             string path = DbAccessor.GetSolutionPath();
-            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_"+date+ ".pdf");
+            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_" + date + ".pdf");
 
         }
     }

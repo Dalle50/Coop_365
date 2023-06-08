@@ -129,7 +129,6 @@ namespace Delta_Coop365
             order.ClearOrderLines();
             order.UpdateTotalPrice();
 
-
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
@@ -139,7 +138,6 @@ namespace Delta_Coop365
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            
             Console.WriteLine("Closing window so customer can add more items.");
         }
         /// <summary>
@@ -155,6 +153,7 @@ namespace Delta_Coop365
             }
             if ((bool)checkBox.IsChecked)
             {
+
                 if (!isPhoneNumberCheckOpened)
                 {
                     CheckOutPointsCheck phoneNumberCheck = new CheckOutPointsCheck(ConvertItemsToPoints(orderLines.ToList()));
@@ -162,7 +161,6 @@ namespace Delta_Coop365
                     phoneNumberCheck.Show();
                     isPhoneNumberCheckOpened = true; // Set the flag to indicate that phoneNumberCheck window is opened
                 }
-
             }
             else
             {
@@ -240,8 +238,9 @@ namespace Delta_Coop365
                 {
                     Console.WriteLine("Sender mail.....");
                     emailService.SendNotice("daniel.htc.jacobsen@gmail.com",
-                        "Stock is empty", 
-                        "The stock of: "+ p.GetName() +" is emptied out at the time: " + date,new string[] {});
+                        "Stock is empty",
+                        //string[]  er med så man kan attatch den i en email
+                        "The stock of: " + p.GetName() +" is emptied out at the time: " + date, new string[] {}); 
                 }
                 foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
@@ -260,6 +259,7 @@ namespace Delta_Coop365
         private void DontUpdateStock(Product p)
         {
             Console.WriteLine("Stock is set back to: " + p.GetStock());
+
             p.SetStock(p.GetStock());
             dbAccessor.updateStock(p.GetID(), p.GetStock());
         }
