@@ -26,7 +26,10 @@ namespace Delta_Coop365
         DateTime date = DateTime.Now;
         private bool isPhoneNumberCheckOpened = false;
 
-
+        /// <summary>
+        /// Opens checkout Window with order object
+        /// </summary>
+        /// <param name="o"></param>
         public CheckOut(Order o)
         {
             InitializeComponent();
@@ -35,7 +38,11 @@ namespace Delta_Coop365
             GetCartItems();
             ShowCartItems();
         }
-
+        /// <summary>
+        /// Removes orderline from the order both visual in the ObservableCollection and in the order object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void removeItem_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -45,13 +52,16 @@ namespace Delta_Coop365
             {
                 orderLines.Remove(orderLine);
                 order.DeleteOrderLine(orderLine);
-                DontUpdateStock(orderLine.GetProduct());
                 order.UpdateTotalPrice();
                 MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
                 App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             }
         }
-
+        /// <summary>
+        /// Decrement the amount of products on the orderline.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -67,7 +77,11 @@ namespace Delta_Coop365
                 cartItems.Items.Refresh();
             }
         }
-
+        /// <summary>
+        /// Increments the amount of products
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -87,6 +101,9 @@ namespace Delta_Coop365
                 cartItems.Items.Refresh();
             }
         }
+        /// <summary>
+        /// Get all the orderLines
+        /// </summary>
         private void GetCartItems()
         {
             if (order != null)
@@ -102,12 +119,20 @@ namespace Delta_Coop365
                 Console.WriteLine("No products is in the cart.");
             }
         }
+        /// <summary>
+        /// Changes itemsource to the orderlinescollection
+        /// updates the total price
+        /// </summary>
         private void ShowCartItems()
         {
             cartItems.ItemsSource = orderLines;
             txtTotal.Text = order.GetPrice().ToString() + " Kr.";
         }
-
+        /// <summary>
+        /// Clears the orderlines
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUndoAll_Click(object sender, RoutedEventArgs e)
         {
             foreach (OrderLine orderLine in orderLines)
@@ -135,13 +160,10 @@ namespace Delta_Coop365
             Console.WriteLine("The order history was cleared.");
         }
 
-        private void btnAddMore_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-            Console.WriteLine("Closing window so customer can add more items.");
-        }
         /// <summary>
         /// [Author] Daniel
+        /// Controls only one window is opened at a time for registering
+        /// And checks customer for phonenumber, if checkbox is marked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -180,6 +202,8 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// Eventhandler for noticing when phonenumbercheck is closed
+        /// Confirms if customer exists, and if the customer just got registered it updates points.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -212,11 +236,20 @@ namespace Delta_Coop365
             MainWindow.ResetOrder();
             Close();
         }
+        /// <summary>
+        /// Back button closes the window 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGoBack_Click(object sender, RoutedEventArgs e)
         {
             Close();
             Console.WriteLine("Window closing but order is still saved.");
         }
+        /// <summary>
+        /// Generates the qr code
+        /// </summary>
+        /// <param name="orderId"></param>
         private void CreateQRCode(int orderId)
         {
             QrCodeService qRCodeGenerator = new QrCodeService();
@@ -261,16 +294,11 @@ namespace Delta_Coop365
                 Console.WriteLine("Stock has been updated to " + p.GetStock());
             }
         }
-        private void DontUpdateStock(Product p)
-        {
-            Console.WriteLine("Stock is set back to: " + p.GetStock());
-
-            p.SetStock(p.GetStock());
-            dbAccessor.updateStock(p.GetID(), p.GetStock());
-        }
         /// <summary>
         /// [Author] Daniel
-        /// </summary>
+        /// Take the orderlines of the order
+        /// Converts the amount of items to points
+        /// Given that every produkt gives 5 points.
         /// <param name="orderLines"></param>
         /// <returns></returns>
         public static double ConvertItemsToPoints(List<OrderLine> orderLines)
