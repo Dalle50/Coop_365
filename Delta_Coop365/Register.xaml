@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Register" Height="287" Width="306" ResizeMode="NoResize" Background="#0dc144">
     <Grid Margin="0,0,511,181">
-        <Grid Margin="42,18,-332,-169">
+        <Grid Margin="-14,21,-276,-172">
             <TextBlock HorizontalAlignment="Left" Margin="73,42,0,0" TextWrapping="Wrap" Text="Navn" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="73,63,0,0" TextWrapping="Wrap" Text="Adresse" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment="Left" Margin="73,87,0,0" TextWrapping="Wrap" Text="Postnr" VerticalAlignment="Top" RenderTransformOrigin="1.17,1.147"/>
