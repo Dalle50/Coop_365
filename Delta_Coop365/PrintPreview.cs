@@ -96,7 +96,8 @@ namespace Delta_Coop365
 
             string path = DbAccessor.GetSolutionPath();
             document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_" + date + ".pdf");
-
+            EmailView emailView = new EmailView(true, "Daily Report", "Den daglige rapport er vedlagt som fil", "Daglig_Rapport_for_salg_" + date + ".pdf");
+            emailView.Show();
         }
     }
 }
