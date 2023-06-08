@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -19,6 +21,7 @@ using System.Xml.Linq;
 using Delta_Coop365;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using QRCoder;
 
 namespace Delta_Coop365
 {
@@ -40,6 +43,7 @@ namespace Delta_Coop365
         public MainWindow()
         {
             InitializeComponent();
+            MakePaths();
             productsCollection = new ObservableCollection<Product>();
             theOrder = new Order();
             textBlock = tbTotalAmount;
@@ -51,6 +55,27 @@ namespace Delta_Coop365
             {
                 TestData testDataGenerator = new TestData();
                 testDataGenerator.GenerateTestData();
+            }
+        }
+        /// <summary>
+        /// [Author] Daniel
+        /// Generates folders to save Receipts and qr codes
+        /// </summary>
+        public void MakePaths()
+        {
+            string primaryPath = DbAccessor.GetSolutionPath();
+            string receiptPath = primaryPath + "\\Receipts\\";
+            try
+            {
+                if (!Directory.Exists(receiptPath))
+                {
+                    Directory.CreateDirectory(receiptPath);
+                    Console.WriteLine("Receipts folder has been made");
+                }
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("Failed to generate path to Receipts");
             }
         }
         /// <summary>
