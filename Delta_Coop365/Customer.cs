@@ -8,13 +8,7 @@ using static QRCoder.PayloadGenerator;
 namespace Delta_Coop365
 {
     /// <summary>
-    ///             SqlParameter NameParam = new SqlParameter("@Name", name);
-    //SqlParameter AddressParam = new SqlParameter("@Address", address);
-    //SqlParameter ZipcodeParam = new SqlParameter("@Zipcode", zipCode);
-    //SqlParameter CityParam = new SqlParameter("@City", city);
-    //SqlParameter EmailParam = new SqlParameter("@Email", email);
-    //SqlParameter PhoneNumberParam = new SqlParameter("@PhoneNumber", phoneNumber);
-    //SqlParameter CoopPointsParam = new SqlParameter("@CoopPoints
+    /// [Author] Daniel
     /// </summary>
     public class Customer
     {

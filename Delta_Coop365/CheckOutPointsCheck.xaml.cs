@@ -16,6 +16,7 @@ namespace Delta_Coop365
 {
     /// <summary>
     /// Interaction logic for CheckOutPointsCheck.xaml
+    /// [Author] Daniel
     /// </summary>
     public partial class CheckOutPointsCheck : Window
     {
@@ -23,6 +24,7 @@ namespace Delta_Coop365
         private double points;
         DbAccessor dbAccessor = new DbAccessor();
         Customer customer;
+        private bool registrationSuccessful = false;
         public CheckOutPointsCheck(double points)
         {
             InitializeComponent();
@@ -67,7 +69,7 @@ namespace Delta_Coop365
                     }
                     else if(messageBoxResult == MessageBoxResult.No)
                     {
-                        dbAccessor.UpdateCustomerPoints(phoneNumber, 0);
+                        dbAccessor.UpdateCustomerPoints(phoneNumber, customer.coopPoints + CheckOut.ConvertItemsToPoints(MainWindow.theOrder.GetOrderLines()));
                         Close();
                     }
                 }
@@ -78,8 +80,11 @@ namespace Delta_Coop365
                     MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Vil du registreres i systemet?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.Yes)
                     {
-                        Register register = new Register(points ,phoneNumber);
+                        Register register = new Register(phoneNumber);
                         register.Show();
+                        register.Closed += Register_Closed;
+
+                        register.CheckOutPointsCheckWindow = this;
 
                     }
                     else if (messageBoxResult == MessageBoxResult.No)
@@ -95,6 +100,20 @@ namespace Delta_Coop365
             }
             
         }
+        private void Register_Closed(object sender, EventArgs e)
+        {
+            if (registrationSuccessful)
+            {
+                phoneNumberExist = true;
+                // Close the current window when the Register window is closed and registration was successful
+                Close();
+            }
+        }
+        public bool RegistrationSuccessful
+        {
+            get { return registrationSuccessful; }
+            set { registrationSuccessful = value; }
+        }
         private void UndoClick(object sender, RoutedEventArgs e)
         {
             phoneNumberExist = false;
@@ -103,6 +122,20 @@ namespace Delta_Coop365
         private double ConvertPointsToCash(Customer c)
         {
             return c.coopPoints / 100;
+        }
+        private void phoneNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            string newText = textBox.Text + e.Text;
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true; // Cancel the input
+            }
+
+            if (newText.Length > 8)
+            {
+                e.Handled = true; // Cancel the input
+            }
         }
     }
 }

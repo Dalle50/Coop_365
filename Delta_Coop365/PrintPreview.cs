@@ -10,25 +10,9 @@ namespace Delta_Coop365
 {
     internal class PrintPreview
     {
-
-
         public PrintPreview()
         {
-            // Create a new PDF document
-            // Set the starting position
-
-
         }
-        //public XImage DrawImage(XGraphics gfx, string jpegSamplePath, int x, int y, int width, int height)
-        //{
-
-        //    XImage image = XImage.FromFile(qrPath + "\\Receipts\\" + ordreId + ".Jpeg");
-        //    gfx.DrawImage(image, x, y, width, height);
-        //     Save the document...
-
-        //     ...and start a viewer.
-        //    Process.Start(path + "\\" + ordreId + ".pdf");
-        //}
         public void CreatePDFReceipt(Order order, int orderId)
         {
             double x = 0;
