@@ -226,6 +226,9 @@ namespace Delta_Coop365
             CreateRecipe.CreatePDFReceipt(order, orderId);
             Console.WriteLine("QR-Kode has been generated and added onto the PDF file.");
         }
+        /// <summary>
+        /// Sends an Email, but also shows the Email in the form of a pop-up window
+        /// </summary>
         private void UpdateStockOnConfirm()
         {
             foreach (OrderLine orderline in order.orderLines)
@@ -240,7 +243,9 @@ namespace Delta_Coop365
                     emailService.SendNotice("daniel.htc.jacobsen@gmail.com",
                         "Stock is empty",
                         //string[]  er med så man kan attatch den i en email
-                        "The stock of: " + p.GetName() +" is emptied out at the time: " + date, new string[] {}); 
+                        "The stock of: " + p.GetName() +" is emptied out at the time: " + date, new string[] {});
+                    EmailView emailView = new EmailView(false, "Stock is empty", "The stock of: " + p.GetName() + " is emptied out at the time: " + date, "");
+                    emailView.Show();
                 }
                 foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
