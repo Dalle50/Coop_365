@@ -10,25 +10,6 @@ namespace Delta_Coop365
 {
     internal class PrintPreview
     {
-
-
-        public PrintPreview()
-        {
-            // Create a new PDF document
-            // Set the starting position
-
-
-        }
-        //public XImage DrawImage(XGraphics gfx, string jpegSamplePath, int x, int y, int width, int height)
-        //{
-
-        //    XImage image = XImage.FromFile(qrPath + "\\Receipts\\" + ordreId + ".Jpeg");
-        //    gfx.DrawImage(image, x, y, width, height);
-        //     Save the document...
-
-        //     ...and start a viewer.
-        //    Process.Start(path + "\\" + ordreId + ".pdf");
-        //}
         public void CreatePDFReceipt(Order order, int orderId)
         {
             double x = 0;
@@ -58,14 +39,14 @@ namespace Delta_Coop365
                     XStringFormats.TopLeft);
                 gfx.DrawString(ol.amount.ToString(), font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopCenter);
-                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2)+ "("+ ol.GetProduct().GetPrice()+"  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
+                gfx.DrawString((ol.GetAmount() * ol.GetProduct().GetPrice()).ToString("N" + 2) + "(" + ol.GetProduct().GetPrice() + "  pr. stk)", font, XBrushes.Black, new XRect(x, y, page.Width, page.Height),
     XStringFormats.TopRight);
                 y += 40;
 
             }
             XImage image = XImage.FromFile(DbAccessor.GetSolutionPath() + "\\QrCodes\\" + orderId + ".Jpeg");
             gfx.DrawImage(image, x, y, page.Width, page.Width);
-            
+
             document.Save(DbAccessor.GetSolutionPath() + "\\Receipts\\" + orderId + ".pdf");
         }
         public void CreateDailyPDF(List<OrderLine> ols)
@@ -111,7 +92,7 @@ namespace Delta_Coop365
     XStringFormats.TopCenter);
 
             string path = DbAccessor.GetSolutionPath();
-            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_"+date+ ".pdf");
+            document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_" + date + ".pdf");
 
         }
     }

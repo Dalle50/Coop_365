@@ -112,7 +112,6 @@ namespace Delta_Coop365
             order.ClearOrderLines();
             order.UpdateTotalPrice();
 
-
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
             App.Current.Dispatcher.Invoke(delegate { txtTotal.Text = order.GetPrice().ToString(); });
             Close();
@@ -122,7 +121,6 @@ namespace Delta_Coop365
         private void btnAddMore_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            
             Console.WriteLine("Closing window so customer can add more items.");
         }
 
@@ -133,7 +131,6 @@ namespace Delta_Coop365
                 CheckOutPointsCheck phoneNumberCheck = new CheckOutPointsCheck(ConvertItemsToPoints(orderLines.ToList()));
                 phoneNumberCheck.Closing += PhoneNumberCheck_Closing; // Attach the event handler
                 phoneNumberCheck.Show();
-                
             }
             else
             {
@@ -198,8 +195,9 @@ namespace Delta_Coop365
                 {
                     Console.WriteLine("Sender mail.....");
                     emailService.SendNotice("daniel.htc.jacobsen@gmail.com",
-                        "Stock is empty", 
-                        "The stock of: "+ p.GetName() +" is emptied out at the time: " + date,new string[] {});
+                        "Stock is empty",
+                        //string[]  er med så man kan attatch den i en email
+                        "The stock of: " + p.GetName() +" is emptied out at the time: " + date, new string[] {}); 
                 }
                 foreach (Product collectiveProduct in MainWindow.productsCollection)
                 {
@@ -218,6 +216,7 @@ namespace Delta_Coop365
         private void DontUpdateStock(Product p)
         {
             Console.WriteLine("Stock is set back to: " + p.GetStock());
+
             p.SetStock(p.GetStock());
             dbAccessor.updateStock(p.GetID(), p.GetStock());
         }

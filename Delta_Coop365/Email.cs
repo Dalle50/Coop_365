@@ -19,7 +19,6 @@ namespace Delta_Coop365
     public class Email
     {
         //private receiver;
-        private Report report;
         private string senderEmail = "deltacoop365@outlook.dk";
         private string senderPassword = "projekt1234";
 
