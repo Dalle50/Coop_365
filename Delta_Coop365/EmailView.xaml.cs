@@ -19,6 +19,13 @@ namespace Delta_Coop365
     /// </summary>
     public partial class EmailView : Window
     {
+        /// <summary>
+        /// Creates a window simulating the mail that has been created
+        /// </summary>
+        /// <param name="isDailyReport"></param>
+        /// <param name="subject"></param>
+        /// <param name="body"></param>
+        /// <param name="dailyReport"></param>
         public EmailView(bool isDailyReport, string subject, string body, string dailyReport)
         {
             InitializeComponent();
