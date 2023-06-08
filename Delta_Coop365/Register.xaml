@@ -8,12 +8,12 @@
         Title="Register" Height="287" Width="306" ResizeMode="NoResize" Background="#0dc144">
     <Grid Margin="0,0,511,181">
         <Grid Margin="-14,21,-276,-172">
-            <TextBlock HorizontalAlignment="Left" Margin="73,42,0,0" TextWrapping="Wrap" Text="Navn" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="73,63,0,0" TextWrapping="Wrap" Text="Adresse" VerticalAlignment="Top"/>
-            <TextBlock HorizontalAlignment="Left" Margin="73,87,0,0" TextWrapping="Wrap" Text="Postnr" VerticalAlignment="Top" RenderTransformOrigin="1.17,1.147"/>
-            <TextBlock HorizontalAlignment="Left" Margin="73,112,0,0" TextWrapping="Wrap" Text="By" VerticalAlignment="Top" RenderTransformOrigin="1.245,1.372"/>
-            <TextBlock HorizontalAlignment="Left" Margin="73,135,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" RenderTransformOrigin="1.145,1.443"/>
-            <TextBlock HorizontalAlignment="Left" Margin="73,156,0,0" TextWrapping="Wrap" Text="TelefonNr" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,42,0,0" TextWrapping="Wrap" Text="Navn" VerticalAlignment="Top" FontFamily="cambria"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,63,0,0" TextWrapping="Wrap" Text="Adresse" VerticalAlignment="Top" FontFamily="cambria"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,87,0,0" TextWrapping="Wrap" Text="Postnr" VerticalAlignment="Top" RenderTransformOrigin="1.17,1.147" FontFamily="cambria"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,112,0,0" TextWrapping="Wrap" Text="By" VerticalAlignment="Top" RenderTransformOrigin="1.245,1.372" FontFamily="cambria"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,135,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" RenderTransformOrigin="1.145,1.443" FontFamily="cambria"/>
+            <TextBlock HorizontalAlignment="Left" Margin="73,156,0,0" TextWrapping="Wrap" Text="TelefonNr" VerticalAlignment="Top" FontFamily="cambria"/>
             <TextBox x:Name="Navn" PreviewTextInput="NumberCheck_PreviewTextInput" HorizontalAlignment="Left" Margin="127,41,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Background="#066a3f" Foreground="White" FontFamily="cambria"/>
             <TextBox x:Name="Adresse" HorizontalAlignment="Left" Margin="127,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Background="#066a3f" Foreground="White" FontFamily="cambria"/>
             <TextBox x:Name="zip" PreviewTextInput="zipCheck_PreviewTextInput" HorizontalAlignment="Left" Margin="127,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Background="#066a3f" Foreground="White" FontFamily="cambria"/>
@@ -21,7 +21,7 @@
             <TextBox x:Name="email" HorizontalAlignment="Left" Margin="127,133,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Background="#066a3f" Foreground="White" FontFamily="cambria"/>
             <TextBox x:Name="phoneNumber" IsReadOnly="True" HorizontalAlignment="Left" Margin="127,156,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Background="#066a3f" Foreground="White" FontFamily="cambria"/>
             <Button Content="Register" HorizontalAlignment="Left" Margin="198,202,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click" RenderTransformOrigin="-0.136,0.37" Background="#066a3f" Foreground="White" FontFamily="cambria"/>
-            <TextBlock HorizontalAlignment="Left" Margin="90,10,0,0" TextWrapping="Wrap" Text="Indtast dine informationer her" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="90,10,0,0" TextWrapping="Wrap" Text="Indtast dine informationer her" VerticalAlignment="Top" FontFamily="cambria"/>
         </Grid>
     </Grid>
 </Window>
