@@ -23,6 +23,7 @@
         <Label Grid.Column="0" Grid.Row="0" Content="kategorier" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Cambria" Foreground="#066a3f" Height="38" Width="117"/>
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Brød" HorizontalAlignment="Left" Margin="33,57,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White" Height="18" Width="54"/>
         <CheckBox Grid.Column="0" Grid.Row="0" Content="Kage" HorizontalAlignment="Left" Margin="33,96,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Cambria" Foreground="White" Height="18" Width="54"/>
+        <Button Content="Daily Report" HorizontalAlignment="Center" Margin="0,439,0,0" VerticalAlignment="Top" Height="51" Width="72" Click="GenerateDailyPDF"/>
         <!-- col 1, row 0-->
         <ScrollViewer Grid.Column="1" Grid.Row="0" Background="#0dc144" Margin="0,0,0,4">
             <StackPanel x:Name="BakeOff">
@@ -65,7 +66,6 @@
         <Label Grid.Column="1" Grid.Row="1" Content="Kurv" HorizontalAlignment="Center"  VerticalAlignment="Top" FontFamily="Cambria" Foreground="White" FontSize="15" Height="28" Width="75" Margin="584,102,0,0" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbTotalAmount" Text="{Binding priceText}" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="46" TextAlignment="Center" FontSize="24" Background="White" Margin="375,52,0,0" Grid.Column="1"/>
         <Label Grid.Column="1" Grid.Row="1" Content="kr." HorizontalAlignment="Left" Margin="510,58,0,0" Height="40" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.441,0.971" Foreground="White" FontFamily="Cambria" Width="36"/>
-        <Button Content="Daily Report" HorizontalAlignment="Center" Margin="0,439,0,0" VerticalAlignment="Top" Height="51" Width="72" Click="GenerateDailyPDF"/>
     </Grid>
 </Window>
 

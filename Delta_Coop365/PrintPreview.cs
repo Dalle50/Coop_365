@@ -2,9 +2,6 @@
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Controls;
-using System.Windows.Media.Media3D;
 
 namespace Delta_Coop365
 {
@@ -13,16 +10,28 @@ namespace Delta_Coop365
         public PrintPreview()
         {
         }
+        /// <summary>
+        /// [Author] Palle
+        /// Creates
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="orderId"></param>
         public void CreatePDFReceipt(Order order, int orderId)
         {
+
             double x = 0;
             double y = 50;
-            string price = order.GetPrice().ToString();
+
+
             PdfDocument document = new PdfDocument();
             document.Info.Title = orderId.ToString();
+
             // Create an empty page
             PdfPage page = document.AddPage();
+
+            // Save it beforehand to ensure QR Code can be added to it
             document.Save(DbAccessor.GetSolutionPath() + "\\Receipts\\" + orderId + ".pdf");
+
             // Get an XGraphics object for drawing
             XGraphics gfx = XGraphics.FromPdfPage(page);
             // Create a font
@@ -50,8 +59,14 @@ namespace Delta_Coop365
             XImage image = XImage.FromFile(DbAccessor.GetSolutionPath() + "\\QrCodes\\" + orderId + ".Jpeg");
             gfx.DrawImage(image, x, y, page.Width, page.Width);
 
+
+            // Saves the finalized pdf document
             document.Save(DbAccessor.GetSolutionPath() + "\\Receipts\\" + orderId + ".pdf");
         }
+        /// <summary>
+        /// Creates report from the orderlines attached as a parameter
+        /// </summary>
+        /// <param name="ols"></param>
         public void CreateDailyPDF(List<OrderLine> ols)
         {
             string date = DateTime.Now.ToString("MM-dd-yyyy HH-mm-ss");
@@ -96,7 +111,8 @@ namespace Delta_Coop365
 
             string path = DbAccessor.GetSolutionPath();
             document.Save(path + "\\Receipts\\" + "Daglig_Rapport_for_salg_" + date + ".pdf");
-
+            EmailView emailView = new EmailView(true, "Daily Report", "Den daglige rapport er vedlagt som fil", "Daglig_Rapport_for_salg_" + date + ".pdf");
+            emailView.Show();
         }
     }
 }

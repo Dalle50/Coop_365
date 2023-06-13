@@ -20,10 +20,16 @@ namespace Delta_Coop365
     /// </summary>
     public partial class CheckOutPointsCheck : Window
     {
-        public bool phoneNumberExist;
-        private double points;
+        /// <summary>
+        /// dbAccessor to write into the database
+        /// Customer to set current customer
+        /// phoneNumberExist to confirm in checkout after window is closed
+        /// registrationSuccessful to confirm a registration has been made, if window is registered to be closed ( error handling )
+        /// </summary>
         DbAccessor dbAccessor = new DbAccessor();
         Customer customer;
+        private double points;
+        public bool phoneNumberExist;
         private bool registrationSuccessful = false;
         public CheckOutPointsCheck(double points)
         {
@@ -31,7 +37,16 @@ namespace Delta_Coop365
             this.points = points;
         }
 
-
+        /// <summary>
+        /// Enter phonenumber
+        /// Controls if number is valid format
+        /// Checks if it phonenumber exist in database
+        /// If it does it retrieves the customer, and asks if customer wants to pay with their points
+        /// If they dont ask for registratrion with options yes no
+        /// If they choose to they will be prompted with register window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConfirmClick(object sender, RoutedEventArgs e)
         {
             int phoneNumber = Int32.Parse(phoneNumberTextBox.Text);
@@ -100,6 +115,11 @@ namespace Delta_Coop365
             }
             
         }
+        /// <summary>
+        /// Event handler when Register window is closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Register_Closed(object sender, EventArgs e)
         {
             if (registrationSuccessful)

@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Delta_Coop365
 {
@@ -20,10 +10,17 @@ namespace Delta_Coop365
     /// </summary>
     public partial class ViewingProduct : Window
     {
+        /// <summary>
+        /// Field values used to save the current information about both the order and the product
+        /// </summary>
         private Product product;
         private Order order;
         private DateTime date = DateTime.Now.Date;
-        
+        /// <summary>
+        /// Constructs the ViewingProduct window with an instance of the current clicked product
+        /// Goal is to display relevant information about the product.
+        /// </summary>
+        /// <param name="currentProduct"></param>
         public ViewingProduct(Product currentProduct)
         {
             InitializeComponent();
@@ -32,7 +29,11 @@ namespace Delta_Coop365
             GetImage();
             GetInfo(currentProduct);
         }
-
+        /// <summary>
+        /// Button to increment amount of products
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             if (Int32.Parse(txtAmount.Text) <= product.GetStock() - 1)
@@ -42,7 +43,11 @@ namespace Delta_Coop365
                 txtAmount.Text = temp.ToString();
             }
         }
-
+        /// <summary>
+        /// Button to decrement amount of products
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSubstract_Click(object sender, RoutedEventArgs e)
         {
             if (Int32.Parse(txtAmount.Text) > 0)
@@ -52,11 +57,22 @@ namespace Delta_Coop365
                 txtAmount.Text = temp.ToString();
             }
         }
-
+        /// <summary>
+        /// Button to close the window securely
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReturn_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+        /// <summary>
+        /// Adds the OrderLine to the order
+        /// Controls if the current product already exists in any of the orderlines
+        /// to ensure not having multiple of same orderline
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddToCart(object sender, RoutedEventArgs e)
         {
             int amount = Int32.Parse(txtAmount.Text);
@@ -101,6 +117,10 @@ namespace Delta_Coop365
                 Console.WriteLine($"Der er nu ikke flere {product.GetName()} tilbage i montren" );
             }
         }
+        /// <summary>
+        /// Creates the orderLine with the current set field values
+        /// and updates the total price on the main window
+        /// </summary>
         private void CreateNewOrderLine()
         {
             int amount = Int32.Parse(txtAmount.Text);
@@ -109,7 +129,10 @@ namespace Delta_Coop365
             order.UpdateTotalPrice();
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
-        
+        /// <summary>
+        /// Updates the orderline that already exists in the orderlines list
+        /// </summary>
+        /// <param name="orderLine"></param>
         private void UpdateExistingOrderLine(OrderLine orderLine)
         {
             int amount = Int32.Parse(txtAmount.Text);
@@ -117,7 +140,9 @@ namespace Delta_Coop365
             order.UpdateTotalPrice();
             MainWindow.UpdateTotalPriceText(order.GetPrice().ToString() + " Kr.");
         }
-        
+        /// <summary>
+        /// Gets the index of the product in Observable collection and updates the stock of the observable collection product
+        /// </summary>
         private void UpdateStock()
         {
             int amount = Int32.Parse(txtAmount.Text);
@@ -134,13 +159,20 @@ namespace Delta_Coop365
             MainWindow.productsCollection[productIndex].SetStock(product.GetStock() - amount);
             product.SetStock(product.GetStock() - amount);
         }
-
+        /// <summary>
+        /// Sets product information in the window
+        /// </summary>
+        /// <param name="product"></param>
         private void GetInfo(Product product)
         {
             txtProductName.Text = product.GetName();
             txtNutrition.Text = product.GetIngredients();
             txtPrice.Text = product.GetPrice().ToString();
         }
+        /// <summary>
+        /// Creates and sets image of the product
+        /// Sets UriSource of the product impPath.
+        /// </summary>
         private void GetImage()
         {
             BitmapImage bitmap = new BitmapImage();

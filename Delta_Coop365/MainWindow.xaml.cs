@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -19,6 +21,7 @@ using System.Xml.Linq;
 using Delta_Coop365;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using QRCoder;
 
 namespace Delta_Coop365
 {
@@ -35,11 +38,12 @@ namespace Delta_Coop365
         public static Order theOrder;
         public static TextBlock textBlock;
         /// <summary>
-        /// [Author] Daniel
+        /// [Authors] Pernille & Rebecca
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            MakePaths();
             productsCollection = new ObservableCollection<Product>();
             theOrder = new Order();
             textBlock = tbTotalAmount;
@@ -55,6 +59,28 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// Generates folders to save Receipts and qr codes
+        /// </summary>
+        public void MakePaths()
+        {
+            string primaryPath = DbAccessor.GetSolutionPath();
+            string receiptPath = primaryPath + "\\Receipts\\";
+            try
+            {
+                if (!Directory.Exists(receiptPath))
+                {
+                    Directory.CreateDirectory(receiptPath);
+                    Console.WriteLine("Receipts folder has been made");
+                }
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("Failed to generate path to Receipts");
+            }
+        }
+        /// <summary>
+        /// [Author] Daniel
+        /// Returns data from XAML file 
         /// </summary>
         /// <returns></returns>
         public IEnumerable<XElement> GetData()
@@ -63,6 +89,7 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// If products table in database is populated it updates all the products withe current data from XML File
         /// </summary>
         public void UpdateDataBase()
         {
@@ -86,6 +113,7 @@ namespace Delta_Coop365
         }
         /// <summary>
         /// [Author] Daniel
+        /// Gets products into ObservableCollection
         /// </summary>
         public void GetProducts()
         {
@@ -101,6 +129,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Sets ItemSource of our products to the Observable collection
         /// </summary>
         public void ShowProducts()
         {
@@ -109,6 +138,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Starts the CheckoutWindow passing the order.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -119,6 +149,11 @@ namespace Delta_Coop365
 
         }
 
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ReturnClick(object sender, MouseButtonEventArgs e)
         {
 
@@ -126,6 +161,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Registers click on a picture and finds the product with imagepath. Then starts new viewingProduct window
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -157,6 +193,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Updates total price textbox
         /// </summary>
         /// <param name="text"></param>
         public static void UpdateTotalPriceText(string text)
@@ -166,6 +203,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [ Author: Rebecca ]
+        /// Generates random stock everytime program is launched.
         /// </summary>
         private void SetStock()
         {
@@ -195,6 +233,7 @@ namespace Delta_Coop365
 
         /// <summary>
         /// [Author] Daniel
+        /// Function to reset the text field and order
         /// </summary>
         public static void ResetOrder()
         {
